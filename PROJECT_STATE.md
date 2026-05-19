@@ -1,0 +1,243 @@
+# REACH — PROJECT STATE DOC
+*Handoff document. Architecture-focused. No code blocks.*
+*Last updated: May 2026*
+
+---
+
+## WHAT WE'RE BUILDING
+
+A web app that takes ambitious high schoolers and first/second-year uni students from "I want to work at a startup" to "I sent a great cold email to the right founder" — in one workflow.
+
+**Core edge:** REACH is a curated directory of early-stage YC founders who are realistically reachable by someone without experience or connections. The database is intentionally small. Every company in it was chosen because the founder is likely to respond to a thoughtful cold email from a young person. That curation is the product.
+
+**Motto:** *Cold email the founders who actually respond.*
+
+**The problem we solve:** The bottleneck isn't finding companies or finding emails. It's knowing who is actually reachable, why you specifically fit, and what to say without sounding generic. REACH handles all three.
+
+**What we are not:** A job board. A Hunter.io wrapper. A company directory. An AI email writer.
+
+**Not building in MVP:** AI-generated emails, location-based filtering, automated sending, multi-org track, Hunter.io dependency, email resolution as a core feature.
+
+---
+
+## STACK
+
+| Layer | Tool |
+|---|---|
+| Frontend | Next.js + Tailwind (Vercel) |
+| Backend | FastAPI (Railway ~$5/mo) |
+| Database | Supabase (free tier) |
+| Local LLM | Qwen3 8B via Ollama (offline pipeline only) |
+| Email resolution | Hunter.io (optional, low priority, not core) |
+
+Hunter.io is a nice-to-have fallback only. If a user can find the founder on LinkedIn themselves, that is fine. Email resolution is not the value prop.
+
+---
+
+## DATA PIPELINE (OFFLINE, RUNS ON DEV MACHINE)
+
+Runs on developer's RTX 3060 12GB. Not user-facing. Scheduled manually or on batch release.
+
+**Sources:** YC directory only (MVP). Last 4 batches: W23, S23, W24, S24. ~600-800 companies before filtering. Target ~150-250 after curation for genuine reachability.
+
+**Pipeline steps:**
+1. Scrape YC directory → raw company data (name, description, batch, tags, website)
+2. Activity filter → ping website (resolves?) + check GitHub last commit date. Dead companies dropped.
+3. Scrape company website team page → founder name, title, social links
+4. Local LLM enrichment (Qwen3 8B) → structured JSON per company
+5. Write enriched records to Supabase companies table
+6. Hunter.io → deferred, optional, only if user explicitly triggers it on brief page
+
+**Local LLM outputs per company:**
+- 2-sentence summary
+- Industry category
+- Team size estimate (1-5 / 6-15 / 16-30 / 30+)
+- Need tags (2-3 extracted from description)
+- Stage (pre-seed / seed / series-a)
+- is_active boolean
+- reachability_score: estimate of how likely a HS student gets a response (low/medium/high) based on team size + stage
+
+**Pipeline refresh schedule:**
+- YC directory: once per batch release (~2x/year, manually triggered)
+- Activity filter: runs with each scrape
+- No live API calls during user sessions (Hunter optional on demand only)
+
+---
+
+## MATCHING LOGIC (RULE-BASED, $0)
+
+User selects up to 3 skills on signup from 12 options across 4 categories:
+- Technical: Coding, Data & Analytics, Design (UI/UX)
+- Creative: Graphic Design, Video & Editing, Photography
+- Business: Marketing, Writing & Content, Research
+- Community: Social Media, Operations, Finance
+
+Match score = overlap between user skill categories and company need_tags via a SKILL_TO_CATEGORY lookup table.
+
+Local LLM generates one specific match reason sentence per company-user pair during pipeline (not live). Stored in DB.
+
+Example: "Your pandas experience maps directly to their data pipeline infrastructure work."
+
+---
+
+## CONFIDENCE LAYER — OUTREACH GUIDANCE PANEL (RULE-BASED, $0)
+
+**This is the heart of the product.** Not a utility feature — it's what separates REACH from a company list.
+
+Shown on the brief page. Four fields:
+
+- **Your angle:** what to lead with given your skill + this company's stage
+- **Reference this:** one specific thing to mention from their background
+- **Don't say:** the most common mistake for this company type
+- **Your ask:** what to actually request (never "internship" — offer a specific deliverable)
+
+Built from ~30-40 rules across skill × stage × industry combinations. No AI. No API cost.
+
+The goal of this panel is to give a nervous first-timer enough structure that they actually send the email. That activation is the product outcome we care about.
+
+---
+
+## FOUNDER CARD FIELDS
+
+- Photo, name, title
+- Company name + YC batch
+- One-line description
+- Tags: industry, stage, team size estimate, reachability signal
+- Skill match badge + one-sentence reason
+- "View Brief" button
+
+---
+
+## FOUNDER BRIEF FIELDS (SLIM)
+
+- **WHO:** name + 1-sentence background
+- **WHAT:** 2-sentence description of what they're building
+- **STAGE:** batch, team size, active signal
+- **WHY YOU MATCH:** specific sentence (pre-generated by pipeline)
+- **FIND THEM:** website, Twitter, LinkedIn (email via Hunter only if user requests it)
+
+---
+
+## EMAIL WORKSPACE
+
+- Simple textarea in-app
+- Character/word count indicator (target: under 150 words)
+- "Open in Gmail" button → mailto: link with founder email + subject pre-filled (if email resolved)
+- No AI generation. No AI feedback. User writes it themselves.
+- The guidance panel next to the workspace is the coach.
+
+---
+
+## OUTREACH TRACKER
+
+- Log: company, status (sent / replied / meeting / no response), sent date, notes
+- Follow-up reminder: sent_date + 5 days → banner appears on tracker page
+- Response rate stats: emails sent, replies, meetings booked
+
+---
+
+## AUTH + PAYWALL
+
+- Signup: email + password
+- No school email verification (high schools have no standardized domain)
+
+Unlock tiers:
+- **Free:** browse all cards, view 3 briefs
+- **Unlocked:** complete full profile (skills, bio, optional GitHub/portfolio) → unlimited briefs + tracker + reminders
+- **Paid:** $9 one-time → removes all limits, early v2 feature access
+
+---
+
+## DATABASE SCHEMA
+
+**users:** id, email, school, grad_year, skills[], bio, github_url, portfolio_url, tier, created_at
+
+**companies:** id, name, yc_batch, description, summary, website, industry, stage, team_size_estimate, need_tags[], is_active, reachability_score, founder_name, founder_title, founder_email, founder_linkedin, founder_twitter, github_url, last_github_commit, created_at, updated_at
+
+**outreach_log:** id, user_id, company_id, status, sent_at, followup_date, notes, created_at
+
+**brief_views:** id, user_id, company_id, viewed_at (enforces 3-brief free limit)
+
+---
+
+## FOLDER STRUCTURE
+
+```
+reach/
+├── frontend/
+│   ├── app/
+│   │   ├── page.tsx                  # landing
+│   │   ├── onboard/page.tsx          # signup + profile
+│   │   ├── feed/page.tsx             # card feed
+│   │   ├── brief/[id]/page.tsx       # founder brief + guidance
+│   │   └── tracker/page.tsx          # outreach tracker
+│   └── components/
+│       ├── FounderCard.tsx
+│       ├── FounderBrief.tsx
+│       ├── GuidancePanel.tsx
+│       ├── EmailWorkspace.tsx
+│       └── OutreachTracker.tsx
+│
+├── backend/
+│   ├── main.py
+│   ├── routers/
+│   │   ├── auth.py
+│   │   ├── companies.py
+│   │   ├── briefs.py
+│   │   └── tracker.py
+│   ├── pipeline/
+│   │   ├── scrape_yc.py
+│   │   ├── scrape_website.py
+│   │   ├── activity_filter.py
+│   │   ├── enrich.py
+│   │   ├── hunter.py                 # optional, low priority
+│   │   └── run_pipeline.py
+│   ├── matching/
+│   │   ├── skill_map.py
+│   │   └── scorer.py
+│   ├── guidance/
+│   │   └── rules.py
+│   └── db/
+│       ├── schema.sql
+│       └── queries.py
+│
+├── pipeline_runner.py
+├── PROJECT_STATE.md
+└── README.md
+```
+
+---
+
+## BUILD ORDER
+
+| Week | Focus |
+|---|---|
+| 1 | Pipeline: scrape_yc → activity filter → website scrape → enrich → Supabase write |
+| 2 | Backend API: schema, FastAPI setup, /companies, /briefs, /tracker, auth |
+| 3 | Matching + guidance: skill_map, scorer, rules.py, wire into API |
+| 4 | Frontend: landing, onboarding, feed, brief page, email workspace, tracker |
+| 5 | Polish + deploy: auth gates, paywall, Vercel + Railway deploy, E2E test |
+
+---
+
+## WHAT TO BUILD FIRST
+
+**File:** `backend/pipeline/scrape_yc.py`
+**Goal:** Scrape YC directory for last 4 batches. Return raw company records (name, description, batch, tags, website). No LLM yet. Just get the data.
+
+**Prerequisites before starting:**
+- Python + VSCode on Windows ✓
+- Ollama installed + `ollama pull qwen3:8b` completed
+- Supabase project created (free tier)
+- Hunter.io account (optional, not needed for Week 1)
+
+---
+
+## V2 FEATURES (NOT MVP)
+
+- Mission-driven org track (nonprofits, research labs open to HS students)
+- AI writing feedback on email drafts
+- Response rate analytics + ML optimization
+- Founder signal alerts ("new match added")
+- Direct email sending via Gmail OAuth
+- Hunter.io as a smoother integrated flow (if demand warrants it)
