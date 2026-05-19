@@ -2,12 +2,14 @@
 
 import json
 import os
+from urllib.parse import quote
+
 import requests
 
 ALGOLIA_APP_ID = "45BWZJ1SGC"
-ALGOLIA_API_KEY = "be7591b7e2cc2a51d92e5ec0a1498399"
+ALGOLIA_API_KEY = "NzllNTY5MzJiZGM2OTY2ZTQwMDEzOTNhYWZiZGRjODlhYzVkNjBmOGRjNzJiMWM4ZTU0ZDlhYTZjOTJiMjlhMWFuYWx5dGljc1RhZ3M9eWNkYyZyZXN0cmljdEluZGljZXM9WUNDb21wYW55X3Byb2R1Y3Rpb24lMkNZQ0NvbXBhbnlfQnlfTGF1bmNoX0RhdGVfcHJvZHVjdGlvbiZ0YWdGaWx0ZXJzPSU1QiUyMnljZGNfcHVibGljJTIyJTVE"
 ALGOLIA_INDEX = "YCCompany_production"
-TARGET_BATCHES = ["W23", "S23", "W24", "S24"]
+TARGET_BATCHES = ["Winter 2023", "Summer 2023", "Winter 2024", "Summer 2024"]
 
 
 def extract_company(hit: dict) -> dict:
@@ -41,8 +43,9 @@ def fetch_batch(batch: str) -> list[dict]:
         "X-Algolia-Application-Id": ALGOLIA_APP_ID,
         "Content-Type": "application/json",
     }
+    batch_filter = quote(f'["batch:{batch}"]')
     payload = {
-        "params": f'facetFilters=["batch:{batch}"]&hitsPerPage=1000'
+        "params": f"facetFilters={batch_filter}&hitsPerPage=1000"
     }
 
     try:

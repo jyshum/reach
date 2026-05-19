@@ -6,7 +6,7 @@ def test_extract_company_maps_fields():
     hit = {
         "name": "Acme Corp",
         "one_liner": "AI for supply chains.",
-        "batch": "W24",
+        "batch": "Winter 2024",
         "tags": ["B2B", "Supply Chain", "AI"],
         "website": "https://acmecorp.com",
         "objectID": "acme-corp",
@@ -17,7 +17,7 @@ def test_extract_company_maps_fields():
     assert result == {
         "name": "Acme Corp",
         "description": "AI for supply chains.",
-        "batch": "W24",
+        "batch": "Winter 2024",
         "tags": ["B2B", "Supply Chain", "AI"],
         "website": "https://acmecorp.com",
     }
@@ -26,13 +26,13 @@ def test_extract_company_maps_fields():
 def test_extract_company_handles_missing_fields():
     hit = {
         "name": "Bare Minimum Co",
-        "batch": "S23",
+        "batch": "Summer 2023",
     }
     result = extract_company(hit)
     assert result == {
         "name": "Bare Minimum Co",
         "description": "",
-        "batch": "S23",
+        "batch": "Summer 2023",
         "tags": [],
         "website": "",
     }
@@ -43,9 +43,9 @@ from backend.pipeline.scrape_yc import dedup_companies
 
 def test_dedup_removes_duplicate_names():
     companies = [
-        {"name": "Acme", "description": "v1", "batch": "W23", "tags": [], "website": ""},
-        {"name": "Acme", "description": "v2", "batch": "W24", "tags": [], "website": ""},
-        {"name": "Beta", "description": "unique", "batch": "S23", "tags": [], "website": ""},
+        {"name": "Acme", "description": "v1", "batch": "Winter 2023", "tags": [], "website": ""},
+        {"name": "Acme", "description": "v2", "batch": "Winter 2024", "tags": [], "website": ""},
+        {"name": "Beta", "description": "unique", "batch": "Summer 2023", "tags": [], "website": ""},
     ]
     result = dedup_companies(companies)
     assert len(result) == 2
@@ -56,8 +56,8 @@ def test_dedup_removes_duplicate_names():
 
 def test_dedup_preserves_order_keeps_first():
     companies = [
-        {"name": "Acme", "description": "first", "batch": "W23", "tags": [], "website": ""},
-        {"name": "Acme", "description": "second", "batch": "W24", "tags": [], "website": ""},
+        {"name": "Acme", "description": "first", "batch": "Winter 2023", "tags": [], "website": ""},
+        {"name": "Acme", "description": "second", "batch": "Winter 2024", "tags": [], "website": ""},
     ]
     result = dedup_companies(companies)
     assert len(result) == 1
@@ -83,7 +83,7 @@ def test_fetch_batch_parses_response():
             {
                 "name": "TestCo",
                 "one_liner": "Testing things.",
-                "batch": "W24",
+                "batch": "Winter 2024",
                 "tags": ["SaaS"],
                 "website": "https://testco.com",
             }
@@ -92,7 +92,7 @@ def test_fetch_batch_parses_response():
     }
 
     with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response) as mock_post:
-        result = fetch_batch("W24")
+        result = fetch_batch("Winter 2024")
 
     assert len(result) == 1
     assert result[0]["name"] == "TestCo"
@@ -112,7 +112,7 @@ def test_fetch_batch_returns_empty_on_error():
 
     with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response) as mock_post:
         mock_post.return_value.raise_for_status = mock_response.raise_for_status
-        result = fetch_batch("W24")
+        result = fetch_batch("Winter 2024")
 
     assert result == []
 
@@ -123,7 +123,7 @@ def test_scrape_yc_directory_writes_json(tmp_path):
             {
                 "name": "AlphaCo",
                 "one_liner": "Alpha does alpha.",
-                "batch": "W24",
+                "batch": "Winter 2024",
                 "tags": ["AI"],
                 "website": "https://alpha.com",
             },
@@ -165,10 +165,10 @@ def test_scrape_yc_directory_creates_parent_dir(tmp_path):
 @pytest.mark.integration
 def test_fetch_batch_live_returns_companies():
     """Smoke test: hit real Algolia API for W24 batch."""
-    result = fetch_batch("W24")
+    result = fetch_batch("Winter 2024")
     assert len(result) > 50, f"Expected 50+ companies, got {len(result)}"
     first = result[0]
     assert "name" in first
     assert "description" in first
     assert "batch" in first
-    assert first["batch"] == "W24"
+    assert first["batch"] == "Winter 2024"
