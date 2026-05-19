@@ -65,3 +65,49 @@ def test_dedup_preserves_order_keeps_first():
 
 def test_dedup_empty_list():
     assert dedup_companies([]) == []
+
+
+from unittest.mock import patch, Mock
+from backend.pipeline.scrape_yc import fetch_batch
+
+
+def test_fetch_batch_parses_response():
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        "hits": [
+            {
+                "name": "TestCo",
+                "one_liner": "Testing things.",
+                "batch": "W24",
+                "tags": ["SaaS"],
+                "website": "https://testco.com",
+            }
+        ],
+        "nbHits": 1,
+    }
+
+    with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response) as mock_post:
+        result = fetch_batch("W24")
+
+    assert len(result) == 1
+    assert result[0]["name"] == "TestCo"
+    assert result[0]["description"] == "Testing things."
+
+    # Verify correct Algolia endpoint was called
+    call_args = mock_post.call_args
+    url = call_args[0][0]
+    assert "45BWZJ1SGC" in url
+    assert "YCCompany_production" in url
+
+
+def test_fetch_batch_returns_empty_on_error():
+    mock_response = Mock()
+    mock_response.status_code = 500
+    mock_response.raise_for_status.side_effect = Exception("Server error")
+
+    with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response) as mock_post:
+        mock_post.return_value.raise_for_status = mock_response.raise_for_status
+        result = fetch_batch("W24")
+
+    assert result == []
