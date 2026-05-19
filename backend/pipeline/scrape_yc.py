@@ -15,3 +15,15 @@ def extract_company(hit: dict) -> dict:
         "tags": hit.get("tags", []),
         "website": hit.get("website", ""),
     }
+
+
+def dedup_companies(companies: list[dict]) -> list[dict]:
+    """Remove duplicate companies by name, keeping first occurrence."""
+    seen = set()
+    result = []
+    for company in companies:
+        name = company["name"]
+        if name not in seen:
+            seen.add(name)
+            result.append(company)
+    return result
