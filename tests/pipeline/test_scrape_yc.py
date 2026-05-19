@@ -1,3 +1,4 @@
+import pytest
 from backend.pipeline.scrape_yc import extract_company
 
 
@@ -159,3 +160,15 @@ def test_scrape_yc_directory_creates_parent_dir(tmp_path):
     assert output_path.exists()
     data = json.loads(output_path.read_text())
     assert data == []
+
+
+@pytest.mark.integration
+def test_fetch_batch_live_returns_companies():
+    """Smoke test: hit real Algolia API for W24 batch."""
+    result = fetch_batch("W24")
+    assert len(result) > 50, f"Expected 50+ companies, got {len(result)}"
+    first = result[0]
+    assert "name" in first
+    assert "description" in first
+    assert "batch" in first
+    assert first["batch"] == "W24"
