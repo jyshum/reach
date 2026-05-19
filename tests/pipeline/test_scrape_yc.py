@@ -67,8 +67,11 @@ def test_dedup_empty_list():
     assert dedup_companies([]) == []
 
 
+import json
+import os
 from unittest.mock import patch, Mock
 from backend.pipeline.scrape_yc import fetch_batch
+from backend.pipeline.scrape_yc import scrape_yc_directory
 
 
 def test_fetch_batch_parses_response():
@@ -111,3 +114,48 @@ def test_fetch_batch_returns_empty_on_error():
         result = fetch_batch("W24")
 
     assert result == []
+
+
+def test_scrape_yc_directory_writes_json(tmp_path):
+    mock_hits = {
+        "hits": [
+            {
+                "name": "AlphaCo",
+                "one_liner": "Alpha does alpha.",
+                "batch": "W24",
+                "tags": ["AI"],
+                "website": "https://alpha.com",
+            },
+        ],
+        "nbHits": 1,
+    }
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = mock_hits
+    mock_response.raise_for_status = Mock()
+
+    output_path = tmp_path / "raw_companies.json"
+
+    with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response):
+        scrape_yc_directory(output_path=str(output_path))
+
+    assert output_path.exists()
+    data = json.loads(output_path.read_text())
+    assert len(data) > 0
+    assert data[0]["name"] == "AlphaCo"
+
+
+def test_scrape_yc_directory_creates_parent_dir(tmp_path):
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"hits": [], "nbHits": 0}
+    mock_response.raise_for_status = Mock()
+
+    output_path = tmp_path / "subdir" / "raw_companies.json"
+
+    with patch("backend.pipeline.scrape_yc.requests.post", return_value=mock_response):
+        scrape_yc_directory(output_path=str(output_path))
+
+    assert output_path.exists()
+    data = json.loads(output_path.read_text())
+    assert data == []

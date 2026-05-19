@@ -1,5 +1,7 @@
 """Scrape YC company directory via Algolia API."""
 
+import json
+import os
 import requests
 
 ALGOLIA_APP_ID = "45BWZJ1SGC"
@@ -54,3 +56,29 @@ def fetch_batch(batch: str) -> list[dict]:
     hits = data.get("hits", [])
     print(f"[INFO] Batch {batch}: {len(hits)} companies fetched")
     return [extract_company(hit) for hit in hits]
+
+
+DEFAULT_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "raw_companies.json")
+
+
+def scrape_yc_directory(output_path: str = DEFAULT_OUTPUT_PATH) -> list[dict]:
+    """Scrape all target batches, dedup, and write to JSON file."""
+    all_companies = []
+    for batch in TARGET_BATCHES:
+        companies = fetch_batch(batch)
+        all_companies.extend(companies)
+
+    deduped = dedup_companies(all_companies)
+
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
+
+    with open(output_path, "w") as f:
+        json.dump(deduped, f, indent=2)
+
+    print(f"[DONE] Wrote {len(deduped)} companies to {output_path}")
+    return deduped
+
+
+if __name__ == "__main__":
+    scrape_yc_directory()
