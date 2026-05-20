@@ -20,6 +20,17 @@ def extract_company(hit: dict) -> dict:
         "batch": hit.get("batch", ""),
         "tags": hit.get("tags", []),
         "website": hit.get("website", ""),
+        "team_size": hit.get("team_size", None),
+        "stage": hit.get("stage", ""),
+        "status": hit.get("status", ""),
+        "is_hiring": hit.get("isHiring", False),
+        "top_company": hit.get("top_company", False),
+        "launched_at": hit.get("launched_at", None),
+        "nonprofit": hit.get("nonprofit", False),
+        "industries": hit.get("industries", []),
+        "subindustry": hit.get("subindustry", ""),
+        "long_description": hit.get("long_description", ""),
+        "all_locations": hit.get("all_locations", ""),
     }
 
 
