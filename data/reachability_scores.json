@@ -1,0 +1,7597 @@
+[
+  {
+    "name": "Pando Bioscience",
+    "reachability_score": "high",
+    "reachability_probability": 0.9551
+  },
+  {
+    "name": "Metal",
+    "reachability_score": "low",
+    "reachability_probability": 0.0187
+  },
+  {
+    "name": "Vaero",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "Yuma AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0214
+  },
+  {
+    "name": "Pierre",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7009
+  },
+  {
+    "name": "Automat",
+    "reachability_score": "high",
+    "reachability_probability": 0.995
+  },
+  {
+    "name": "SpecCheck",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Speedy Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9683
+  },
+  {
+    "name": "Finta",
+    "reachability_score": "high",
+    "reachability_probability": 0.963
+  },
+  {
+    "name": "LiteLLM",
+    "reachability_score": "high",
+    "reachability_probability": 0.9884
+  },
+  {
+    "name": "Theya",
+    "reachability_score": "high",
+    "reachability_probability": 0.9945
+  },
+  {
+    "name": "Fetchr",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8153
+  },
+  {
+    "name": "Warp",
+    "reachability_score": "low",
+    "reachability_probability": 0.0283
+  },
+  {
+    "name": "Adri AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9862
+  },
+  {
+    "name": "Vendora",
+    "reachability_score": "high",
+    "reachability_probability": 0.995
+  },
+  {
+    "name": "Lightski",
+    "reachability_score": "high",
+    "reachability_probability": 0.9692
+  },
+  {
+    "name": "Type",
+    "reachability_score": "medium",
+    "reachability_probability": 0.904
+  },
+  {
+    "name": "Social Radar",
+    "reachability_score": "high",
+    "reachability_probability": 0.971
+  },
+  {
+    "name": "Persana AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Kyber",
+    "reachability_score": "high",
+    "reachability_probability": 0.9743
+  },
+  {
+    "name": "Escape",
+    "reachability_score": "low",
+    "reachability_probability": 0.0142
+  },
+  {
+    "name": "Atmeto",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9211
+  },
+  {
+    "name": "Modulari-T",
+    "reachability_score": "high",
+    "reachability_probability": 0.9511
+  },
+  {
+    "name": "Skyhook",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8511
+  },
+  {
+    "name": "Texel.ai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8694
+  },
+  {
+    "name": "Vector",
+    "reachability_score": "low",
+    "reachability_probability": 0.0189
+  },
+  {
+    "name": "Pier",
+    "reachability_score": "high",
+    "reachability_probability": 0.9986
+  },
+  {
+    "name": "Verata",
+    "reachability_score": "high",
+    "reachability_probability": 0.977
+  },
+  {
+    "name": "Finni Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.038
+  },
+  {
+    "name": "Invitris",
+    "reachability_score": "high",
+    "reachability_probability": 0.9834
+  },
+  {
+    "name": "Adventris Pharmaceuticals",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8957
+  },
+  {
+    "name": "Untether Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9974
+  },
+  {
+    "name": "Edge",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8547
+  },
+  {
+    "name": "Benchmark",
+    "reachability_score": "high",
+    "reachability_probability": 0.9956
+  },
+  {
+    "name": "Vocode",
+    "reachability_score": "high",
+    "reachability_probability": 0.993
+  },
+  {
+    "name": "Wallbit",
+    "reachability_score": "low",
+    "reachability_probability": 0.0115
+  },
+  {
+    "name": "Vellum",
+    "reachability_score": "low",
+    "reachability_probability": 0.1003
+  },
+  {
+    "name": "rex.fit",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8919
+  },
+  {
+    "name": "Persist AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9461
+  },
+  {
+    "name": "Berry",
+    "reachability_score": "high",
+    "reachability_probability": 0.994
+  },
+  {
+    "name": "Conduit",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9162
+  },
+  {
+    "name": "SuperAPI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9788
+  },
+  {
+    "name": "Unstatiq",
+    "reachability_score": "high",
+    "reachability_probability": 0.9751
+  },
+  {
+    "name": "Resend",
+    "reachability_score": "low",
+    "reachability_probability": 0.1003
+  },
+  {
+    "name": "Decohere",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9154
+  },
+  {
+    "name": "Constant",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9465
+  },
+  {
+    "name": "Common Paper",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8805
+  },
+  {
+    "name": "Dill",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8714
+  },
+  {
+    "name": "Hindsight",
+    "reachability_score": "high",
+    "reachability_probability": 0.9934
+  },
+  {
+    "name": "Littio",
+    "reachability_score": "low",
+    "reachability_probability": 0.0065
+  },
+  {
+    "name": "Thread",
+    "reachability_score": "high",
+    "reachability_probability": 0.9723
+  },
+  {
+    "name": "Waza",
+    "reachability_score": "low",
+    "reachability_probability": 0.0117
+  },
+  {
+    "name": "Rivet",
+    "reachability_score": "high",
+    "reachability_probability": 0.9651
+  },
+  {
+    "name": "Tagsafe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9865
+  },
+  {
+    "name": "Invopop",
+    "reachability_score": "high",
+    "reachability_probability": 0.9611
+  },
+  {
+    "name": "Corgi Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.921
+  },
+  {
+    "name": "Stralis Aircraft",
+    "reachability_score": "low",
+    "reachability_probability": 0.6748
+  },
+  {
+    "name": "Helios",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9458
+  },
+  {
+    "name": "Epsilon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9884
+  },
+  {
+    "name": "Clad",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9451
+  },
+  {
+    "name": "Pylon",
+    "reachability_score": "low",
+    "reachability_probability": 0.0769
+  },
+  {
+    "name": "Peeba",
+    "reachability_score": "low",
+    "reachability_probability": 0.0238
+  },
+  {
+    "name": "Diffuse Bio",
+    "reachability_score": "medium",
+    "reachability_probability": 0.788
+  },
+  {
+    "name": "inBuild",
+    "reachability_score": "high",
+    "reachability_probability": 0.9931
+  },
+  {
+    "name": "Sanvivo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9561
+  },
+  {
+    "name": "Clearspace",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "Univerbal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9964
+  },
+  {
+    "name": "Milio",
+    "reachability_score": "low",
+    "reachability_probability": 0.0277
+  },
+  {
+    "name": "Mantys",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9183
+  },
+  {
+    "name": "Proglix",
+    "reachability_score": "low",
+    "reachability_probability": 0.0231
+  },
+  {
+    "name": "Coldreach",
+    "reachability_score": "high",
+    "reachability_probability": 0.9787
+  },
+  {
+    "name": "MagnaPlay",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8529
+  },
+  {
+    "name": "Shekel Mobility",
+    "reachability_score": "low",
+    "reachability_probability": 0.0171
+  },
+  {
+    "name": "Rally Tax",
+    "reachability_score": "high",
+    "reachability_probability": 0.9965
+  },
+  {
+    "name": "Loula",
+    "reachability_score": "high",
+    "reachability_probability": 0.9638
+  },
+  {
+    "name": "Sirdab",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Retape",
+    "reachability_score": "high",
+    "reachability_probability": 0.9561
+  },
+  {
+    "name": "Clueso",
+    "reachability_score": "low",
+    "reachability_probability": 0.0072
+  },
+  {
+    "name": "SuperKalam",
+    "reachability_score": "low",
+    "reachability_probability": 0.0283
+  },
+  {
+    "name": "Fastgen",
+    "reachability_score": "high",
+    "reachability_probability": 0.998
+  },
+  {
+    "name": "Vendah",
+    "reachability_score": "high",
+    "reachability_probability": 0.9973
+  },
+  {
+    "name": "Alaan",
+    "reachability_score": "low",
+    "reachability_probability": 0.0451
+  },
+  {
+    "name": "CombineHealth",
+    "reachability_score": "low",
+    "reachability_probability": 0.3009
+  },
+  {
+    "name": "Odigos Technologies Inc.",
+    "reachability_score": "low",
+    "reachability_probability": 0.0116
+  },
+  {
+    "name": "nunu.ai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7987
+  },
+  {
+    "name": "Hona",
+    "reachability_score": "low",
+    "reachability_probability": 0.007
+  },
+  {
+    "name": "Radical",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9055
+  },
+  {
+    "name": "Vitalize",
+    "reachability_score": "low",
+    "reachability_probability": 0.1495
+  },
+  {
+    "name": "Noya Software",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8434
+  },
+  {
+    "name": "Infinia",
+    "reachability_score": "low",
+    "reachability_probability": 0.5236
+  },
+  {
+    "name": "Hippo Scribe",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9478
+  },
+  {
+    "name": "Koywe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9917
+  },
+  {
+    "name": "Finic",
+    "reachability_score": "high",
+    "reachability_probability": 0.9709
+  },
+  {
+    "name": "Honeydew",
+    "reachability_score": "high",
+    "reachability_probability": 0.9844
+  },
+  {
+    "name": "Sherloq",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8924
+  },
+  {
+    "name": "Onshore",
+    "reachability_score": "low",
+    "reachability_probability": 0.0568
+  },
+  {
+    "name": "Shortbread",
+    "reachability_score": "high",
+    "reachability_probability": 0.9865
+  },
+  {
+    "name": "Pointwise",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Hadrius",
+    "reachability_score": "low",
+    "reachability_probability": 0.0189
+  },
+  {
+    "name": "Sage AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9866
+  },
+  {
+    "name": "FactIQ",
+    "reachability_score": "medium",
+    "reachability_probability": 0.944
+  },
+  {
+    "name": "Boundary",
+    "reachability_score": "medium",
+    "reachability_probability": 0.936
+  },
+  {
+    "name": "ClickPe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9895
+  },
+  {
+    "name": "compliant-llm",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8385
+  },
+  {
+    "name": "David",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7032
+  },
+  {
+    "name": "Variance",
+    "reachability_score": "high",
+    "reachability_probability": 0.9896
+  },
+  {
+    "name": "222",
+    "reachability_score": "low",
+    "reachability_probability": 0.0778
+  },
+  {
+    "name": "Ariglad",
+    "reachability_score": "low",
+    "reachability_probability": 0.6748
+  },
+  {
+    "name": "Berilium",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9423
+  },
+  {
+    "name": "Homeflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9698
+  },
+  {
+    "name": "Rainmaker",
+    "reachability_score": "high",
+    "reachability_probability": 0.9872
+  },
+  {
+    "name": "IcePanel",
+    "reachability_score": "high",
+    "reachability_probability": 0.9822
+  },
+  {
+    "name": "Storyboarder",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "1stCollab",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8936
+  },
+  {
+    "name": "KV Cash",
+    "reachability_score": "high",
+    "reachability_probability": 0.9877
+  },
+  {
+    "name": "Orchid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9986
+  },
+  {
+    "name": "Overlord",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8028
+  },
+  {
+    "name": "TableFlow",
+    "reachability_score": "low",
+    "reachability_probability": 0.6548
+  },
+  {
+    "name": "Truewind",
+    "reachability_score": "low",
+    "reachability_probability": 0.0229
+  },
+  {
+    "name": "BuildJet",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9477
+  },
+  {
+    "name": "ShortLoop",
+    "reachability_score": "high",
+    "reachability_probability": 0.9816
+  },
+  {
+    "name": "Wild Moose",
+    "reachability_score": "high",
+    "reachability_probability": 0.9521
+  },
+  {
+    "name": "Velos",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8866
+  },
+  {
+    "name": "Inkeep",
+    "reachability_score": "low",
+    "reachability_probability": 0.0253
+  },
+  {
+    "name": "Plutis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9987
+  },
+  {
+    "name": "RUUF",
+    "reachability_score": "low",
+    "reachability_probability": 0.0231
+  },
+  {
+    "name": "Propexo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9665
+  },
+  {
+    "name": "Iliad",
+    "reachability_score": "high",
+    "reachability_probability": 0.9987
+  },
+  {
+    "name": "Relace",
+    "reachability_score": "high",
+    "reachability_probability": 0.9762
+  },
+  {
+    "name": "Floworks",
+    "reachability_score": "low",
+    "reachability_probability": 0.0072
+  },
+  {
+    "name": "Extend",
+    "reachability_score": "low",
+    "reachability_probability": 0.0794
+  },
+  {
+    "name": "co.dev",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9318
+  },
+  {
+    "name": "DataSuite",
+    "reachability_score": "medium",
+    "reachability_probability": 0.71
+  },
+  {
+    "name": "Bluedot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9241
+  },
+  {
+    "name": "Dream3D",
+    "reachability_score": "high",
+    "reachability_probability": 0.9677
+  },
+  {
+    "name": "No Cap",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9489
+  },
+  {
+    "name": "Kivo Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.0394
+  },
+  {
+    "name": "coil inc.",
+    "reachability_score": "high",
+    "reachability_probability": 0.9979
+  },
+  {
+    "name": "Haven",
+    "reachability_score": "high",
+    "reachability_probability": 0.985
+  },
+  {
+    "name": "Suger",
+    "reachability_score": "low",
+    "reachability_probability": 0.0536
+  },
+  {
+    "name": "Cobblestone",
+    "reachability_score": "high",
+    "reachability_probability": 0.9894
+  },
+  {
+    "name": "Frigade",
+    "reachability_score": "high",
+    "reachability_probability": 0.9511
+  },
+  {
+    "name": "Repacket",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8841
+  },
+  {
+    "name": "PoloTab",
+    "reachability_score": "low",
+    "reachability_probability": 0.0337
+  },
+  {
+    "name": "Cloudchipr",
+    "reachability_score": "low",
+    "reachability_probability": 0.0253
+  },
+  {
+    "name": "Gooseworks",
+    "reachability_score": "high",
+    "reachability_probability": 0.9837
+  },
+  {
+    "name": "Chart",
+    "reachability_score": "high",
+    "reachability_probability": 0.9898
+  },
+  {
+    "name": "Bujeti",
+    "reachability_score": "low",
+    "reachability_probability": 0.0115
+  },
+  {
+    "name": "Alloy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9671
+  },
+  {
+    "name": "Cosine",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9334
+  },
+  {
+    "name": "Flower",
+    "reachability_score": "low",
+    "reachability_probability": 0.0164
+  },
+  {
+    "name": "Pirros",
+    "reachability_score": "low",
+    "reachability_probability": 0.0568
+  },
+  {
+    "name": "LinkGrep",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7645
+  },
+  {
+    "name": "Scanbase",
+    "reachability_score": "low",
+    "reachability_probability": 0.4388
+  },
+  {
+    "name": "Vooma",
+    "reachability_score": "low",
+    "reachability_probability": 0.0346
+  },
+  {
+    "name": "Coperniq",
+    "reachability_score": "high",
+    "reachability_probability": 0.9873
+  },
+  {
+    "name": "GovEagle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9512
+  },
+  {
+    "name": "PoplarML",
+    "reachability_score": "high",
+    "reachability_probability": 0.9555
+  },
+  {
+    "name": "infra.new",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7635
+  },
+  {
+    "name": "FlexWash",
+    "reachability_score": "high",
+    "reachability_probability": 0.9598
+  },
+  {
+    "name": "Gluetrail",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9438
+  },
+  {
+    "name": "JustPaid",
+    "reachability_score": "low",
+    "reachability_probability": 0.1247
+  },
+  {
+    "name": "Narrative",
+    "reachability_score": "high",
+    "reachability_probability": 0.9886
+  },
+  {
+    "name": "Omnistrate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9666
+  },
+  {
+    "name": "Dataglade",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8786
+  },
+  {
+    "name": "Tennr",
+    "reachability_score": "low",
+    "reachability_probability": 0.049
+  },
+  {
+    "name": "Salient",
+    "reachability_score": "low",
+    "reachability_probability": 0.0147
+  },
+  {
+    "name": "ZeroDev",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9252
+  },
+  {
+    "name": "Ruby Card",
+    "reachability_score": "high",
+    "reachability_probability": 0.987
+  },
+  {
+    "name": "Pledge Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9751
+  },
+  {
+    "name": "Versive",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7391
+  },
+  {
+    "name": "Glass Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9534
+  },
+  {
+    "name": "Double \u2013 Coding Copilot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8564
+  },
+  {
+    "name": "Ohm",
+    "reachability_score": "high",
+    "reachability_probability": 0.9977
+  },
+  {
+    "name": "Pair AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9986
+  },
+  {
+    "name": "Mercoa",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Numeral",
+    "reachability_score": "low",
+    "reachability_probability": 0.0189
+  },
+  {
+    "name": "Nango",
+    "reachability_score": "high",
+    "reachability_probability": 0.9934
+  },
+  {
+    "name": "Palomma",
+    "reachability_score": "high",
+    "reachability_probability": 0.9868
+  },
+  {
+    "name": "Hammr",
+    "reachability_score": "medium",
+    "reachability_probability": 0.926
+  },
+  {
+    "name": "Trackstar",
+    "reachability_score": "high",
+    "reachability_probability": 0.983
+  },
+  {
+    "name": "FlexDesk",
+    "reachability_score": "high",
+    "reachability_probability": 0.9956
+  },
+  {
+    "name": "Mulligan",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9283
+  },
+  {
+    "name": "Backdrop",
+    "reachability_score": "high",
+    "reachability_probability": 0.9961
+  },
+  {
+    "name": "Latent",
+    "reachability_score": "low",
+    "reachability_probability": 0.0156
+  },
+  {
+    "name": "Concourse",
+    "reachability_score": "high",
+    "reachability_probability": 0.9748
+  },
+  {
+    "name": "Novelcare",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8884
+  },
+  {
+    "name": "Pigeon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9922
+  },
+  {
+    "name": "Depot",
+    "reachability_score": "high",
+    "reachability_probability": 0.968
+  },
+  {
+    "name": "Rollstack",
+    "reachability_score": "low",
+    "reachability_probability": 0.0248
+  },
+  {
+    "name": "Magic Patterns",
+    "reachability_score": "high",
+    "reachability_probability": 0.9705
+  },
+  {
+    "name": "Credal.ai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9429
+  },
+  {
+    "name": "DrDroid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9708
+  },
+  {
+    "name": "Syncly",
+    "reachability_score": "low",
+    "reachability_probability": 0.3151
+  },
+  {
+    "name": "Trigger.dev",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9462
+  },
+  {
+    "name": "rift",
+    "reachability_score": "high",
+    "reachability_probability": 0.9673
+  },
+  {
+    "name": "Matano",
+    "reachability_score": "high",
+    "reachability_probability": 0.9696
+  },
+  {
+    "name": "Linum",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "OneText",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8687
+  },
+  {
+    "name": "Reflex",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7357
+  },
+  {
+    "name": "Miracle",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9455
+  },
+  {
+    "name": "Finvest",
+    "reachability_score": "high",
+    "reachability_probability": 0.9736
+  },
+  {
+    "name": "Laminate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9955
+  },
+  {
+    "name": "Designbase",
+    "reachability_score": "high",
+    "reachability_probability": 0.9783
+  },
+  {
+    "name": "StackAI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0812
+  },
+  {
+    "name": "Middleware",
+    "reachability_score": "low",
+    "reachability_probability": 0.0279
+  },
+  {
+    "name": "Infisical",
+    "reachability_score": "low",
+    "reachability_probability": 0.0205
+  },
+  {
+    "name": "Avoca",
+    "reachability_score": "low",
+    "reachability_probability": 0.1112
+  },
+  {
+    "name": "Rubbrband",
+    "reachability_score": "high",
+    "reachability_probability": 0.9633
+  },
+  {
+    "name": "zudo.work",
+    "reachability_score": "high",
+    "reachability_probability": 0.9647
+  },
+  {
+    "name": "Sameday",
+    "reachability_score": "high",
+    "reachability_probability": 0.9532
+  },
+  {
+    "name": "Chima",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Alphawatch AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9334
+  },
+  {
+    "name": "Unify",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8687
+  },
+  {
+    "name": "Flex",
+    "reachability_score": "low",
+    "reachability_probability": 0.6456
+  },
+  {
+    "name": "Letterbook",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9445
+  },
+  {
+    "name": "Healthtech 1",
+    "reachability_score": "low",
+    "reachability_probability": 0.115
+  },
+  {
+    "name": "Feanix Biotechnologies",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9187
+  },
+  {
+    "name": "Orbio Earth",
+    "reachability_score": "high",
+    "reachability_probability": 0.9553
+  },
+  {
+    "name": "Coba",
+    "reachability_score": "high",
+    "reachability_probability": 0.9897
+  },
+  {
+    "name": "Cembla",
+    "reachability_score": "high",
+    "reachability_probability": 0.9692
+  },
+  {
+    "name": "Tempo",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9164
+  },
+  {
+    "name": "Opensteer",
+    "reachability_score": "low",
+    "reachability_probability": 0.6378
+  },
+  {
+    "name": "Cognitio Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9778
+  },
+  {
+    "name": "Olio Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.2763
+  },
+  {
+    "name": "truemetrics",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8856
+  },
+  {
+    "name": "Glide",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7649
+  },
+  {
+    "name": "Wattson Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.4524
+  },
+  {
+    "name": "Constructable",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8863
+  },
+  {
+    "name": "Morph",
+    "reachability_score": "high",
+    "reachability_probability": 0.9947
+  },
+  {
+    "name": "Nowadays",
+    "reachability_score": "high",
+    "reachability_probability": 0.9877
+  },
+  {
+    "name": "Structured Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9975
+  },
+  {
+    "name": "Twine",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7298
+  },
+  {
+    "name": "Simbie AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9733
+  },
+  {
+    "name": "Foundation",
+    "reachability_score": "low",
+    "reachability_probability": 0.6643
+  },
+  {
+    "name": "AiSDR",
+    "reachability_score": "high",
+    "reachability_probability": 0.9562
+  },
+  {
+    "name": "Giga",
+    "reachability_score": "low",
+    "reachability_probability": 0.0277
+  },
+  {
+    "name": "Affinity",
+    "reachability_score": "high",
+    "reachability_probability": 0.9857
+  },
+  {
+    "name": "Shadeform",
+    "reachability_score": "low",
+    "reachability_probability": 0.5338
+  },
+  {
+    "name": "Inconvo",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8664
+  },
+  {
+    "name": "Cargo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9588
+  },
+  {
+    "name": "Roame",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "dili",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7321
+  },
+  {
+    "name": "Webhound",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7094
+  },
+  {
+    "name": "Trayd",
+    "reachability_score": "low",
+    "reachability_probability": 0.0138
+  },
+  {
+    "name": "Cair Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8957
+  },
+  {
+    "name": "ParadeDB",
+    "reachability_score": "high",
+    "reachability_probability": 0.9712
+  },
+  {
+    "name": "Eden Care",
+    "reachability_score": "low",
+    "reachability_probability": 0.015
+  },
+  {
+    "name": "Quill Bills",
+    "reachability_score": "low",
+    "reachability_probability": 0.2073
+  },
+  {
+    "name": "Strada",
+    "reachability_score": "low",
+    "reachability_probability": 0.112
+  },
+  {
+    "name": "Minded",
+    "reachability_score": "high",
+    "reachability_probability": 0.9543
+  },
+  {
+    "name": "Smobi",
+    "reachability_score": "medium",
+    "reachability_probability": 0.912
+  },
+  {
+    "name": "Tiptap",
+    "reachability_score": "low",
+    "reachability_probability": 0.0031
+  },
+  {
+    "name": "RecipeUI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8827
+  },
+  {
+    "name": "Fiber AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9409
+  },
+  {
+    "name": "Terracotta AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9781
+  },
+  {
+    "name": "Certainly Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9795
+  },
+  {
+    "name": "Cedalio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9968
+  },
+  {
+    "name": "HappyRobot",
+    "reachability_score": "low",
+    "reachability_probability": 0.0199
+  },
+  {
+    "name": "Pure",
+    "reachability_score": "high",
+    "reachability_probability": 0.9939
+  },
+  {
+    "name": "Nanograb",
+    "reachability_score": "low",
+    "reachability_probability": 0.6812
+  },
+  {
+    "name": "Elythea",
+    "reachability_score": "high",
+    "reachability_probability": 0.9891
+  },
+  {
+    "name": "Sant\u00e9",
+    "reachability_score": "high",
+    "reachability_probability": 0.9592
+  },
+  {
+    "name": "Langdock",
+    "reachability_score": "low",
+    "reachability_probability": 0.0483
+  },
+  {
+    "name": "Inventive AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7341
+  },
+  {
+    "name": "SyntheticFi",
+    "reachability_score": "low",
+    "reachability_probability": 0.3419
+  },
+  {
+    "name": "Sendblue",
+    "reachability_score": "low",
+    "reachability_probability": 0.1593
+  },
+  {
+    "name": "sudocode",
+    "reachability_score": "high",
+    "reachability_probability": 0.9647
+  },
+  {
+    "name": "Sweep",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "Silimate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9818
+  },
+  {
+    "name": "Andromeda Surgical",
+    "reachability_score": "low",
+    "reachability_probability": 0.2118
+  },
+  {
+    "name": "Roundtable",
+    "reachability_score": "high",
+    "reachability_probability": 0.9878
+  },
+  {
+    "name": "DisputeNinja",
+    "reachability_score": "medium",
+    "reachability_probability": 0.894
+  },
+  {
+    "name": "Envelope",
+    "reachability_score": "medium",
+    "reachability_probability": 0.855
+  },
+  {
+    "name": "VectorShift",
+    "reachability_score": "low",
+    "reachability_probability": 0.1036
+  },
+  {
+    "name": "SafetyKit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9923
+  },
+  {
+    "name": "Baserun",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9355
+  },
+  {
+    "name": "Automorphic",
+    "reachability_score": "high",
+    "reachability_probability": 0.975
+  },
+  {
+    "name": "Read Bean",
+    "reachability_score": "high",
+    "reachability_probability": 0.9783
+  },
+  {
+    "name": "Sola",
+    "reachability_score": "high",
+    "reachability_probability": 0.9948
+  },
+  {
+    "name": "Rankai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9441
+  },
+  {
+    "name": "Inlet",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9487
+  },
+  {
+    "name": "Converge",
+    "reachability_score": "high",
+    "reachability_probability": 0.9939
+  },
+  {
+    "name": "Flint",
+    "reachability_score": "low",
+    "reachability_probability": 0.0318
+  },
+  {
+    "name": "CambioML",
+    "reachability_score": "high",
+    "reachability_probability": 0.9785
+  },
+  {
+    "name": "Osium AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9868
+  },
+  {
+    "name": "Slicker",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9463
+  },
+  {
+    "name": "Khoj",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9021
+  },
+  {
+    "name": "VaultPay",
+    "reachability_score": "high",
+    "reachability_probability": 0.9872
+  },
+  {
+    "name": "Bolto",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8473
+  },
+  {
+    "name": "Gleam",
+    "reachability_score": "high",
+    "reachability_probability": 0.9654
+  },
+  {
+    "name": "Kobalt Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.4331
+  },
+  {
+    "name": "Studdy",
+    "reachability_score": "medium",
+    "reachability_probability": 0.892
+  },
+  {
+    "name": "Trainy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Apoxy",
+    "reachability_score": "low",
+    "reachability_probability": 0.3821
+  },
+  {
+    "name": "sizeless",
+    "reachability_score": "high",
+    "reachability_probability": 0.9721
+  },
+  {
+    "name": "Rimward",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9005
+  },
+  {
+    "name": "Continue",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9483
+  },
+  {
+    "name": "Letter AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.5298
+  },
+  {
+    "name": "Guac",
+    "reachability_score": "high",
+    "reachability_probability": 0.9952
+  },
+  {
+    "name": "CareOasis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9553
+  },
+  {
+    "name": "Glade",
+    "reachability_score": "medium",
+    "reachability_probability": 0.931
+  },
+  {
+    "name": "LifestyleRx",
+    "reachability_score": "high",
+    "reachability_probability": 0.964
+  },
+  {
+    "name": "Empirical Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9495
+  },
+  {
+    "name": "Fortuna Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9739
+  },
+  {
+    "name": "Aglide",
+    "reachability_score": "high",
+    "reachability_probability": 0.9884
+  },
+  {
+    "name": "AgentCollect",
+    "reachability_score": "low",
+    "reachability_probability": 0.0702
+  },
+  {
+    "name": "Midrender",
+    "reachability_score": "low",
+    "reachability_probability": 0.3667
+  },
+  {
+    "name": "Bretton AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.1044
+  },
+  {
+    "name": "MediSearch",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8682
+  },
+  {
+    "name": "Metalware",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7018
+  },
+  {
+    "name": "Upstream",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8697
+  },
+  {
+    "name": "Maven Bio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9632
+  },
+  {
+    "name": "Surface Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8794
+  },
+  {
+    "name": "CandorIQ",
+    "reachability_score": "high",
+    "reachability_probability": 0.9913
+  },
+  {
+    "name": "refine",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8402
+  },
+  {
+    "name": "Epsilla",
+    "reachability_score": "high",
+    "reachability_probability": 0.972
+  },
+  {
+    "name": "maintouch",
+    "reachability_score": "high",
+    "reachability_probability": 0.9927
+  },
+  {
+    "name": "VetRec",
+    "reachability_score": "low",
+    "reachability_probability": 0.0566
+  },
+  {
+    "name": "Numen",
+    "reachability_score": "low",
+    "reachability_probability": 0.1808
+  },
+  {
+    "name": "Decoda Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7438
+  },
+  {
+    "name": "Skyvern",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9112
+  },
+  {
+    "name": "Cardinal Gray",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "Hiro",
+    "reachability_score": "high",
+    "reachability_probability": 0.981
+  },
+  {
+    "name": "Rocketeer",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9167
+  },
+  {
+    "name": "Margin",
+    "reachability_score": "low",
+    "reachability_probability": 0.3006
+  },
+  {
+    "name": "Repaint",
+    "reachability_score": "low",
+    "reachability_probability": 0.3476
+  },
+  {
+    "name": "Chow Central Inc",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7819
+  },
+  {
+    "name": "FleetWorks",
+    "reachability_score": "low",
+    "reachability_probability": 0.1683
+  },
+  {
+    "name": "Health Harbor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9652
+  },
+  {
+    "name": "Shasta Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.6697
+  },
+  {
+    "name": "Hegel AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.4754
+  },
+  {
+    "name": "Outset",
+    "reachability_score": "low",
+    "reachability_probability": 0.0014
+  },
+  {
+    "name": "Serra",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9399
+  },
+  {
+    "name": "Corgea",
+    "reachability_score": "high",
+    "reachability_probability": 0.9658
+  },
+  {
+    "name": "Terminal",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9436
+  },
+  {
+    "name": "MICSI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9854
+  },
+  {
+    "name": "Arcimus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9507
+  },
+  {
+    "name": "Docsum",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7246
+  },
+  {
+    "name": "Obento Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.3078
+  },
+  {
+    "name": "Kite",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8744
+  },
+  {
+    "name": "Bronco AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9834
+  },
+  {
+    "name": "Agentive",
+    "reachability_score": "high",
+    "reachability_probability": 0.9754
+  },
+  {
+    "name": "Venta AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9882
+  },
+  {
+    "name": "Parea",
+    "reachability_score": "high",
+    "reachability_probability": 0.9656
+  },
+  {
+    "name": "Campfire",
+    "reachability_score": "low",
+    "reachability_probability": 0.0446
+  },
+  {
+    "name": "Alguna",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "SID",
+    "reachability_score": "low",
+    "reachability_probability": 0.5675
+  },
+  {
+    "name": "Capi Money",
+    "reachability_score": "low",
+    "reachability_probability": 0.0143
+  },
+  {
+    "name": "Baud Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9445
+  },
+  {
+    "name": "Spine AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.973
+  },
+  {
+    "name": "Subsets",
+    "reachability_score": "high",
+    "reachability_probability": 0.989
+  },
+  {
+    "name": "CORE",
+    "reachability_score": "high",
+    "reachability_probability": 0.972
+  },
+  {
+    "name": "Synch",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9229
+  },
+  {
+    "name": "Revamp",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9305
+  },
+  {
+    "name": "DataShare",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8876
+  },
+  {
+    "name": "Airgoods",
+    "reachability_score": "low",
+    "reachability_probability": 0.6897
+  },
+  {
+    "name": "Talc",
+    "reachability_score": "low",
+    "reachability_probability": 0.6354
+  },
+  {
+    "name": "Solve Intelligence",
+    "reachability_score": "low",
+    "reachability_probability": 0.0106
+  },
+  {
+    "name": "Lio (formerly askLio)",
+    "reachability_score": "low",
+    "reachability_probability": 0.0337
+  },
+  {
+    "name": "Craftwork",
+    "reachability_score": "low",
+    "reachability_probability": 0.0295
+  },
+  {
+    "name": "Electric Air",
+    "reachability_score": "low",
+    "reachability_probability": 0.0115
+  },
+  {
+    "name": "Prosper",
+    "reachability_score": "high",
+    "reachability_probability": 0.9895
+  },
+  {
+    "name": "Mandel AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.5564
+  },
+  {
+    "name": "Every",
+    "reachability_score": "high",
+    "reachability_probability": 0.9769
+  },
+  {
+    "name": "Contour",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "OpenTools",
+    "reachability_score": "low",
+    "reachability_probability": 0.6211
+  },
+  {
+    "name": "Cedana",
+    "reachability_score": "low",
+    "reachability_probability": 0.6531
+  },
+  {
+    "name": "Casca",
+    "reachability_score": "low",
+    "reachability_probability": 0.1974
+  },
+  {
+    "name": "Zelos Cloud",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9358
+  },
+  {
+    "name": "Readily",
+    "reachability_score": "high",
+    "reachability_probability": 0.9849
+  },
+  {
+    "name": "PropRise",
+    "reachability_score": "high",
+    "reachability_probability": 0.9538
+  },
+  {
+    "name": "Pointhound",
+    "reachability_score": "high",
+    "reachability_probability": 0.9821
+  },
+  {
+    "name": "Diligent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9897
+  },
+  {
+    "name": "Bland AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0147
+  },
+  {
+    "name": "Sohar Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8562
+  },
+  {
+    "name": "Sweetspot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7105
+  },
+  {
+    "name": "Magic Loops",
+    "reachability_score": "high",
+    "reachability_probability": 0.9904
+  },
+  {
+    "name": "Ohmic Biosciences",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8689
+  },
+  {
+    "name": "Stellar Sleep",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9318
+  },
+  {
+    "name": "AIVideo.com",
+    "reachability_score": "high",
+    "reachability_probability": 0.9731
+  },
+  {
+    "name": "Linc.",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "Dioxus Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9845
+  },
+  {
+    "name": "Hyperbound",
+    "reachability_score": "low",
+    "reachability_probability": 0.0029
+  },
+  {
+    "name": "Accend",
+    "reachability_score": "low",
+    "reachability_probability": 0.1121
+  },
+  {
+    "name": "Elyos AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0258
+  },
+  {
+    "name": "Clearest Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9947
+  },
+  {
+    "name": "Metoro",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7819
+  },
+  {
+    "name": "Twenty",
+    "reachability_score": "medium",
+    "reachability_probability": 0.947
+  },
+  {
+    "name": "Ora AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.907
+  },
+  {
+    "name": "Nectar",
+    "reachability_score": "low",
+    "reachability_probability": 0.2157
+  },
+  {
+    "name": "Reworkd",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Kino AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9645
+  },
+  {
+    "name": "kapa.ai",
+    "reachability_score": "low",
+    "reachability_probability": 0.0253
+  },
+  {
+    "name": "Artie",
+    "reachability_score": "low",
+    "reachability_probability": 0.0252
+  },
+  {
+    "name": "HyLight",
+    "reachability_score": "low",
+    "reachability_probability": 0.0138
+  },
+  {
+    "name": "HockeyStack",
+    "reachability_score": "low",
+    "reachability_probability": 0.0368
+  },
+  {
+    "name": "Y/n",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9185
+  },
+  {
+    "name": "Cercli",
+    "reachability_score": "low",
+    "reachability_probability": 0.0505
+  },
+  {
+    "name": "Indemni",
+    "reachability_score": "high",
+    "reachability_probability": 0.9871
+  },
+  {
+    "name": "ParcelBio",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9165
+  },
+  {
+    "name": "K-Scale Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7612
+  },
+  {
+    "name": "Marr Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7729
+  },
+  {
+    "name": "Forge Rewards",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9489
+  },
+  {
+    "name": "Dropback",
+    "reachability_score": "high",
+    "reachability_probability": 0.9725
+  },
+  {
+    "name": "RetailReady",
+    "reachability_score": "medium",
+    "reachability_probability": 0.93
+  },
+  {
+    "name": "Million",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8422
+  },
+  {
+    "name": "NowHouse",
+    "reachability_score": "high",
+    "reachability_probability": 0.9855
+  },
+  {
+    "name": "GetCrux",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9368
+  },
+  {
+    "name": "Reprompt",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8269
+  },
+  {
+    "name": "InspectMind AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9814
+  },
+  {
+    "name": "Yarn",
+    "reachability_score": "high",
+    "reachability_probability": 0.9912
+  },
+  {
+    "name": "Blacksmith",
+    "reachability_score": "low",
+    "reachability_probability": 0.6838
+  },
+  {
+    "name": "CrowdVolt",
+    "reachability_score": "medium",
+    "reachability_probability": 0.919
+  },
+  {
+    "name": "kater.ai",
+    "reachability_score": "low",
+    "reachability_probability": 0.3892
+  },
+  {
+    "name": "Mathos",
+    "reachability_score": "high",
+    "reachability_probability": 0.9561
+  },
+  {
+    "name": "Tower",
+    "reachability_score": "low",
+    "reachability_probability": 0.4594
+  },
+  {
+    "name": "Quivr",
+    "reachability_score": "low",
+    "reachability_probability": 0.1895
+  },
+  {
+    "name": "Dragoneye",
+    "reachability_score": "medium",
+    "reachability_probability": 0.868
+  },
+  {
+    "name": "renderlet",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8198
+  },
+  {
+    "name": "Latted",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8906
+  },
+  {
+    "name": "The New Money Company",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8722
+  },
+  {
+    "name": "Forge",
+    "reachability_score": "high",
+    "reachability_probability": 0.9759
+  },
+  {
+    "name": "Integuru",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9298
+  },
+  {
+    "name": "VoxOps AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9979
+  },
+  {
+    "name": "Granza Bio",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7178
+  },
+  {
+    "name": "Haplotype Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.5388
+  },
+  {
+    "name": "Healia",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7983
+  },
+  {
+    "name": "TrueClaim",
+    "reachability_score": "high",
+    "reachability_probability": 0.996
+  },
+  {
+    "name": "CoCrafter",
+    "reachability_score": "low",
+    "reachability_probability": 0.5692
+  },
+  {
+    "name": "Reform",
+    "reachability_score": "high",
+    "reachability_probability": 0.9573
+  },
+  {
+    "name": "Piramidal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9933
+  },
+  {
+    "name": "Junction Bioscience",
+    "reachability_score": "low",
+    "reachability_probability": 0.1459
+  },
+  {
+    "name": "OddsView",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9044
+  },
+  {
+    "name": "Silogy",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7875
+  },
+  {
+    "name": "Senso",
+    "reachability_score": "high",
+    "reachability_probability": 0.9956
+  },
+  {
+    "name": "Eris Biotech",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8573
+  },
+  {
+    "name": "Powder",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9356
+  },
+  {
+    "name": "OpenFoundry",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9429
+  },
+  {
+    "name": "Polar",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8835
+  },
+  {
+    "name": "Penciled",
+    "reachability_score": "low",
+    "reachability_probability": 0.3812
+  },
+  {
+    "name": "Magic Hour",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7181
+  },
+  {
+    "name": "Ryse",
+    "reachability_score": "high",
+    "reachability_probability": 0.9862
+  },
+  {
+    "name": "Datacurve",
+    "reachability_score": "high",
+    "reachability_probability": 0.9539
+  },
+  {
+    "name": "Marblism",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9312
+  },
+  {
+    "name": "CommodityAI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9169
+  },
+  {
+    "name": "Veles",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8872
+  },
+  {
+    "name": "Miden",
+    "reachability_score": "low",
+    "reachability_probability": 0.0247
+  },
+  {
+    "name": "Fluently",
+    "reachability_score": "high",
+    "reachability_probability": 0.9891
+  },
+  {
+    "name": "Basepilot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7181
+  },
+  {
+    "name": "Aqua Voice",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9254
+  },
+  {
+    "name": "xPay",
+    "reachability_score": "low",
+    "reachability_probability": 0.6528
+  },
+  {
+    "name": "Deepnight",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8618
+  },
+  {
+    "name": "Vista Power",
+    "reachability_score": "low",
+    "reachability_probability": 0.2435
+  },
+  {
+    "name": "Adapted",
+    "reachability_score": "high",
+    "reachability_probability": 0.9595
+  },
+  {
+    "name": "Ocular AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9245
+  },
+  {
+    "name": "Retell AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0773
+  },
+  {
+    "name": "Rove",
+    "reachability_score": "low",
+    "reachability_probability": 0.4633
+  },
+  {
+    "name": "camelAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9627
+  },
+  {
+    "name": "Spark",
+    "reachability_score": "high",
+    "reachability_probability": 0.9965
+  },
+  {
+    "name": "Downlink",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9215
+  },
+  {
+    "name": "Terrakotta",
+    "reachability_score": "high",
+    "reachability_probability": 0.9836
+  },
+  {
+    "name": "Stacksync",
+    "reachability_score": "low",
+    "reachability_probability": 0.0298
+  },
+  {
+    "name": "Hatchet",
+    "reachability_score": "high",
+    "reachability_probability": 0.9808
+  },
+  {
+    "name": "Shepherd",
+    "reachability_score": "high",
+    "reachability_probability": 0.9757
+  },
+  {
+    "name": "Sonauto",
+    "reachability_score": "low",
+    "reachability_probability": 0.111
+  },
+  {
+    "name": "BiteSight",
+    "reachability_score": "low",
+    "reachability_probability": 0.368
+  },
+  {
+    "name": "Velorum Therapeutics",
+    "reachability_score": "low",
+    "reachability_probability": 0.689
+  },
+  {
+    "name": "Zep AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9909
+  },
+  {
+    "name": "Openmart",
+    "reachability_score": "high",
+    "reachability_probability": 0.9986
+  },
+  {
+    "name": "Triply",
+    "reachability_score": "low",
+    "reachability_probability": 0.06
+  },
+  {
+    "name": "Deep24",
+    "reachability_score": "high",
+    "reachability_probability": 0.9762
+  },
+  {
+    "name": "Alai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8504
+  },
+  {
+    "name": "Lumetric",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9406
+  },
+  {
+    "name": "Brainbase Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8786
+  },
+  {
+    "name": "Focal",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8909
+  },
+  {
+    "name": "Givefront",
+    "reachability_score": "low",
+    "reachability_probability": 0.549
+  },
+  {
+    "name": "Cleva",
+    "reachability_score": "low",
+    "reachability_probability": 0.1024
+  },
+  {
+    "name": "Oma Care",
+    "reachability_score": "low",
+    "reachability_probability": 0.0892
+  },
+  {
+    "name": "Artos",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9064
+  },
+  {
+    "name": "Model ML",
+    "reachability_score": "low",
+    "reachability_probability": 0.3468
+  },
+  {
+    "name": "BetterBasket",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8648
+  },
+  {
+    "name": "Circleback",
+    "reachability_score": "high",
+    "reachability_probability": 0.9575
+  },
+  {
+    "name": "JustAI",
+    "reachability_score": "low",
+    "reachability_probability": 0.3085
+  },
+  {
+    "name": "Risotto",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8363
+  },
+  {
+    "name": "Diana",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9344
+  },
+  {
+    "name": "HeartByte",
+    "reachability_score": "high",
+    "reachability_probability": 0.9656
+  },
+  {
+    "name": "Yondu",
+    "reachability_score": "high",
+    "reachability_probability": 0.9886
+  },
+  {
+    "name": "Raindrop",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9355
+  },
+  {
+    "name": "floatingpoint",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Centauri AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.1704
+  },
+  {
+    "name": "ProSights",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9098
+  },
+  {
+    "name": "Manifold Freight",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7724
+  },
+  {
+    "name": "EdgeTrace",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7878
+  },
+  {
+    "name": "Clarum",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9453
+  },
+  {
+    "name": "Opencall",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9379
+  },
+  {
+    "name": "Voicepanel",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8403
+  },
+  {
+    "name": "OffDeal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Andy AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9055
+  },
+  {
+    "name": "Hazel",
+    "reachability_score": "high",
+    "reachability_probability": 0.9821
+  },
+  {
+    "name": "Shiboleth",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7076
+  },
+  {
+    "name": "Aftercare",
+    "reachability_score": "high",
+    "reachability_probability": 0.9659
+  },
+  {
+    "name": "Soundry AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9208
+  },
+  {
+    "name": "Elodin",
+    "reachability_score": "low",
+    "reachability_probability": 0.5042
+  },
+  {
+    "name": "Whip",
+    "reachability_score": "high",
+    "reachability_probability": 0.9551
+  },
+  {
+    "name": "Toma",
+    "reachability_score": "low",
+    "reachability_probability": 0.0292
+  },
+  {
+    "name": "Carma",
+    "reachability_score": "high",
+    "reachability_probability": 0.97
+  },
+  {
+    "name": "Preloop",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7281
+  },
+  {
+    "name": "Superagent",
+    "reachability_score": "medium",
+    "reachability_probability": 0.923
+  },
+  {
+    "name": "Bilanc",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7782
+  },
+  {
+    "name": "SevnAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Astro Mechanica",
+    "reachability_score": "low",
+    "reachability_probability": 0.1487
+  },
+  {
+    "name": "CodeAnt AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.1366
+  },
+  {
+    "name": "Draftaid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9868
+  },
+  {
+    "name": "Metofico",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8993
+  },
+  {
+    "name": "Ellipsis",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7968
+  },
+  {
+    "name": "Dime",
+    "reachability_score": "high",
+    "reachability_probability": 0.9909
+  },
+  {
+    "name": "Solari AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9485
+  },
+  {
+    "name": "Pazi",
+    "reachability_score": "high",
+    "reachability_probability": 0.9695
+  },
+  {
+    "name": "Open",
+    "reachability_score": "low",
+    "reachability_probability": 0.1933
+  },
+  {
+    "name": "Salvy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0326
+  },
+  {
+    "name": "Centralize",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8948
+  },
+  {
+    "name": "NanoCorp",
+    "reachability_score": "high",
+    "reachability_probability": 0.9812
+  },
+  {
+    "name": "Firebender",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7823
+  },
+  {
+    "name": "Aether",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9231
+  },
+  {
+    "name": "Parallel",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9433
+  },
+  {
+    "name": "Vibrant Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8371
+  },
+  {
+    "name": "sync.",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9232
+  },
+  {
+    "name": "PandasAI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8498
+  },
+  {
+    "name": "Infinity",
+    "reachability_score": "medium",
+    "reachability_probability": 0.899
+  },
+  {
+    "name": "InQuery",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8843
+  },
+  {
+    "name": "14.ai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9477
+  },
+  {
+    "name": "Tamarind Bio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9887
+  },
+  {
+    "name": "Clarion",
+    "reachability_score": "high",
+    "reachability_probability": 0.9901
+  },
+  {
+    "name": "Consul",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8977
+  },
+  {
+    "name": "Scout",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8569
+  },
+  {
+    "name": "Decipher AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7875
+  },
+  {
+    "name": "LemonSlice",
+    "reachability_score": "high",
+    "reachability_probability": 0.9545
+  },
+  {
+    "name": "Polished",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8213
+  },
+  {
+    "name": "Guide Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9363
+  },
+  {
+    "name": "OmniAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9895
+  },
+  {
+    "name": "Respan",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9098
+  },
+  {
+    "name": "PromptArmor",
+    "reachability_score": "low",
+    "reachability_probability": 0.5975
+  },
+  {
+    "name": "Zaymo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9876
+  },
+  {
+    "name": "Meticulate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9763
+  },
+  {
+    "name": "CloudCruise",
+    "reachability_score": "high",
+    "reachability_probability": 0.9898
+  },
+  {
+    "name": "Attunement",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7345
+  },
+  {
+    "name": "Lucite",
+    "reachability_score": "high",
+    "reachability_probability": 0.9712
+  },
+  {
+    "name": "OneGrep",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8867
+  },
+  {
+    "name": "Tusk",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9324
+  },
+  {
+    "name": "PartnerHQ",
+    "reachability_score": "low",
+    "reachability_probability": 0.4401
+  },
+  {
+    "name": "atopile",
+    "reachability_score": "low",
+    "reachability_probability": 0.5119
+  },
+  {
+    "name": "Copper Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8887
+  },
+  {
+    "name": "SynsoryBio",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9276
+  },
+  {
+    "name": "Yoneda Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9955
+  },
+  {
+    "name": "TokenOwl",
+    "reachability_score": "high",
+    "reachability_probability": 0.9626
+  },
+  {
+    "name": "Topo",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8769
+  },
+  {
+    "name": "Trellis AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.5048
+  },
+  {
+    "name": "Ecliptor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9774
+  },
+  {
+    "name": "Greenboard",
+    "reachability_score": "low",
+    "reachability_probability": 0.4825
+  },
+  {
+    "name": "Eggnog",
+    "reachability_score": "high",
+    "reachability_probability": 0.9791
+  },
+  {
+    "name": "Artisan",
+    "reachability_score": "low",
+    "reachability_probability": 0.149
+  },
+  {
+    "name": "Octolane AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9619
+  },
+  {
+    "name": "SuretyNow",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7498
+  },
+  {
+    "name": "ROE",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7777
+  },
+  {
+    "name": "FurtherAI",
+    "reachability_score": "low",
+    "reachability_probability": 0.2033
+  },
+  {
+    "name": "Arini",
+    "reachability_score": "low",
+    "reachability_probability": 0.1672
+  },
+  {
+    "name": "Paradigm",
+    "reachability_score": "high",
+    "reachability_probability": 0.9958
+  },
+  {
+    "name": "PointOne",
+    "reachability_score": "high",
+    "reachability_probability": 0.9815
+  },
+  {
+    "name": "AveryIQ",
+    "reachability_score": "high",
+    "reachability_probability": 0.9957
+  },
+  {
+    "name": "Wavelength",
+    "reachability_score": "high",
+    "reachability_probability": 0.9725
+  },
+  {
+    "name": "MathDash",
+    "reachability_score": "high",
+    "reachability_probability": 0.9789
+  },
+  {
+    "name": "Leaping",
+    "reachability_score": "high",
+    "reachability_probability": 0.9581
+  },
+  {
+    "name": "Basalt",
+    "reachability_score": "low",
+    "reachability_probability": 0.2215
+  },
+  {
+    "name": "Carousel Technologies",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8609
+  },
+  {
+    "name": "Agentic Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9131
+  },
+  {
+    "name": "Fractal Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9854
+  },
+  {
+    "name": "Pivot Robotics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9722
+  },
+  {
+    "name": "Aidy",
+    "reachability_score": "low",
+    "reachability_probability": 0.2544
+  },
+  {
+    "name": "Keystroke",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8858
+  },
+  {
+    "name": "Garage",
+    "reachability_score": "low",
+    "reachability_probability": 0.604
+  },
+  {
+    "name": "Argon AI, Inc.",
+    "reachability_score": "high",
+    "reachability_probability": 0.9579
+  },
+  {
+    "name": "nCompass Technologies",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8315
+  },
+  {
+    "name": "Pretzel AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9606
+  },
+  {
+    "name": "Alex",
+    "reachability_score": "low",
+    "reachability_probability": 0.0314
+  },
+  {
+    "name": "malibou",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8917
+  },
+  {
+    "name": "Newton",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "Saga AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8792
+  },
+  {
+    "name": "Tuesday Lab",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8562
+  },
+  {
+    "name": "Momentic",
+    "reachability_score": "high",
+    "reachability_probability": 0.9781
+  },
+  {
+    "name": "Reducto",
+    "reachability_score": "low",
+    "reachability_probability": 0.2502
+  },
+  {
+    "name": "Andon Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.646
+  },
+  {
+    "name": "Maia",
+    "reachability_score": "low",
+    "reachability_probability": 0.3103
+  },
+  {
+    "name": "Nuanced",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9147
+  },
+  {
+    "name": "Precip",
+    "reachability_score": "medium",
+    "reachability_probability": 0.905
+  },
+  {
+    "name": "Tracecat",
+    "reachability_score": "high",
+    "reachability_probability": 0.9798
+  },
+  {
+    "name": "Kabilah",
+    "reachability_score": "high",
+    "reachability_probability": 0.9871
+  },
+  {
+    "name": "Sonia",
+    "reachability_score": "low",
+    "reachability_probability": 0.1023
+  },
+  {
+    "name": "Maihem",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7315
+  },
+  {
+    "name": "ion design",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7217
+  },
+  {
+    "name": "Duckie",
+    "reachability_score": "high",
+    "reachability_probability": 0.952
+  },
+  {
+    "name": "Happenstance",
+    "reachability_score": "low",
+    "reachability_probability": 0.237
+  },
+  {
+    "name": "Ubicloud",
+    "reachability_score": "high",
+    "reachability_probability": 0.9738
+  },
+  {
+    "name": "Greptile",
+    "reachability_score": "low",
+    "reachability_probability": 0.0143
+  },
+  {
+    "name": "Cora",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8993
+  },
+  {
+    "name": "ego",
+    "reachability_score": "high",
+    "reachability_probability": 0.9732
+  },
+  {
+    "name": "Legora",
+    "reachability_score": "low",
+    "reachability_probability": 0.0464
+  },
+  {
+    "name": "Scritch",
+    "reachability_score": "high",
+    "reachability_probability": 0.9856
+  },
+  {
+    "name": "Relari",
+    "reachability_score": "high",
+    "reachability_probability": 0.9601
+  },
+  {
+    "name": "DryMerge",
+    "reachability_score": "high",
+    "reachability_probability": 0.9865
+  },
+  {
+    "name": "Navier AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9131
+  },
+  {
+    "name": "Upsolve AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.941
+  },
+  {
+    "name": "Event Horizon Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8665
+  },
+  {
+    "name": "Gumloop",
+    "reachability_score": "low",
+    "reachability_probability": 0.0651
+  },
+  {
+    "name": "Driver",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Onyx",
+    "reachability_score": "low",
+    "reachability_probability": 0.2378
+  },
+  {
+    "name": "Yenmo",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8656
+  },
+  {
+    "name": "GovernGPT",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "Outerport",
+    "reachability_score": "high",
+    "reachability_probability": 0.951
+  },
+  {
+    "name": "DreamRP",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Conductor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9882
+  },
+  {
+    "name": "Syntra",
+    "reachability_score": "high",
+    "reachability_probability": 0.9888
+  },
+  {
+    "name": "PathPilot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9524
+  },
+  {
+    "name": "Bits to Atoms",
+    "reachability_score": "low",
+    "reachability_probability": 0.5492
+  },
+  {
+    "name": "SimCare",
+    "reachability_score": "high",
+    "reachability_probability": 0.9943
+  },
+  {
+    "name": "Merlin AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.2364
+  },
+  {
+    "name": "Freestyle",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8544
+  },
+  {
+    "name": "Arva AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9982
+  },
+  {
+    "name": "Affil.ai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9684
+  },
+  {
+    "name": "OrgOrg",
+    "reachability_score": "high",
+    "reachability_probability": 0.964
+  },
+  {
+    "name": "Patched",
+    "reachability_score": "low",
+    "reachability_probability": 0.2744
+  },
+  {
+    "name": "Village Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9562
+  },
+  {
+    "name": "Mica AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8317
+  },
+  {
+    "name": "Formula Insight",
+    "reachability_score": "high",
+    "reachability_probability": 0.9982
+  },
+  {
+    "name": "Overlap",
+    "reachability_score": "high",
+    "reachability_probability": 0.9772
+  },
+  {
+    "name": "Capitol AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9062
+  },
+  {
+    "name": "Void",
+    "reachability_score": "high",
+    "reachability_probability": 0.9861
+  },
+  {
+    "name": "Anglera",
+    "reachability_score": "high",
+    "reachability_probability": 0.9829
+  },
+  {
+    "name": "XTraffic",
+    "reachability_score": "high",
+    "reachability_probability": 0.9899
+  },
+  {
+    "name": "BrowserOS",
+    "reachability_score": "medium",
+    "reachability_probability": 0.93
+  },
+  {
+    "name": "Henry",
+    "reachability_score": "low",
+    "reachability_probability": 0.0298
+  },
+  {
+    "name": "Ficra",
+    "reachability_score": "high",
+    "reachability_probability": 0.9927
+  },
+  {
+    "name": "Rowboat Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9231
+  },
+  {
+    "name": "Pipeshift",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9428
+  },
+  {
+    "name": "Vera Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9413
+  },
+  {
+    "name": "Pharos",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9089
+  },
+  {
+    "name": "et al.",
+    "reachability_score": "high",
+    "reachability_probability": 0.9987
+  },
+  {
+    "name": "Keet",
+    "reachability_score": "high",
+    "reachability_probability": 0.988
+  },
+  {
+    "name": "Terra",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8854
+  },
+  {
+    "name": "Dayflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9975
+  },
+  {
+    "name": "Diode Computers, Inc.",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9482
+  },
+  {
+    "name": "SureBright",
+    "reachability_score": "low",
+    "reachability_probability": 0.0166
+  },
+  {
+    "name": "Usul",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8877
+  },
+  {
+    "name": "Saldor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Bucket Robotics",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9186
+  },
+  {
+    "name": "Oway",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9293
+  },
+  {
+    "name": "Elayne",
+    "reachability_score": "high",
+    "reachability_probability": 0.97
+  },
+  {
+    "name": "Blaze",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "pap!",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "RentFlow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9625
+  },
+  {
+    "name": "TradeFlow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Voker",
+    "reachability_score": "high",
+    "reachability_probability": 0.9526
+  },
+  {
+    "name": "Rastro",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9291
+  },
+  {
+    "name": "Quetzal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9948
+  },
+  {
+    "name": "Typa",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8875
+  },
+  {
+    "name": "Moreta",
+    "reachability_score": "high",
+    "reachability_probability": 0.9556
+  },
+  {
+    "name": "Sterling Labs, Inc",
+    "reachability_score": "high",
+    "reachability_probability": 0.9935
+  },
+  {
+    "name": "Orca Launcher",
+    "reachability_score": "high",
+    "reachability_probability": 0.9978
+  },
+  {
+    "name": "Assembly HOA",
+    "reachability_score": "high",
+    "reachability_probability": 0.9915
+  },
+  {
+    "name": "autarc",
+    "reachability_score": "low",
+    "reachability_probability": 0.0309
+  },
+  {
+    "name": "omnidock",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9385
+  },
+  {
+    "name": "Polymet",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9189
+  },
+  {
+    "name": "Kontigo",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8703
+  },
+  {
+    "name": "Weel",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8355
+  },
+  {
+    "name": "Entropy",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8715
+  },
+  {
+    "name": "Propaya",
+    "reachability_score": "high",
+    "reachability_probability": 0.9722
+  },
+  {
+    "name": "Vendra",
+    "reachability_score": "high",
+    "reachability_probability": 0.9808
+  },
+  {
+    "name": "Argil",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9491
+  },
+  {
+    "name": "ZeroPath",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8619
+  },
+  {
+    "name": "bluedoor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9753
+  },
+  {
+    "name": "Starcloud",
+    "reachability_score": "high",
+    "reachability_probability": 0.977
+  },
+  {
+    "name": "Dataleap",
+    "reachability_score": "high",
+    "reachability_probability": 0.9768
+  },
+  {
+    "name": "Handled",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Ionworks",
+    "reachability_score": "low",
+    "reachability_probability": 0.6649
+  },
+  {
+    "name": "Rescript",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "HeroUI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7816
+  },
+  {
+    "name": "Helium",
+    "reachability_score": "high",
+    "reachability_probability": 0.9518
+  },
+  {
+    "name": "&AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9805
+  },
+  {
+    "name": "Haystack",
+    "reachability_score": "high",
+    "reachability_probability": 0.9776
+  },
+  {
+    "name": "Finosu",
+    "reachability_score": "high",
+    "reachability_probability": 0.9939
+  },
+  {
+    "name": "Odo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9924
+  },
+  {
+    "name": "Baseline AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9961
+  },
+  {
+    "name": "Sonatoria",
+    "reachability_score": "high",
+    "reachability_probability": 0.9819
+  },
+  {
+    "name": "Cartage",
+    "reachability_score": "high",
+    "reachability_probability": 0.975
+  },
+  {
+    "name": "Paasa",
+    "reachability_score": "high",
+    "reachability_probability": 0.9948
+  },
+  {
+    "name": "Refactor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9971
+  },
+  {
+    "name": "Lilac Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.991
+  },
+  {
+    "name": "Palmier",
+    "reachability_score": "high",
+    "reachability_probability": 0.9881
+  },
+  {
+    "name": "Simple AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9916
+  },
+  {
+    "name": "Sensei",
+    "reachability_score": "high",
+    "reachability_probability": 0.9784
+  },
+  {
+    "name": "Guardian RF",
+    "reachability_score": "low",
+    "reachability_probability": 0.1067
+  },
+  {
+    "name": "Laminar",
+    "reachability_score": "high",
+    "reachability_probability": 0.9554
+  },
+  {
+    "name": "Cerulion",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9398
+  },
+  {
+    "name": "Presti AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0414
+  },
+  {
+    "name": "The Forecasting Company",
+    "reachability_score": "high",
+    "reachability_probability": 0.991
+  },
+  {
+    "name": "Praxos",
+    "reachability_score": "low",
+    "reachability_probability": 0.291
+  },
+  {
+    "name": "Zettascale",
+    "reachability_score": "low",
+    "reachability_probability": 0.4682
+  },
+  {
+    "name": "SchemeFlow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9628
+  },
+  {
+    "name": "Brighterway",
+    "reachability_score": "high",
+    "reachability_probability": 0.9777
+  },
+  {
+    "name": "Mineflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Soff",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7149
+  },
+  {
+    "name": "Parley",
+    "reachability_score": "high",
+    "reachability_probability": 0.9754
+  },
+  {
+    "name": "Intryc",
+    "reachability_score": "high",
+    "reachability_probability": 0.9751
+  },
+  {
+    "name": "Pinnacle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9877
+  },
+  {
+    "name": "Ember Robotics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9874
+  },
+  {
+    "name": "Thunder Compute",
+    "reachability_score": "high",
+    "reachability_probability": 0.9656
+  },
+  {
+    "name": "Kura AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9949
+  },
+  {
+    "name": "Emergent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9982
+  },
+  {
+    "name": "Zeit AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.4246
+  },
+  {
+    "name": "Distro",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7376
+  },
+  {
+    "name": "Mage Legal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9788
+  },
+  {
+    "name": "David AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9912
+  },
+  {
+    "name": "BeeBettor",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8029
+  },
+  {
+    "name": "Stempad",
+    "reachability_score": "high",
+    "reachability_probability": 0.9813
+  },
+  {
+    "name": "Pax",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7739
+  },
+  {
+    "name": "Conductor Quantum",
+    "reachability_score": "high",
+    "reachability_probability": 0.985
+  },
+  {
+    "name": "Autumn Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.6737
+  },
+  {
+    "name": "Opslane",
+    "reachability_score": "high",
+    "reachability_probability": 0.9711
+  },
+  {
+    "name": "winfunc",
+    "reachability_score": "high",
+    "reachability_probability": 0.9961
+  },
+  {
+    "name": "Biocartesian",
+    "reachability_score": "high",
+    "reachability_probability": 0.9858
+  },
+  {
+    "name": "Seals AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9686
+  },
+  {
+    "name": "Drillbit",
+    "reachability_score": "medium",
+    "reachability_probability": 0.926
+  },
+  {
+    "name": "Sharpe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9803
+  },
+  {
+    "name": "Dimely",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7627
+  },
+  {
+    "name": "Redouble AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Planbase",
+    "reachability_score": "high",
+    "reachability_probability": 0.9801
+  },
+  {
+    "name": "Anara",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7631
+  },
+  {
+    "name": "Hestus, Inc.",
+    "reachability_score": "low",
+    "reachability_probability": 0.0394
+  },
+  {
+    "name": "MagiCode",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8995
+  },
+  {
+    "name": "FINNY AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.1818
+  },
+  {
+    "name": "Vibe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9714
+  },
+  {
+    "name": "1849 bio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "ReactWise",
+    "reachability_score": "low",
+    "reachability_probability": 0.4457
+  },
+  {
+    "name": "Zoa Research",
+    "reachability_score": "high",
+    "reachability_probability": 0.9693
+  },
+  {
+    "name": "Saturn",
+    "reachability_score": "low",
+    "reachability_probability": 0.0379
+  },
+  {
+    "name": "Clearly AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9913
+  },
+  {
+    "name": "expand.ai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9902
+  },
+  {
+    "name": "Promi",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9007
+  },
+  {
+    "name": "Ontra Mobility",
+    "reachability_score": "high",
+    "reachability_probability": 0.981
+  },
+  {
+    "name": "Aluna",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9252
+  },
+  {
+    "name": "Panora",
+    "reachability_score": "high",
+    "reachability_probability": 0.9889
+  },
+  {
+    "name": "Manaflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9864
+  },
+  {
+    "name": "Conveo",
+    "reachability_score": "low",
+    "reachability_probability": 0.1524
+  },
+  {
+    "name": "CreativeMode",
+    "reachability_score": "low",
+    "reachability_probability": 0.6593
+  },
+  {
+    "name": "Kastle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9879
+  },
+  {
+    "name": "Kopra Bio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9956
+  },
+  {
+    "name": "Anthrogen",
+    "reachability_score": "high",
+    "reachability_probability": 0.985
+  },
+  {
+    "name": "Benchify",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8936
+  },
+  {
+    "name": "Fazeshift",
+    "reachability_score": "medium",
+    "reachability_probability": 0.902
+  },
+  {
+    "name": "TaxGPT",
+    "reachability_score": "low",
+    "reachability_probability": 0.049
+  },
+  {
+    "name": "Substrate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9753
+  },
+  {
+    "name": "The Synthesis Company",
+    "reachability_score": "low",
+    "reachability_probability": 0.5011
+  },
+  {
+    "name": "Mito Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.6078
+  },
+  {
+    "name": "Lighthouz AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9949
+  },
+  {
+    "name": "Modus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9912
+  },
+  {
+    "name": "d_model",
+    "reachability_score": "high",
+    "reachability_probability": 0.9829
+  },
+  {
+    "name": "LedgerUp",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8304
+  },
+  {
+    "name": "Plume",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "Pulse",
+    "reachability_score": "low",
+    "reachability_probability": 0.0289
+  },
+  {
+    "name": "AutoPallet Robotics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9797
+  },
+  {
+    "name": "Dench.com",
+    "reachability_score": "high",
+    "reachability_probability": 0.9827
+  },
+  {
+    "name": "AminoAnalytica",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9252
+  },
+  {
+    "name": "Gauge",
+    "reachability_score": "medium",
+    "reachability_probability": 0.806
+  },
+  {
+    "name": "Weave Robotics",
+    "reachability_score": "low",
+    "reachability_probability": 0.6034
+  },
+  {
+    "name": "Tandem",
+    "reachability_score": "low",
+    "reachability_probability": 0.1572
+  },
+  {
+    "name": "Kenley",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9074
+  },
+  {
+    "name": "Tivara",
+    "reachability_score": "high",
+    "reachability_probability": 0.9924
+  },
+  {
+    "name": "camfer",
+    "reachability_score": "high",
+    "reachability_probability": 0.9765
+  },
+  {
+    "name": "MinusX",
+    "reachability_score": "high",
+    "reachability_probability": 0.9702
+  },
+  {
+    "name": "Lore",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Parahelp",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8091
+  },
+  {
+    "name": "CodeViz",
+    "reachability_score": "high",
+    "reachability_probability": 0.9753
+  },
+  {
+    "name": "RunLocal AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9782
+  },
+  {
+    "name": "Ares Industries",
+    "reachability_score": "high",
+    "reachability_probability": 0.9799
+  },
+  {
+    "name": "Dodo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9553
+  },
+  {
+    "name": "Lucible",
+    "reachability_score": "high",
+    "reachability_probability": 0.9845
+  },
+  {
+    "name": "Elevate",
+    "reachability_score": "high",
+    "reachability_probability": 0.985
+  },
+  {
+    "name": "Offstream",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8388
+  },
+  {
+    "name": "Storia AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9968
+  },
+  {
+    "name": "DeepSim, Inc.",
+    "reachability_score": "high",
+    "reachability_probability": 0.9799
+  },
+  {
+    "name": "Scape",
+    "reachability_score": "high",
+    "reachability_probability": 0.9853
+  },
+  {
+    "name": "Zuni",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Proxis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9934
+  },
+  {
+    "name": "Rewbi",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "Cloudglue",
+    "reachability_score": "high",
+    "reachability_probability": 0.9617
+  },
+  {
+    "name": "NetworkOcean",
+    "reachability_score": "high",
+    "reachability_probability": 0.9764
+  },
+  {
+    "name": "Silurian",
+    "reachability_score": "high",
+    "reachability_probability": 0.9896
+  },
+  {
+    "name": "Hyrex",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9252
+  },
+  {
+    "name": "Unbound",
+    "reachability_score": "high",
+    "reachability_probability": 0.9606
+  },
+  {
+    "name": "RetroFix",
+    "reachability_score": "high",
+    "reachability_probability": 0.9947
+  },
+  {
+    "name": "Azalea Robotics Corporation",
+    "reachability_score": "low",
+    "reachability_probability": 0.298
+  },
+  {
+    "name": "Decisional AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9046
+  },
+  {
+    "name": "Stardrift",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8281
+  },
+  {
+    "name": "ideate.xyz",
+    "reachability_score": "high",
+    "reachability_probability": 0.9886
+  },
+  {
+    "name": "FirstWork",
+    "reachability_score": "high",
+    "reachability_probability": 0.9652
+  },
+  {
+    "name": "Sorcerer",
+    "reachability_score": "high",
+    "reachability_probability": 0.9502
+  },
+  {
+    "name": "Wordware",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8455
+  },
+  {
+    "name": "Maitai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9559
+  },
+  {
+    "name": "Corgi Insurance",
+    "reachability_score": "low",
+    "reachability_probability": 0.019
+  },
+  {
+    "name": "Phonely",
+    "reachability_score": "high",
+    "reachability_probability": 0.9869
+  },
+  {
+    "name": "VideoGen",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9256
+  },
+  {
+    "name": "Sage Care",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9405
+  },
+  {
+    "name": "Stack Auth",
+    "reachability_score": "low",
+    "reachability_probability": 0.6043
+  },
+  {
+    "name": "Tabula",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9417
+  },
+  {
+    "name": "Callback",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9276
+  },
+  {
+    "name": "Bayesline",
+    "reachability_score": "high",
+    "reachability_probability": 0.9928
+  },
+  {
+    "name": "DigitalCarbon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9905
+  },
+  {
+    "name": "Random Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9917
+  },
+  {
+    "name": "Unsloth AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "Codes Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.998
+  },
+  {
+    "name": "Entangl",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9306
+  },
+  {
+    "name": "ClaimSorted",
+    "reachability_score": "low",
+    "reachability_probability": 0.0166
+  },
+  {
+    "name": "mdhub",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8943
+  },
+  {
+    "name": "Hamming AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7533
+  },
+  {
+    "name": "ProhostAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9644
+  },
+  {
+    "name": "Educato",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8471
+  },
+  {
+    "name": "Spaceium Inc",
+    "reachability_score": "low",
+    "reachability_probability": 0.5021
+  },
+  {
+    "name": "Comfy Deploy",
+    "reachability_score": "medium",
+    "reachability_probability": 0.856
+  },
+  {
+    "name": "Synnax",
+    "reachability_score": "low",
+    "reachability_probability": 0.236
+  },
+  {
+    "name": "Theseus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9779
+  },
+  {
+    "name": "Saphira AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9289
+  },
+  {
+    "name": "Glasskube",
+    "reachability_score": "low",
+    "reachability_probability": 0.4228
+  },
+  {
+    "name": "Mem0",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8217
+  },
+  {
+    "name": "Cheers",
+    "reachability_score": "high",
+    "reachability_probability": 0.9857
+  },
+  {
+    "name": "Understood Care",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9104
+  },
+  {
+    "name": "Doublezero",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Superunit",
+    "reachability_score": "low",
+    "reachability_probability": 0.6582
+  },
+  {
+    "name": "Undermind",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9257
+  },
+  {
+    "name": "Domu Technology Inc.",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7978
+  },
+  {
+    "name": "Apten",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9498
+  },
+  {
+    "name": "Spherecast",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9216
+  },
+  {
+    "name": "Miru",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8669
+  },
+  {
+    "name": "Roger",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9474
+  },
+  {
+    "name": "Abel Police",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7115
+  },
+  {
+    "name": "Ultra",
+    "reachability_score": "high",
+    "reachability_probability": 0.9964
+  },
+  {
+    "name": "\u00c5ngstr\u00f6m AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.3308
+  },
+  {
+    "name": "Coval",
+    "reachability_score": "high",
+    "reachability_probability": 0.9863
+  },
+  {
+    "name": "Evolvere BioSciences",
+    "reachability_score": "high",
+    "reachability_probability": 0.9826
+  },
+  {
+    "name": "Spur",
+    "reachability_score": "high",
+    "reachability_probability": 0.9805
+  },
+  {
+    "name": "Ligo Biosciences",
+    "reachability_score": "high",
+    "reachability_probability": 0.9546
+  },
+  {
+    "name": "ACX",
+    "reachability_score": "high",
+    "reachability_probability": 0.9856
+  },
+  {
+    "name": "Overeasy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9969
+  },
+  {
+    "name": "Fuse",
+    "reachability_score": "medium",
+    "reachability_probability": 0.86
+  },
+  {
+    "name": "Simplex",
+    "reachability_score": "high",
+    "reachability_probability": 0.9912
+  },
+  {
+    "name": "Poka Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9854
+  },
+  {
+    "name": "Red Barn Robotics",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8906
+  },
+  {
+    "name": "Mentra",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8204
+  },
+  {
+    "name": "BlindPay",
+    "reachability_score": "high",
+    "reachability_probability": 0.9891
+  },
+  {
+    "name": "Vantel",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9215
+  },
+  {
+    "name": "Fira",
+    "reachability_score": "low",
+    "reachability_probability": 0.3916
+  },
+  {
+    "name": "assistant-ui",
+    "reachability_score": "medium",
+    "reachability_probability": 0.926
+  },
+  {
+    "name": "Artifact",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8828
+  },
+  {
+    "name": "Axal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9874
+  },
+  {
+    "name": "Dex",
+    "reachability_score": "high",
+    "reachability_probability": 0.9734
+  },
+  {
+    "name": "TrainLoop",
+    "reachability_score": "high",
+    "reachability_probability": 0.9981
+  },
+  {
+    "name": "Candid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9979
+  },
+  {
+    "name": "SAMMY Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9937
+  },
+  {
+    "name": "Instinct",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "Mercura",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9168
+  },
+  {
+    "name": "Tee Time Tommy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9887
+  },
+  {
+    "name": "Cedar",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Browser Use",
+    "reachability_score": "high",
+    "reachability_probability": 0.9958
+  },
+  {
+    "name": "TamLabs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Ergo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9943
+  },
+  {
+    "name": "CopyCat",
+    "reachability_score": "high",
+    "reachability_probability": 0.982
+  },
+  {
+    "name": "Paratus Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9924
+  },
+  {
+    "name": "Butter",
+    "reachability_score": "high",
+    "reachability_probability": 0.9563
+  },
+  {
+    "name": "Bluebook",
+    "reachability_score": "high",
+    "reachability_probability": 0.9888
+  },
+  {
+    "name": "TensorPool",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9272
+  },
+  {
+    "name": "Dalus",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7264
+  },
+  {
+    "name": "Roark",
+    "reachability_score": "high",
+    "reachability_probability": 0.9545
+  },
+  {
+    "name": "Rebolt",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8869
+  },
+  {
+    "name": "Spott",
+    "reachability_score": "high",
+    "reachability_probability": 0.992
+  },
+  {
+    "name": "Woz",
+    "reachability_score": "high",
+    "reachability_probability": 0.994
+  },
+  {
+    "name": "Proception Inc",
+    "reachability_score": "high",
+    "reachability_probability": 0.9578
+  },
+  {
+    "name": "Corsair",
+    "reachability_score": "high",
+    "reachability_probability": 0.9847
+  },
+  {
+    "name": "Wildcard",
+    "reachability_score": "high",
+    "reachability_probability": 0.9873
+  },
+  {
+    "name": "Permitify",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Reditus Space",
+    "reachability_score": "low",
+    "reachability_probability": 0.3433
+  },
+  {
+    "name": "Optifye.ai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9958
+  },
+  {
+    "name": "Pinch",
+    "reachability_score": "high",
+    "reachability_probability": 0.9628
+  },
+  {
+    "name": "Retrofit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9681
+  },
+  {
+    "name": "Archon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9923
+  },
+  {
+    "name": "Forge Automation",
+    "reachability_score": "high",
+    "reachability_probability": 0.9877
+  },
+  {
+    "name": "Mastra",
+    "reachability_score": "high",
+    "reachability_probability": 0.9745
+  },
+  {
+    "name": "AfterQuery",
+    "reachability_score": "low",
+    "reachability_probability": 0.329
+  },
+  {
+    "name": "Misprint",
+    "reachability_score": "high",
+    "reachability_probability": 0.9799
+  },
+  {
+    "name": "FuseAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9624
+  },
+  {
+    "name": "Miyagi Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Artificial Societies",
+    "reachability_score": "high",
+    "reachability_probability": 0.9947
+  },
+  {
+    "name": "OpenIntake",
+    "reachability_score": "high",
+    "reachability_probability": 0.9847
+  },
+  {
+    "name": "Peppr AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.998
+  },
+  {
+    "name": "Infinite",
+    "reachability_score": "high",
+    "reachability_probability": 0.9824
+  },
+  {
+    "name": "Sennu AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9798
+  },
+  {
+    "name": "Orbital Operations",
+    "reachability_score": "low",
+    "reachability_probability": 0.298
+  },
+  {
+    "name": "Mesh",
+    "reachability_score": "high",
+    "reachability_probability": 0.9751
+  },
+  {
+    "name": "Outlit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9809
+  },
+  {
+    "name": "Tire Swing",
+    "reachability_score": "high",
+    "reachability_probability": 0.9933
+  },
+  {
+    "name": "Sherpa Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9928
+  },
+  {
+    "name": "Harper",
+    "reachability_score": "low",
+    "reachability_probability": 0.2108
+  },
+  {
+    "name": "Calltree",
+    "reachability_score": "high",
+    "reachability_probability": 0.9756
+  },
+  {
+    "name": "Nitrode",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9273
+  },
+  {
+    "name": "Karsa",
+    "reachability_score": "high",
+    "reachability_probability": 0.9969
+  },
+  {
+    "name": "Exla",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "Confident AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9277
+  },
+  {
+    "name": "Riviera",
+    "reachability_score": "high",
+    "reachability_probability": 0.9928
+  },
+  {
+    "name": "Waypoint Transit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9977
+  },
+  {
+    "name": "Bystreet",
+    "reachability_score": "high",
+    "reachability_probability": 0.954
+  },
+  {
+    "name": "Agentin AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9868
+  },
+  {
+    "name": "ReJot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9975
+  },
+  {
+    "name": "General Trajectory",
+    "reachability_score": "high",
+    "reachability_probability": 0.995
+  },
+  {
+    "name": "Solidroad",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9021
+  },
+  {
+    "name": "Trata",
+    "reachability_score": "high",
+    "reachability_probability": 0.9927
+  },
+  {
+    "name": "Candor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9805
+  },
+  {
+    "name": "Lucidic AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9351
+  },
+  {
+    "name": "Mundo AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.948
+  },
+  {
+    "name": "G LNK",
+    "reachability_score": "high",
+    "reachability_probability": 0.9978
+  },
+  {
+    "name": "Pluto",
+    "reachability_score": "high",
+    "reachability_probability": 0.9921
+  },
+  {
+    "name": "AthenaHQ",
+    "reachability_score": "low",
+    "reachability_probability": 0.5438
+  },
+  {
+    "name": "Lopus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9949
+  },
+  {
+    "name": "Cenote",
+    "reachability_score": "high",
+    "reachability_probability": 0.9951
+  },
+  {
+    "name": "Harbera",
+    "reachability_score": "high",
+    "reachability_probability": 0.9879
+  },
+  {
+    "name": "Stillwind",
+    "reachability_score": "high",
+    "reachability_probability": 0.9719
+  },
+  {
+    "name": "Bindwell",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7883
+  },
+  {
+    "name": "Pickle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9864
+  },
+  {
+    "name": "Lucid",
+    "reachability_score": "low",
+    "reachability_probability": 0.601
+  },
+  {
+    "name": "Macadamia",
+    "reachability_score": "low",
+    "reachability_probability": 0.6967
+  },
+  {
+    "name": "Asteroid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9957
+  },
+  {
+    "name": "Gale",
+    "reachability_score": "high",
+    "reachability_probability": 0.9839
+  },
+  {
+    "name": "Pave Robotics",
+    "reachability_score": "low",
+    "reachability_probability": 0.2632
+  },
+  {
+    "name": "PAX Markets",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7664
+  },
+  {
+    "name": "Olive",
+    "reachability_score": "high",
+    "reachability_probability": 0.9723
+  },
+  {
+    "name": "hud",
+    "reachability_score": "high",
+    "reachability_probability": 0.97
+  },
+  {
+    "name": "finbar",
+    "reachability_score": "medium",
+    "reachability_probability": 0.91
+  },
+  {
+    "name": "Cuckoo Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9912
+  },
+  {
+    "name": "Mecha Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "10x",
+    "reachability_score": "high",
+    "reachability_probability": 0.9937
+  },
+  {
+    "name": "HealthKey",
+    "reachability_score": "low",
+    "reachability_probability": 0.1533
+  },
+  {
+    "name": "Operand",
+    "reachability_score": "high",
+    "reachability_probability": 0.9971
+  },
+  {
+    "name": "Osmosis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9967
+  },
+  {
+    "name": "Swerve",
+    "reachability_score": "high",
+    "reachability_probability": 0.9943
+  },
+  {
+    "name": "Mosaic",
+    "reachability_score": "low",
+    "reachability_probability": 0.6498
+  },
+  {
+    "name": "Cifrato",
+    "reachability_score": "high",
+    "reachability_probability": 0.9915
+  },
+  {
+    "name": "Oki",
+    "reachability_score": "high",
+    "reachability_probability": 0.9903
+  },
+  {
+    "name": "ZeroEntropy",
+    "reachability_score": "low",
+    "reachability_probability": 0.298
+  },
+  {
+    "name": "Bezel",
+    "reachability_score": "high",
+    "reachability_probability": 0.9969
+  },
+  {
+    "name": "Cardamon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9887
+  },
+  {
+    "name": "Amby Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9899
+  },
+  {
+    "name": "Trim",
+    "reachability_score": "high",
+    "reachability_probability": 0.9507
+  },
+  {
+    "name": "Tergle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9853
+  },
+  {
+    "name": "Rally",
+    "reachability_score": "high",
+    "reachability_probability": 0.9868
+  },
+  {
+    "name": "Adam",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9441
+  },
+  {
+    "name": "Inversion Semiconductor",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8938
+  },
+  {
+    "name": "careCycle",
+    "reachability_score": "high",
+    "reachability_probability": 0.9813
+  },
+  {
+    "name": "Paragon",
+    "reachability_score": "high",
+    "reachability_probability": 0.9731
+  },
+  {
+    "name": "SalesPatriot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9021
+  },
+  {
+    "name": "Maive",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Weave",
+    "reachability_score": "high",
+    "reachability_probability": 0.996
+  },
+  {
+    "name": "Caseflood.ai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9822
+  },
+  {
+    "name": "Tejas AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "Trava",
+    "reachability_score": "high",
+    "reachability_probability": 0.9899
+  },
+  {
+    "name": "Maritime Fusion",
+    "reachability_score": "high",
+    "reachability_probability": 0.9779
+  },
+  {
+    "name": "a0.dev",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7967
+  },
+  {
+    "name": "Altrina",
+    "reachability_score": "low",
+    "reachability_probability": 0.1764
+  },
+  {
+    "name": "A1Zap by A1Base",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "Verbiflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9756
+  },
+  {
+    "name": "Toothy AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8659
+  },
+  {
+    "name": "Rocketable",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9286
+  },
+  {
+    "name": "Contrario",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9445
+  },
+  {
+    "name": "Serno",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Truffle AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9945
+  },
+  {
+    "name": "superglue",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8473
+  },
+  {
+    "name": "Conntour",
+    "reachability_score": "low",
+    "reachability_probability": 0.6249
+  },
+  {
+    "name": "Closure",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "Promptless",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "Subtrace",
+    "reachability_score": "high",
+    "reachability_probability": 0.9544
+  },
+  {
+    "name": "Vocality Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "Astro",
+    "reachability_score": "high",
+    "reachability_probability": 0.989
+  },
+  {
+    "name": "Dartboard Energy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9888
+  },
+  {
+    "name": "Karoo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9806
+  },
+  {
+    "name": "awen",
+    "reachability_score": "high",
+    "reachability_probability": 0.9831
+  },
+  {
+    "name": "Dollyglot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9938
+  },
+  {
+    "name": "Alice.tech",
+    "reachability_score": "high",
+    "reachability_probability": 0.9876
+  },
+  {
+    "name": "Stamp",
+    "reachability_score": "high",
+    "reachability_probability": 0.9595
+  },
+  {
+    "name": "Splash Inc.",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9192
+  },
+  {
+    "name": "Bud",
+    "reachability_score": "high",
+    "reachability_probability": 0.9869
+  },
+  {
+    "name": "Axiom",
+    "reachability_score": "high",
+    "reachability_probability": 0.9908
+  },
+  {
+    "name": "Steinmetz",
+    "reachability_score": "high",
+    "reachability_probability": 0.9931
+  },
+  {
+    "name": "SubImage",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7637
+  },
+  {
+    "name": "Hey Telo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9518
+  },
+  {
+    "name": "Praxim",
+    "reachability_score": "high",
+    "reachability_probability": 0.9655
+  },
+  {
+    "name": "Excellence Learning",
+    "reachability_score": "high",
+    "reachability_probability": 0.9571
+  },
+  {
+    "name": "Tweeks.io",
+    "reachability_score": "high",
+    "reachability_probability": 0.9885
+  },
+  {
+    "name": "Flowtel",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9125
+  },
+  {
+    "name": "Leaping AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9206
+  },
+  {
+    "name": "Vetnio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9796
+  },
+  {
+    "name": "Bild AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.875
+  },
+  {
+    "name": "Outship",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9248
+  },
+  {
+    "name": "Revise Robotics",
+    "reachability_score": "high",
+    "reachability_probability": 0.962
+  },
+  {
+    "name": "Enhanced Radar",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8283
+  },
+  {
+    "name": "Edexia",
+    "reachability_score": "high",
+    "reachability_probability": 0.9895
+  },
+  {
+    "name": "Quantstruct",
+    "reachability_score": "high",
+    "reachability_probability": 0.9981
+  },
+  {
+    "name": "Invo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9911
+  },
+  {
+    "name": "Onlook",
+    "reachability_score": "high",
+    "reachability_probability": 0.9566
+  },
+  {
+    "name": "Delineate",
+    "reachability_score": "low",
+    "reachability_probability": 0.1668
+  },
+  {
+    "name": "Exin Therapeutics",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9198
+  },
+  {
+    "name": "Uncommon Therapeutics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9973
+  },
+  {
+    "name": "YouShift",
+    "reachability_score": "high",
+    "reachability_probability": 0.9948
+  },
+  {
+    "name": "Overstand Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "F2",
+    "reachability_score": "high",
+    "reachability_probability": 0.9973
+  },
+  {
+    "name": "Nox Metals",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Blue",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9148
+  },
+  {
+    "name": "Paloma",
+    "reachability_score": "high",
+    "reachability_probability": 0.9508
+  },
+  {
+    "name": "Uplift AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9769
+  },
+  {
+    "name": "RealRoots",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Luminal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9892
+  },
+  {
+    "name": "Freya",
+    "reachability_score": "high",
+    "reachability_probability": 0.9683
+  },
+  {
+    "name": "burnt",
+    "reachability_score": "high",
+    "reachability_probability": 0.9863
+  },
+  {
+    "name": "Avent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9843
+  },
+  {
+    "name": "Ruvo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9666
+  },
+  {
+    "name": "Veritus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Outrove",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "NOSO LABS",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Vulcan Technologies",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8641
+  },
+  {
+    "name": "Bizzy AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9899
+  },
+  {
+    "name": "Spotlight Realty",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Interfere",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Munify",
+    "reachability_score": "high",
+    "reachability_probability": 0.9825
+  },
+  {
+    "name": "RowFlow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9951
+  },
+  {
+    "name": "TectoAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9843
+  },
+  {
+    "name": "Duranium",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Perspectives Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9786
+  },
+  {
+    "name": "Modelence",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8789
+  },
+  {
+    "name": "Magnetic",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8878
+  },
+  {
+    "name": "Fleetline",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8448
+  },
+  {
+    "name": "CLODO",
+    "reachability_score": "high",
+    "reachability_probability": 0.9585
+  },
+  {
+    "name": "stagewise",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9423
+  },
+  {
+    "name": "Flywheel AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9988
+  },
+  {
+    "name": "Juxta",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Okibi",
+    "reachability_score": "high",
+    "reachability_probability": 0.9727
+  },
+  {
+    "name": "Rebulk",
+    "reachability_score": "high",
+    "reachability_probability": 0.9593
+  },
+  {
+    "name": "KERNEL",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9342
+  },
+  {
+    "name": "Reacher",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "Certus AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.4272
+  },
+  {
+    "name": "Hera",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9181
+  },
+  {
+    "name": "Notte",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9412
+  },
+  {
+    "name": "Pally",
+    "reachability_score": "medium",
+    "reachability_probability": 0.926
+  },
+  {
+    "name": "Locata",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7061
+  },
+  {
+    "name": "Pleom",
+    "reachability_score": "high",
+    "reachability_probability": 0.9877
+  },
+  {
+    "name": "Convexia",
+    "reachability_score": "high",
+    "reachability_probability": 0.989
+  },
+  {
+    "name": "SigmanticAI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Opennote",
+    "reachability_score": "low",
+    "reachability_probability": 0.4475
+  },
+  {
+    "name": "Sira",
+    "reachability_score": "high",
+    "reachability_probability": 0.9731
+  },
+  {
+    "name": "F4 Industries",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7125
+  },
+  {
+    "name": "Eden",
+    "reachability_score": "high",
+    "reachability_probability": 0.9935
+  },
+  {
+    "name": "Altur",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "PARES AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8693
+  },
+  {
+    "name": "Avelis Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9317
+  },
+  {
+    "name": "Nautilus",
+    "reachability_score": "high",
+    "reachability_probability": 0.969
+  },
+  {
+    "name": "Humoniq",
+    "reachability_score": "high",
+    "reachability_probability": 0.9861
+  },
+  {
+    "name": "Maximal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9816
+  },
+  {
+    "name": "Idler",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "Floot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9564
+  },
+  {
+    "name": "Alara",
+    "reachability_score": "high",
+    "reachability_probability": 0.9969
+  },
+  {
+    "name": "Socratix AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.93
+  },
+  {
+    "name": "Minimal AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9879
+  },
+  {
+    "name": "Risely AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9332
+  },
+  {
+    "name": "Omnara",
+    "reachability_score": "high",
+    "reachability_probability": 0.9712
+  },
+  {
+    "name": "Knowlify",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8771
+  },
+  {
+    "name": "Autosana",
+    "reachability_score": "high",
+    "reachability_probability": 0.9932
+  },
+  {
+    "name": "ProcIndex",
+    "reachability_score": "high",
+    "reachability_probability": 0.9843
+  },
+  {
+    "name": "Iron Grid",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8375
+  },
+  {
+    "name": "Finto",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "Motives",
+    "reachability_score": "high",
+    "reachability_probability": 0.9682
+  },
+  {
+    "name": "Relling",
+    "reachability_score": "high",
+    "reachability_probability": 0.9957
+  },
+  {
+    "name": "Char",
+    "reachability_score": "high",
+    "reachability_probability": 0.9905
+  },
+  {
+    "name": "Manufact (formerly mcp-use)",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Novaflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9875
+  },
+  {
+    "name": "Perseus Defense",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8277
+  },
+  {
+    "name": "Phases",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7771
+  },
+  {
+    "name": "Solva",
+    "reachability_score": "low",
+    "reachability_probability": 0.3541
+  },
+  {
+    "name": "Albacore Inc.",
+    "reachability_score": "low",
+    "reachability_probability": 0.6712
+  },
+  {
+    "name": "GoRiff",
+    "reachability_score": "high",
+    "reachability_probability": 0.9792
+  },
+  {
+    "name": "Mimos",
+    "reachability_score": "high",
+    "reachability_probability": 0.992
+  },
+  {
+    "name": "Nozomio",
+    "reachability_score": "high",
+    "reachability_probability": 0.9741
+  },
+  {
+    "name": "VibeFlow",
+    "reachability_score": "medium",
+    "reachability_probability": 0.823
+  },
+  {
+    "name": "Comena",
+    "reachability_score": "high",
+    "reachability_probability": 0.9653
+  },
+  {
+    "name": "Normal",
+    "reachability_score": "low",
+    "reachability_probability": 0.4401
+  },
+  {
+    "name": "GhostEye",
+    "reachability_score": "high",
+    "reachability_probability": 0.9742
+  },
+  {
+    "name": "Channel3",
+    "reachability_score": "high",
+    "reachability_probability": 0.9748
+  },
+  {
+    "name": "Epicenter",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8934
+  },
+  {
+    "name": "Costream",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8022
+  },
+  {
+    "name": "Embedder",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9362
+  },
+  {
+    "name": "Flai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9468
+  },
+  {
+    "name": "b12 Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Fulcrum",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Trace",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9055
+  },
+  {
+    "name": "Interface",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9284
+  },
+  {
+    "name": "IronLedger.ai",
+    "reachability_score": "high",
+    "reachability_probability": 0.9655
+  },
+  {
+    "name": "Doe",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8162
+  },
+  {
+    "name": "Theora",
+    "reachability_score": "high",
+    "reachability_probability": 0.9523
+  },
+  {
+    "name": "Parachute",
+    "reachability_score": "high",
+    "reachability_probability": 0.9835
+  },
+  {
+    "name": "Riverbank",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9441
+  },
+  {
+    "name": "Kalinda",
+    "reachability_score": "high",
+    "reachability_probability": 0.9939
+  },
+  {
+    "name": "Stellon Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9856
+  },
+  {
+    "name": "BootLoop",
+    "reachability_score": "high",
+    "reachability_probability": 0.9771
+  },
+  {
+    "name": "Panoptive",
+    "reachability_score": "high",
+    "reachability_probability": 0.9638
+  },
+  {
+    "name": "cocreate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9854
+  },
+  {
+    "name": "Slashy",
+    "reachability_score": "high",
+    "reachability_probability": 0.971
+  },
+  {
+    "name": "Wedge",
+    "reachability_score": "high",
+    "reachability_probability": 0.9854
+  },
+  {
+    "name": "CareSwift",
+    "reachability_score": "high",
+    "reachability_probability": 0.9916
+  },
+  {
+    "name": "Pangolin",
+    "reachability_score": "high",
+    "reachability_probability": 0.9938
+  },
+  {
+    "name": "Kestroll",
+    "reachability_score": "high",
+    "reachability_probability": 0.9987
+  },
+  {
+    "name": "Tesora",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7823
+  },
+  {
+    "name": "DeepAware AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9916
+  },
+  {
+    "name": "Stockline",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9143
+  },
+  {
+    "name": "Magnitude",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Proliferate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9918
+  },
+  {
+    "name": "DeepGrove",
+    "reachability_score": "high",
+    "reachability_probability": 0.978
+  },
+  {
+    "name": "Frizzle",
+    "reachability_score": "high",
+    "reachability_probability": 0.972
+  },
+  {
+    "name": "Skope",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "OnDeck AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "Alter",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Imprezia",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8663
+  },
+  {
+    "name": "Lilac",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9318
+  },
+  {
+    "name": "Janet AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9636
+  },
+  {
+    "name": "Cyberdesk",
+    "reachability_score": "high",
+    "reachability_probability": 0.9724
+  },
+  {
+    "name": "Panels",
+    "reachability_score": "high",
+    "reachability_probability": 0.9991
+  },
+  {
+    "name": "Wafer",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Orange Slice",
+    "reachability_score": "high",
+    "reachability_probability": 0.9784
+  },
+  {
+    "name": "Monarcha",
+    "reachability_score": "high",
+    "reachability_probability": 0.9943
+  },
+  {
+    "name": "Lotas",
+    "reachability_score": "medium",
+    "reachability_probability": 0.948
+  },
+  {
+    "name": "Design Arena",
+    "reachability_score": "high",
+    "reachability_probability": 0.9688
+  },
+  {
+    "name": "EffiGov",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9446
+  },
+  {
+    "name": "bitrig",
+    "reachability_score": "high",
+    "reachability_probability": 0.9897
+  },
+  {
+    "name": "Lark",
+    "reachability_score": "high",
+    "reachability_probability": 0.9611
+  },
+  {
+    "name": "Topological",
+    "reachability_score": "high",
+    "reachability_probability": 0.9809
+  },
+  {
+    "name": "Datafruit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9959
+  },
+  {
+    "name": "ContextFort",
+    "reachability_score": "high",
+    "reachability_probability": 0.958
+  },
+  {
+    "name": "LLM Stats",
+    "reachability_score": "high",
+    "reachability_probability": 0.9982
+  },
+  {
+    "name": "Verne Robotics",
+    "reachability_score": "low",
+    "reachability_probability": 0.5248
+  },
+  {
+    "name": "Playgent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9977
+  },
+  {
+    "name": "Liva AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9404
+  },
+  {
+    "name": "Shor",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8876
+  },
+  {
+    "name": "Golpo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9779
+  },
+  {
+    "name": "gitdot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9982
+  },
+  {
+    "name": "Lanesurf",
+    "reachability_score": "low",
+    "reachability_probability": 0.5353
+  },
+  {
+    "name": "Astor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9794
+  },
+  {
+    "name": "Blank Bio",
+    "reachability_score": "high",
+    "reachability_probability": 0.966
+  },
+  {
+    "name": "truthsystems",
+    "reachability_score": "high",
+    "reachability_probability": 0.9951
+  },
+  {
+    "name": "AgentMail",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9443
+  },
+  {
+    "name": "TraceRoot.AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7328
+  },
+  {
+    "name": "Halluminate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9746
+  },
+  {
+    "name": "MangoDesk",
+    "reachability_score": "high",
+    "reachability_probability": 0.9924
+  },
+  {
+    "name": "The Prompting Company",
+    "reachability_score": "high",
+    "reachability_probability": 0.9781
+  },
+  {
+    "name": "Acrely",
+    "reachability_score": "high",
+    "reachability_probability": 0.9858
+  },
+  {
+    "name": "Dedalus Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9974
+  },
+  {
+    "name": "Closera",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Meteor",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "GETASAP",
+    "reachability_score": "low",
+    "reachability_probability": 0.4986
+  },
+  {
+    "name": "Adaptional",
+    "reachability_score": "high",
+    "reachability_probability": 0.9664
+  },
+  {
+    "name": "Pingo AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9722
+  },
+  {
+    "name": "Preseen",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7472
+  },
+  {
+    "name": "Synthetic Society",
+    "reachability_score": "high",
+    "reachability_probability": 0.9731
+  },
+  {
+    "name": "Cactus",
+    "reachability_score": "medium",
+    "reachability_probability": 0.81
+  },
+  {
+    "name": "Nixo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9517
+  },
+  {
+    "name": "Serafis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9668
+  },
+  {
+    "name": "Wayline",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9444
+  },
+  {
+    "name": "Ambral",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8799
+  },
+  {
+    "name": "Fluidize",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8666
+  },
+  {
+    "name": "Autumn",
+    "reachability_score": "high",
+    "reachability_probability": 0.9821
+  },
+  {
+    "name": "Stormy AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9691
+  },
+  {
+    "name": "Wideframe",
+    "reachability_score": "high",
+    "reachability_probability": 0.9807
+  },
+  {
+    "name": "Martini",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Condor Energy",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9301
+  },
+  {
+    "name": "Remix",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Shofo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9921
+  },
+  {
+    "name": "Wayco",
+    "reachability_score": "high",
+    "reachability_probability": 0.9867
+  },
+  {
+    "name": "Unifold",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9357
+  },
+  {
+    "name": "Carrot Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9963
+  },
+  {
+    "name": "Aurorin CAD",
+    "reachability_score": "high",
+    "reachability_probability": 0.9944
+  },
+  {
+    "name": "Fixture",
+    "reachability_score": "high",
+    "reachability_probability": 0.9771
+  },
+  {
+    "name": "DAIVIN!",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9469
+  },
+  {
+    "name": "GrazeMate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Origami Robotics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "Librar Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9755
+  },
+  {
+    "name": "Rubric AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Zymbly",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Ritivel",
+    "reachability_score": "high",
+    "reachability_probability": 0.9744
+  },
+  {
+    "name": "Polymorph",
+    "reachability_score": "high",
+    "reachability_probability": 0.9964
+  },
+  {
+    "name": "Pollinate",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "SpotPay",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "VOYGR",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "MochaCare",
+    "reachability_score": "low",
+    "reachability_probability": 0.6327
+  },
+  {
+    "name": "Vela",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Supafax",
+    "reachability_score": "high",
+    "reachability_probability": 0.9909
+  },
+  {
+    "name": "Talking Computers",
+    "reachability_score": "high",
+    "reachability_probability": 0.9974
+  },
+  {
+    "name": "Copperlane",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Canary",
+    "reachability_score": "medium",
+    "reachability_probability": 0.94
+  },
+  {
+    "name": "Grade",
+    "reachability_score": "high",
+    "reachability_probability": 0.9818
+  },
+  {
+    "name": "Sila",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9147
+  },
+  {
+    "name": "Maven",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Moda",
+    "reachability_score": "high",
+    "reachability_probability": 0.9937
+  },
+  {
+    "name": "The Token Company",
+    "reachability_score": "low",
+    "reachability_probability": 0.6182
+  },
+  {
+    "name": "BeeSafe AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.946
+  },
+  {
+    "name": "Fed10",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9445
+  },
+  {
+    "name": "Squid",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Crow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9986
+  },
+  {
+    "name": "Foreman",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Booko",
+    "reachability_score": "high",
+    "reachability_probability": 0.9983
+  },
+  {
+    "name": "Corelayer",
+    "reachability_score": "high",
+    "reachability_probability": 0.9651
+  },
+  {
+    "name": "General Legal",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8091
+  },
+  {
+    "name": "Fort",
+    "reachability_score": "low",
+    "reachability_probability": 0.2497
+  },
+  {
+    "name": "Balance",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9488
+  },
+  {
+    "name": "Chasi",
+    "reachability_score": "high",
+    "reachability_probability": 0.9815
+  },
+  {
+    "name": "Remy AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Glue",
+    "reachability_score": "high",
+    "reachability_probability": 0.9987
+  },
+  {
+    "name": "o11",
+    "reachability_score": "high",
+    "reachability_probability": 0.9937
+  },
+  {
+    "name": "Doomersion",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9482
+  },
+  {
+    "name": "Sequence Markets",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "Ditto Biosciences",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7709
+  },
+  {
+    "name": "Servo7",
+    "reachability_score": "high",
+    "reachability_probability": 0.9794
+  },
+  {
+    "name": "Datoric",
+    "reachability_score": "high",
+    "reachability_probability": 0.9887
+  },
+  {
+    "name": "Voxel Energy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9921
+  },
+  {
+    "name": "Polymath",
+    "reachability_score": "high",
+    "reachability_probability": 0.9978
+  },
+  {
+    "name": "Bubble Lab",
+    "reachability_score": "high",
+    "reachability_probability": 0.9931
+  },
+  {
+    "name": "Pocket",
+    "reachability_score": "high",
+    "reachability_probability": 0.982
+  },
+  {
+    "name": "Byteport",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9231
+  },
+  {
+    "name": "Constellation Space",
+    "reachability_score": "high",
+    "reachability_probability": 0.9706
+  },
+  {
+    "name": "Mendral",
+    "reachability_score": "high",
+    "reachability_probability": 0.9964
+  },
+  {
+    "name": "AxionOrbital Space",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "Oximy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9601
+  },
+  {
+    "name": "Caretta",
+    "reachability_score": "medium",
+    "reachability_probability": 0.729
+  },
+  {
+    "name": "Samora AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9563
+  },
+  {
+    "name": "Human Archive",
+    "reachability_score": "high",
+    "reachability_probability": 0.9706
+  },
+  {
+    "name": "Forum",
+    "reachability_score": "high",
+    "reachability_probability": 0.9981
+  },
+  {
+    "name": "sitefire",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Robby",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9223
+  },
+  {
+    "name": "Ressl AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9553
+  },
+  {
+    "name": "Emdash",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9147
+  },
+  {
+    "name": "InventoryQuant",
+    "reachability_score": "high",
+    "reachability_probability": 0.9848
+  },
+  {
+    "name": "Congruent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Reframe",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9147
+  },
+  {
+    "name": "Valence",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9301
+  },
+  {
+    "name": "Approxima",
+    "reachability_score": "high",
+    "reachability_probability": 0.9969
+  },
+  {
+    "name": "Traverse",
+    "reachability_score": "high",
+    "reachability_probability": 0.9957
+  },
+  {
+    "name": "Revion",
+    "reachability_score": "high",
+    "reachability_probability": 0.9955
+  },
+  {
+    "name": "Maywood",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8805
+  },
+  {
+    "name": "Fenrock AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "End Close",
+    "reachability_score": "high",
+    "reachability_probability": 0.9906
+  },
+  {
+    "name": "Chamber",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9014
+  },
+  {
+    "name": "Patientdesk.ai",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8847
+  },
+  {
+    "name": "Visibl Semiconductors",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "Synthetic Sciences",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Seeing Systems",
+    "reachability_score": "high",
+    "reachability_probability": 0.994
+  },
+  {
+    "name": "Jinba",
+    "reachability_score": "high",
+    "reachability_probability": 0.9776
+  },
+  {
+    "name": "Cardboard",
+    "reachability_score": "high",
+    "reachability_probability": 0.9964
+  },
+  {
+    "name": "Prana",
+    "reachability_score": "high",
+    "reachability_probability": 0.9717
+  },
+  {
+    "name": "Rhizome AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9968
+  },
+  {
+    "name": "Pax Historia",
+    "reachability_score": "high",
+    "reachability_probability": 0.9696
+  },
+  {
+    "name": "Hex Security",
+    "reachability_score": "high",
+    "reachability_probability": 0.9821
+  },
+  {
+    "name": "Laurence",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "Terminal Use",
+    "reachability_score": "medium",
+    "reachability_probability": 0.8866
+  },
+  {
+    "name": "Overshoot",
+    "reachability_score": "high",
+    "reachability_probability": 0.9843
+  },
+  {
+    "name": "Cajal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Proximitty",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "Stilta",
+    "reachability_score": "high",
+    "reachability_probability": 0.9955
+  },
+  {
+    "name": "Unisson",
+    "reachability_score": "medium",
+    "reachability_probability": 0.94
+  },
+  {
+    "name": "IncidentFox",
+    "reachability_score": "high",
+    "reachability_probability": 0.9978
+  },
+  {
+    "name": "Compresr",
+    "reachability_score": "high",
+    "reachability_probability": 0.9561
+  },
+  {
+    "name": "Opalite Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9293
+  },
+  {
+    "name": "Confluence Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9984
+  },
+  {
+    "name": "Mango Medical",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7673
+  },
+  {
+    "name": "Sponge",
+    "reachability_score": "high",
+    "reachability_probability": 0.9798
+  },
+  {
+    "name": "Terranox AI",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9164
+  },
+  {
+    "name": "Ventura",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9056
+  },
+  {
+    "name": "Orthogonal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Perfectly",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7936
+  },
+  {
+    "name": "Sparkles",
+    "reachability_score": "high",
+    "reachability_probability": 0.9944
+  },
+  {
+    "name": "EigenPal",
+    "reachability_score": "high",
+    "reachability_probability": 0.9794
+  },
+  {
+    "name": "Salus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9962
+  },
+  {
+    "name": "Moritz",
+    "reachability_score": "high",
+    "reachability_probability": 0.9739
+  },
+  {
+    "name": "RamAIn",
+    "reachability_score": "high",
+    "reachability_probability": 0.9942
+  },
+  {
+    "name": "Milliray",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9396
+  },
+  {
+    "name": "Beyond Reach Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9893
+  },
+  {
+    "name": "OctaPulse",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "CodeWisp",
+    "reachability_score": "high",
+    "reachability_probability": 0.9714
+  },
+  {
+    "name": "Ashr",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Aemon",
+    "reachability_score": "high",
+    "reachability_probability": 0.978
+  },
+  {
+    "name": "Luel",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "Scheduling Wizard",
+    "reachability_score": "high",
+    "reachability_probability": 0.9879
+  },
+  {
+    "name": "RoboDock",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9469
+  },
+  {
+    "name": "Skillsync",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9262
+  },
+  {
+    "name": "MouseCat",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Zatanna",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9301
+  },
+  {
+    "name": "AutoSitu",
+    "reachability_score": "low",
+    "reachability_probability": 0.6543
+  },
+  {
+    "name": "Verdex",
+    "reachability_score": "high",
+    "reachability_probability": 0.9936
+  },
+  {
+    "name": "Cumulus Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9954
+  },
+  {
+    "name": "Tepali",
+    "reachability_score": "high",
+    "reachability_probability": 0.9812
+  },
+  {
+    "name": "Palus Finance",
+    "reachability_score": "high",
+    "reachability_probability": 0.9775
+  },
+  {
+    "name": "21st",
+    "reachability_score": "high",
+    "reachability_probability": 0.9897
+  },
+  {
+    "name": "Avoice",
+    "reachability_score": "high",
+    "reachability_probability": 0.9941
+  },
+  {
+    "name": "Kyten Technologies",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "ZeroSettle",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7545
+  },
+  {
+    "name": "Carson",
+    "reachability_score": "high",
+    "reachability_probability": 0.9966
+  },
+  {
+    "name": "OpenSpec",
+    "reachability_score": "high",
+    "reachability_probability": 0.9875
+  },
+  {
+    "name": "Piris Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7954
+  },
+  {
+    "name": "CellType",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9444
+  },
+  {
+    "name": "Burt",
+    "reachability_score": "high",
+    "reachability_probability": 0.9825
+  },
+  {
+    "name": "Envariant",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Cascade",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Beacon Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9968
+  },
+  {
+    "name": "Strand AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9909
+  },
+  {
+    "name": "BaseFrame",
+    "reachability_score": "high",
+    "reachability_probability": 0.9981
+  },
+  {
+    "name": "Protent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9919
+  },
+  {
+    "name": "Cofia",
+    "reachability_score": "high",
+    "reachability_probability": 0.9929
+  },
+  {
+    "name": "LegalOS",
+    "reachability_score": "high",
+    "reachability_probability": 0.9674
+  },
+  {
+    "name": "Sentrial",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "10x Science",
+    "reachability_score": "high",
+    "reachability_probability": 0.9947
+  },
+  {
+    "name": "REV1",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "shortkit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "Asimov",
+    "reachability_score": "high",
+    "reachability_probability": 0.9739
+  },
+  {
+    "name": "Lexius",
+    "reachability_score": "high",
+    "reachability_probability": 0.9603
+  },
+  {
+    "name": "Axis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Sonarly",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Docura Health",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9459
+  },
+  {
+    "name": "Lance",
+    "reachability_score": "high",
+    "reachability_probability": 0.9981
+  },
+  {
+    "name": "RunAnywhere",
+    "reachability_score": "low",
+    "reachability_probability": 0.6543
+  },
+  {
+    "name": "Lucent",
+    "reachability_score": "high",
+    "reachability_probability": 0.9822
+  },
+  {
+    "name": "Ruma Care",
+    "reachability_score": "high",
+    "reachability_probability": 0.9812
+  },
+  {
+    "name": "Klaus AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9946
+  },
+  {
+    "name": "Kita",
+    "reachability_score": "high",
+    "reachability_probability": 0.9698
+  },
+  {
+    "name": "Syntropy",
+    "reachability_score": "high",
+    "reachability_probability": 0.9926
+  },
+  {
+    "name": "One Robot",
+    "reachability_score": "medium",
+    "reachability_probability": 0.918
+  },
+  {
+    "name": "Didit",
+    "reachability_score": "high",
+    "reachability_probability": 0.9944
+  },
+  {
+    "name": "Panta",
+    "reachability_score": "high",
+    "reachability_probability": 0.9608
+  },
+  {
+    "name": "Payna",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9147
+  },
+  {
+    "name": "Origin",
+    "reachability_score": "high",
+    "reachability_probability": 0.976
+  },
+  {
+    "name": "Hlabs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9978
+  },
+  {
+    "name": "Eos AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9968
+  },
+  {
+    "name": "Valgo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9714
+  },
+  {
+    "name": "ARC Prize Foundation",
+    "reachability_score": "high",
+    "reachability_probability": 0.9988
+  },
+  {
+    "name": "Corvera",
+    "reachability_score": "high",
+    "reachability_probability": 0.9794
+  },
+  {
+    "name": "FullSeam",
+    "reachability_score": "high",
+    "reachability_probability": 0.9545
+  },
+  {
+    "name": "CatchBack Cards",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "Mantis",
+    "reachability_score": "high",
+    "reachability_probability": 0.9632
+  },
+  {
+    "name": "Haladir",
+    "reachability_score": "high",
+    "reachability_probability": 0.9887
+  },
+  {
+    "name": "ClaimGlide",
+    "reachability_score": "high",
+    "reachability_probability": 0.9822
+  },
+  {
+    "name": "Inviscid AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9909
+  },
+  {
+    "name": "Ndea",
+    "reachability_score": "high",
+    "reachability_probability": 0.9783
+  },
+  {
+    "name": "Crosslayer Labs",
+    "reachability_score": "medium",
+    "reachability_probability": 0.946
+  },
+  {
+    "name": "Voltair",
+    "reachability_score": "high",
+    "reachability_probability": 0.9898
+  },
+  {
+    "name": "Vector Legal",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9299
+  },
+  {
+    "name": "General Astronautics",
+    "reachability_score": "high",
+    "reachability_probability": 0.9888
+  },
+  {
+    "name": "Oxus",
+    "reachability_score": "high",
+    "reachability_probability": 0.9856
+  },
+  {
+    "name": "Captain",
+    "reachability_score": "high",
+    "reachability_probability": 0.9852
+  },
+  {
+    "name": "Agentic Fabriq",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "Travo",
+    "reachability_score": "high",
+    "reachability_probability": 0.9961
+  },
+  {
+    "name": "Velum Labs",
+    "reachability_score": "high",
+    "reachability_probability": 0.9974
+  },
+  {
+    "name": "Alt-X",
+    "reachability_score": "high",
+    "reachability_probability": 0.9976
+  },
+  {
+    "name": "Button Computer",
+    "reachability_score": "high",
+    "reachability_probability": 0.9937
+  },
+  {
+    "name": "Pollen",
+    "reachability_score": "medium",
+    "reachability_probability": 0.7984
+  },
+  {
+    "name": "Autumn AI",
+    "reachability_score": "high",
+    "reachability_probability": 0.9925
+  },
+  {
+    "name": "Overdrive Health",
+    "reachability_score": "high",
+    "reachability_probability": 0.9897
+  },
+  {
+    "name": "Signals",
+    "reachability_score": "high",
+    "reachability_probability": 0.9972
+  },
+  {
+    "name": "Galactic Resource Utilization Space, Inc. (GRU Space)",
+    "reachability_score": "high",
+    "reachability_probability": 0.9934
+  },
+  {
+    "name": "Bidflow",
+    "reachability_score": "high",
+    "reachability_probability": 0.9933
+  },
+  {
+    "name": "Menza",
+    "reachability_score": "medium",
+    "reachability_probability": 0.9464
+  },
+  {
+    "name": "highlight.io",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fern",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OpenInt",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "DAGWorks Inc.",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Keep",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "PlayAI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Muffin Data",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Arroyo",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fairway Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fintool",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Helicone",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Booth AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "EzDubs",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OpenMeter",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Langfuse",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Outerbase",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Bluebirds",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Trigo",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OfOne",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "EdgeBit",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Brewit",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Dashdive",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Viddy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lume",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Versori",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Traceloop",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Cardinal",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "moonrepo",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Upfront",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Second",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Serial",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Luca",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fabius",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Interlock",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "CodeParrot AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Sorted",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Turntable",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Defer",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Echo",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "SensorSurf",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OutSail Technologies",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Magicflow \ud800\udc82",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "GoodCourse",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Choppy!",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Neptyne",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "CreatorML",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Overflux",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OpenSight",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Cakework",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Rubber Ducky Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Parabolic",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lynx",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Demospace",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Indexical",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Paperplane",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Layup",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Struct",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Blyss",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Mogara",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lavo Life Sciences",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "OpenPipe",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Catamaran",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Autotab",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Mocha",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "FlowiseAI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "CheqUPI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fragment",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Inari",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Chatter",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Pincites",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Watto AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Deasy Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Xeol",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Tremor",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "PeerDB",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "CodeStory",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Onward",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Saatvy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Kips Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Line.Build",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Movley",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Vango AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "MantleBio",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Vizly",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Unhaze",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Sidenote",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lysto",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Briefer",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "CraftOS",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "GreenTally",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Atla",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lifelike",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Remy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Branch AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Leafpress",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Arcane",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Sample",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Trieve",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Browser Buddy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Resonance",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Speck",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "StarJar",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Verse Therapy",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lumona",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Fileforge",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Thorntale",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Abel",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Wuri",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Aedilic",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "crmCopilot",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Toolify",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Glimmer",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Celest",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Selera Medical",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Engines",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Blume Benefits",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Patchwork",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "DGI Apparel",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Mango Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Quary",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Stitch Technologies",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "RadMate AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Tesseral",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Lantern",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Midship",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Hey Revia",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Sepal AI",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Thyme",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Remade",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Central",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "RiskAngle",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "deepsilicon",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Invaria",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Flyflow",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Pre",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Egress Health",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Sublingual",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Metis",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Nexa Labs",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Nuntius",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  },
+  {
+    "name": "Q2Q",
+    "reachability_score": "low",
+    "reachability_probability": 0.0
+  }
+]
