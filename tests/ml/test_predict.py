@@ -7,18 +7,18 @@ from backend.ml.predict import score_to_category, predict_all
 
 
 def test_score_to_category():
-    assert score_to_category(0.8) == "high"
-    assert score_to_category(0.6) == "high"
-    assert score_to_category(0.5) == "medium"
-    assert score_to_category(0.3) == "medium"
-    assert score_to_category(0.29) == "low"
+    assert score_to_category(0.99) == "high"
+    assert score_to_category(0.95) == "high"
+    assert score_to_category(0.8) == "medium"
+    assert score_to_category(0.7) == "medium"
+    assert score_to_category(0.69) == "low"
     assert score_to_category(0.0) == "low"
 
 
 def test_predict_all_writes_json(tmp_path):
     # Create a minimal fake model
     fake_model = Mock()
-    fake_model.predict_proba.return_value = np.array([[0.2, 0.8], [0.7, 0.3]])
+    fake_model.predict_proba.return_value = np.array([[0.02, 0.98], [0.25, 0.75]])
 
     companies = [
         {
@@ -83,16 +83,16 @@ def test_predict_all_writes_json(tmp_path):
     assert len(scores) == 2
     assert scores[0]["name"] == "HighReach"
     assert scores[0]["reachability_score"] == "high"
-    assert scores[0]["reachability_probability"] == 0.8
+    assert scores[0]["reachability_probability"] == 0.98
     assert scores[1]["name"] == "LowReach"
     assert scores[1]["reachability_score"] == "medium"
-    assert scores[1]["reachability_probability"] == 0.3
+    assert scores[1]["reachability_probability"] == 0.75
 
 
 def test_predict_all_inactive_auto_low(tmp_path):
     """Inactive/acquired companies are auto-scored as low without model."""
     fake_model = Mock()
-    fake_model.predict_proba.return_value = np.array([[0.2, 0.8]])
+    fake_model.predict_proba.return_value = np.array([[0.02, 0.98]])
 
     companies = [
         {
@@ -177,7 +177,7 @@ def test_predict_all_inactive_auto_low(tmp_path):
 
     active_result = next(r for r in results if r["name"] == "ActiveCo")
     assert active_result["reachability_score"] == "high"
-    assert active_result["reachability_probability"] == 0.8
+    assert active_result["reachability_probability"] == 0.98
 
     inactive_result = next(r for r in results if r["name"] == "InactiveCo")
     assert inactive_result["reachability_score"] == "low"

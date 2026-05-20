@@ -8,14 +8,19 @@ All companies here are Active (inactive/acquired are pre-filtered out).
 
 Label 1 (likely responds) if MOST of these are true:
   - Small team (1-5 people) — founder reads their own email
-  - Hiring — founder is actively looking for help
   - Recent batch (2025-2026) — still in early scrappy phase
   - Industry where a student could contribute (software, marketing, content)
+  - Hiring is a plus, but not required (hiring status changes frequently)
 
 Label 0 (unlikely responds) if ANY of these are true:
   - Large team (16+) — founder has layers between them and cold email
-  - Not hiring — not actively looking for help
   - Specialized domain where students can't contribute (deep biotech, hardware)
   - Enterprise/government focus with no student angle
+  - Company was recently acquired or shut down (YC directory may lag behind —
+    check the website if something feels off)
+
+Weaker negative signals (not automatic 0, but lean toward 0 when combined):
+  - Not hiring — suggests less immediate need, but can change quickly
+  - Older batch (2023) with no other positive signals
 
 When in doubt, label 0 (conservative).

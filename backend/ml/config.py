@@ -15,8 +15,8 @@ MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.joblib")
 FEATURE_COLS_PATH = os.path.join(ARTIFACTS_DIR, "feature_cols.json")
 
 # Probability -> category thresholds
-HIGH_THRESHOLD = 0.6
-LOW_THRESHOLD = 0.3
+HIGH_THRESHOLD = 0.95
+LOW_THRESHOLD = 0.7
 
 # Training
 N_FOLDS = 5
