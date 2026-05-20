@@ -63,10 +63,9 @@ def test_predict_all_writes_json(tmp_path):
 
     feature_cols = [
         "team_size", "team_size_missing", "batch_recency_days",
-        "stage_early", "stage_growth", "stage_late",
-        "is_hiring", "top_company", "days_since_launch",
-        "nonprofit", "description_length", "has_long_description",
-        "num_tags", "num_industries", "is_active",
+        "is_growth", "is_hiring", "days_since_launch",
+        "description_length", "has_long_description",
+        "num_tags", "num_industries",
     ]
     cols_path = tmp_path / "feature_cols.json"
     cols_path.write_text(json.dumps(feature_cols))
@@ -88,3 +87,102 @@ def test_predict_all_writes_json(tmp_path):
     assert scores[1]["name"] == "LowReach"
     assert scores[1]["reachability_score"] == "medium"
     assert scores[1]["reachability_probability"] == 0.3
+
+
+def test_predict_all_inactive_auto_low(tmp_path):
+    """Inactive/acquired companies are auto-scored as low without model."""
+    fake_model = Mock()
+    fake_model.predict_proba.return_value = np.array([[0.2, 0.8]])
+
+    companies = [
+        {
+            "name": "ActiveCo",
+            "description": "Active company",
+            "batch": "Winter 2024",
+            "tags": ["AI"],
+            "website": "https://active.com",
+            "team_size": 3,
+            "stage": "Early",
+            "status": "Active",
+            "is_hiring": True,
+            "top_company": False,
+            "launched_at": 1708029636,
+            "nonprofit": False,
+            "industries": ["B2B"],
+            "subindustry": "",
+            "long_description": "",
+            "all_locations": "",
+        },
+        {
+            "name": "InactiveCo",
+            "description": "Inactive company",
+            "batch": "Winter 2023",
+            "tags": [],
+            "website": "",
+            "team_size": 50,
+            "stage": "Late",
+            "status": "Inactive",
+            "is_hiring": False,
+            "top_company": False,
+            "launched_at": 1600000000,
+            "nonprofit": False,
+            "industries": [],
+            "subindustry": "",
+            "long_description": "",
+            "all_locations": "",
+        },
+        {
+            "name": "AcquiredCo",
+            "description": "Acquired company",
+            "batch": "Summer 2023",
+            "tags": [],
+            "website": "",
+            "team_size": 20,
+            "stage": "Growth",
+            "status": "Acquired",
+            "is_hiring": False,
+            "top_company": False,
+            "launched_at": 1650000000,
+            "nonprofit": False,
+            "industries": [],
+            "subindustry": "",
+            "long_description": "",
+            "all_locations": "",
+        },
+    ]
+    raw_path = tmp_path / "raw.json"
+    raw_path.write_text(json.dumps(companies))
+
+    feature_cols = [
+        "team_size", "team_size_missing", "batch_recency_days",
+        "is_growth", "is_hiring", "days_since_launch",
+        "description_length", "has_long_description",
+        "num_tags", "num_industries",
+    ]
+    cols_path = tmp_path / "feature_cols.json"
+    cols_path.write_text(json.dumps(feature_cols))
+
+    output_path = tmp_path / "scores.json"
+
+    with patch("backend.ml.predict.joblib.load", return_value=fake_model):
+        results = predict_all(
+            str(raw_path), "fake_model.joblib",
+            str(cols_path), str(output_path),
+        )
+
+    assert len(results) == 3
+
+    # Model only called with 1 active company
+    assert fake_model.predict_proba.call_count == 1
+
+    active_result = next(r for r in results if r["name"] == "ActiveCo")
+    assert active_result["reachability_score"] == "high"
+    assert active_result["reachability_probability"] == 0.8
+
+    inactive_result = next(r for r in results if r["name"] == "InactiveCo")
+    assert inactive_result["reachability_score"] == "low"
+    assert inactive_result["reachability_probability"] == 0.0
+
+    acquired_result = next(r for r in results if r["name"] == "AcquiredCo")
+    assert acquired_result["reachability_score"] == "low"
+    assert acquired_result["reachability_probability"] == 0.0

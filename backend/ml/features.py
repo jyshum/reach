@@ -12,10 +12,9 @@ _BATCH_DATES = {
 
 FEATURE_COLUMNS = [
     "team_size", "team_size_missing", "batch_recency_days",
-    "stage_early", "stage_growth", "stage_late",
-    "is_hiring", "top_company", "days_since_launch",
-    "nonprofit", "description_length", "has_long_description",
-    "num_tags", "num_industries", "is_active",
+    "is_growth", "is_hiring", "days_since_launch",
+    "description_length", "has_long_description",
+    "num_tags", "num_industries",
 ]
 
 
@@ -54,24 +53,17 @@ def build_features(companies: list[dict]) -> pd.DataFrame:
         else:
             days_since_launch = None
 
-        stage = c.get("stage", "")
-
         rows.append({
             "team_size": team_size,
             "team_size_missing": 1 if team_size is None else 0,
             "batch_recency_days": batch_recency_days,
-            "stage_early": 1 if stage == "Early" else 0,
-            "stage_growth": 1 if stage == "Growth" else 0,
-            "stage_late": 1 if stage == "Late" else 0,
+            "is_growth": 1 if c.get("stage") == "Growth" else 0,
             "is_hiring": 1 if c.get("is_hiring") else 0,
-            "top_company": 1 if c.get("top_company") else 0,
             "days_since_launch": days_since_launch,
-            "nonprofit": 1 if c.get("nonprofit") else 0,
             "description_length": len(c.get("description", "")),
             "has_long_description": 1 if len(c.get("long_description", "")) > 0 else 0,
             "num_tags": len(c.get("tags", [])),
             "num_industries": len(c.get("industries", [])),
-            "is_active": 1 if c.get("status") == "Active" else 0,
         })
 
     df = pd.DataFrame(rows, columns=FEATURE_COLUMNS)

@@ -93,4 +93,4 @@ def test_train_and_evaluate_returns_results(tmp_path):
     # Check saved feature columns
     with open(str(cols_path)) as f:
         saved_cols = json.load(f)
-    assert len(saved_cols) == 15
+    assert len(saved_cols) == 10

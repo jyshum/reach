@@ -4,18 +4,18 @@ Reachability Labeling Guide
 Label each company: will the founder likely respond to a cold email from a
 high school or early-college student offering to help?
 
+All companies here are Active (inactive/acquired are pre-filtered out).
+
 Label 1 (likely responds) if MOST of these are true:
-  - Team size under 10
-  - Early stage (pre-seed, seed)
-  - NOT a "top company" (not Airbnb-level famous)
-  - Recently launched (last 1-2 years)
-  - Description suggests they need hands-on help
+  - Small team (1-5 people) — founder reads their own email
+  - Hiring — founder is actively looking for help
+  - Recent batch (2025-2026) — still in early scrappy phase
+  - Industry where a student could contribute (software, marketing, content)
 
 Label 0 (unlikely responds) if ANY of these are true:
-  - Large team (30+)
-  - Growth or Late stage
-  - Top company flag is True
-  - Company is acquired or inactive
-  - Description suggests enterprise/government focus with no student angle
+  - Large team (16+) — founder has layers between them and cold email
+  - Not hiring — not actively looking for help
+  - Specialized domain where students can't contribute (deep biotech, hardware)
+  - Enterprise/government focus with no student angle
 
 When in doubt, label 0 (conservative).

@@ -38,17 +38,29 @@ def predict_all(
         feature_cols = json.load(f)
 
     model = joblib.load(model_path)
-    X = build_features(companies)
-    X = X[feature_cols]  # ensure column order matches training
 
-    probas = model.predict_proba(X)[:, 1]
+    # Split active vs inactive — inactive auto-scored as "low"
+    active = [c for c in companies if c.get("status") == "Active"]
+    inactive = [c for c in companies if c.get("status") != "Active"]
 
     results = []
-    for company, proba in zip(companies, probas):
+
+    if active:
+        X = build_features(active)
+        X = X[feature_cols]
+        probas = model.predict_proba(X)[:, 1]
+        for company, proba in zip(active, probas):
+            results.append({
+                "name": company["name"],
+                "reachability_score": score_to_category(float(proba)),
+                "reachability_probability": round(float(proba), 4),
+            })
+
+    for company in inactive:
         results.append({
             "name": company["name"],
-            "reachability_score": score_to_category(float(proba)),
-            "reachability_probability": round(float(proba), 4),
+            "reachability_score": "low",
+            "reachability_probability": 0.0,
         })
 
     os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
