@@ -9,7 +9,12 @@ import requests
 ALGOLIA_APP_ID = "45BWZJ1SGC"
 ALGOLIA_API_KEY = "NzllNTY5MzJiZGM2OTY2ZTQwMDEzOTNhYWZiZGRjODlhYzVkNjBmOGRjNzJiMWM4ZTU0ZDlhYTZjOTJiMjlhMWFuYWx5dGljc1RhZ3M9eWNkYyZyZXN0cmljdEluZGljZXM9WUNDb21wYW55X3Byb2R1Y3Rpb24lMkNZQ0NvbXBhbnlfQnlfTGF1bmNoX0RhdGVfcHJvZHVjdGlvbiZ0YWdGaWx0ZXJzPSU1QiUyMnljZGNfcHVibGljJTIyJTVE"
 ALGOLIA_INDEX = "YCCompany_production"
-TARGET_BATCHES = ["Winter 2023", "Summer 2023", "Winter 2024", "Summer 2024"]
+TARGET_BATCHES = [
+    "Winter 2023", "Summer 2023",
+    "Winter 2024", "Summer 2024",
+    "Winter 2025", "Summer 2025",
+    "Winter 2026",
+]
 
 
 def extract_company(hit: dict) -> dict:
