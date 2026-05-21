@@ -94,8 +94,7 @@ def auto_fix_enrichment(data: dict) -> dict:
 
     if "industry" in fixed and fixed["industry"] not in INDUSTRY_LIST:
         match = _closest_match(fixed["industry"], INDUSTRY_LIST)
-        if match:
-            fixed["industry"] = match
+        fixed["industry"] = match if match else "other"
 
     if "technical_level" in fixed and fixed["technical_level"] not in VALID_TECHNICAL_LEVELS:
         match = _closest_match(fixed["technical_level"], VALID_TECHNICAL_LEVELS)
