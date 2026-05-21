@@ -1,6 +1,10 @@
 """Pydantic models for API request/response validation."""
 
+from typing import Literal
+
 from pydantic import BaseModel
+
+OUTREACH_STATUSES = Literal["sent", "replied", "meeting", "no-response"]
 
 
 # --- Users ---
@@ -74,13 +78,13 @@ class CompanyBrief(BaseModel):
 
 class OutreachCreate(BaseModel):
     company_id: int
-    status: str  # sent, replied, meeting, no-response
+    status: OUTREACH_STATUSES
     notes: str | None = None
     sent_at: str | None = None  # ISO datetime string
 
 
 class OutreachUpdate(BaseModel):
-    status: str | None = None
+    status: OUTREACH_STATUSES | None = None
     notes: str | None = None
 
 
@@ -88,7 +92,7 @@ class OutreachEntry(BaseModel):
     id: int
     company_id: int
     company_name: str | None = None
-    status: str
+    status: OUTREACH_STATUSES
     sent_at: str | None = None
     followup_date: str | None = None
     notes: str | None = None

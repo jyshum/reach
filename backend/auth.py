@@ -5,8 +5,15 @@ from fastapi import Request, HTTPException
 from jose import jwt
 
 
-SUPABASE_JWT_SECRET = os.environ.get("SUPABASE_JWT_SECRET", "")
 JWT_ALGORITHM = "HS256"
+
+
+def _get_jwt_secret() -> str:
+    """Read JWT secret from environment. Raises if missing or empty."""
+    secret = os.environ.get("SUPABASE_JWT_SECRET", "")
+    if not secret:
+        raise HTTPException(status_code=500, detail="Server misconfiguration: JWT secret not set")
+    return secret
 
 
 def get_current_user(request: Request) -> str:
@@ -21,7 +28,7 @@ def get_current_user(request: Request) -> str:
     token = auth_header.split(" ", 1)[1]
 
     try:
-        payload = jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(token, _get_jwt_secret(), algorithms=[JWT_ALGORITHM])
         user_id = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token payload")
