@@ -47,4 +47,4 @@ def test_industry_list_has_expected_entries():
     assert "fintech" in INDUSTRY_LIST
     assert "healthcare" in INDUSTRY_LIST
     assert "other" in INDUSTRY_LIST
-    assert len(INDUSTRY_LIST) == 17
+    assert len(INDUSTRY_LIST) == 30

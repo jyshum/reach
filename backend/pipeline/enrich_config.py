@@ -21,7 +21,9 @@ INDUSTRY_LIST = [
     "fintech", "healthcare", "biotech", "developer-tools", "ai-ml",
     "education", "e-commerce", "logistics", "real-estate", "legal",
     "security", "enterprise-saas", "consumer", "media", "hardware",
-    "climate", "other",
+    "climate", "aerospace", "gaming", "food-beverage", "manufacturing",
+    "travel", "hr-recruiting", "insurance", "construction", "agriculture",
+    "transportation", "government", "social-impact", "energy", "other",
 ]
 
 VALID_TECHNICAL_LEVELS = ["technical", "mixed", "non-technical"]
