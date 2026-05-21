@@ -128,7 +128,7 @@ def _call_ollama(prompt: str) -> str | None:
         resp = requests.post(OLLAMA_URL, json=payload, timeout=120)
         resp.raise_for_status()
         return resp.json().get("response", "")
-    except Exception as e:
+    except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
         print(f"[ERROR] Ollama call failed: {e}")
         return None
 
