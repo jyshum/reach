@@ -127,7 +127,9 @@ def _call_ollama(prompt: str) -> str | None:
     try:
         resp = requests.post(OLLAMA_URL, json=payload, timeout=120)
         resp.raise_for_status()
-        return resp.json().get("response", "")
+        data = resp.json()
+        # Qwen3 uses thinking mode by default — JSON lands in "thinking", not "response"
+        return data.get("response", "") or data.get("thinking", "")
     except (requests.RequestException, json.JSONDecodeError, KeyError) as e:
         print(f"[ERROR] Ollama call failed: {e}")
         return None
