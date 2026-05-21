@@ -78,15 +78,19 @@ Return this exact JSON structure:
 
 def build_prompt(company: dict) -> str:
     """Build the user prompt for a single company."""
+    def safe(val):
+        """Escape braces in company data to prevent str.format() errors."""
+        return str(val).replace("{", "{{").replace("}", "}}")
+
     return _PROMPT_TEMPLATE.format(
         few_shot=_FEW_SHOT_EXAMPLES,
-        name=company.get("name", ""),
-        batch=company.get("batch", ""),
-        description=company.get("description", ""),
-        long_description=company.get("long_description", ""),
-        tags=company.get("tags", []),
-        industries=company.get("industries", []),
-        team_size=company.get("team_size", "Unknown"),
-        stage=company.get("stage", ""),
+        name=safe(company.get("name", "")),
+        batch=safe(company.get("batch", "")),
+        description=safe(company.get("description", "")),
+        long_description=safe(company.get("long_description", "")),
+        tags=safe(company.get("tags", [])),
+        industries=safe(company.get("industries", [])),
+        team_size=safe(company.get("team_size", "Unknown")),
+        stage=safe(company.get("stage", "")),
         industry_list=", ".join(INDUSTRY_LIST),
     )
