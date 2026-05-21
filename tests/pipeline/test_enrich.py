@@ -2,6 +2,7 @@ import json
 import pytest
 from unittest.mock import patch, Mock
 from backend.pipeline.enrich import parse_response, validate_enrichment, auto_fix_enrichment, enrich_company, enrich_all
+from backend.pipeline.normalize_tags import normalize_all
 
 
 def test_parse_response_valid_json():
@@ -303,3 +304,99 @@ def test_enrich_all_logs_failures(tmp_path):
     failures = json.loads(failures_path.read_text())
     assert len(failures) == 1
     assert failures[0]["name"] == "FailCo"
+
+
+def test_full_pipeline_enrich_then_normalize(tmp_path):
+    """End-to-end: enrich 3 companies, then normalize tags."""
+    companies = [
+        _make_company("AlphaCo"),
+        _make_company("BetaCo"),
+        _make_company("GammaCo"),
+    ]
+    raw_path = tmp_path / "raw.json"
+    raw_path.write_text(json.dumps(companies))
+
+    enriched_path = tmp_path / "enriched.json"
+    failures_path = tmp_path / "failures.json"
+    vocab_path = tmp_path / "vocab.json"
+
+    responses = [
+        json.dumps({
+            "summary": "Alpha builds logistics tools. They optimize shipping routes.",
+            "one_liner": "Logistics optimization platform",
+            "need_tags": ["Python scripting", "data visualization", "React frontend"],
+            "industry": "logistics",
+            "technical_level": "technical",
+            "stage_detail": "growing",
+            "specific_projects": [
+                "Build a route optimization dashboard",
+                "Create API documentation for shipping endpoints",
+            ],
+        }),
+        json.dumps({
+            "summary": "Beta builds logistics tools. They track shipments in real time.",
+            "one_liner": "Real-time shipment tracking",
+            "need_tags": ["python scripting", "Data Visualization", "mobile development"],
+            "industry": "logistics",
+            "technical_level": "technical",
+            "stage_detail": "launched",
+            "specific_projects": [
+                "Build a mobile tracking interface",
+                "Set up real-time notification system",
+            ],
+        }),
+        json.dumps({
+            "summary": "Gamma helps restaurants manage orders. They reduce food waste.",
+            "one_liner": "Restaurant order management",
+            "need_tags": ["graphic design", "content writing", "social media marketing"],
+            "industry": "consumer",
+            "technical_level": "mixed",
+            "stage_detail": "building-mvp",
+            "specific_projects": [
+                "Design menu display templates for partner restaurants",
+                "Write blog posts about food waste reduction strategies",
+            ],
+        }),
+    ]
+
+    call_count = 0
+
+    def mock_post(*args, **kwargs):
+        nonlocal call_count
+        resp = Mock()
+        resp.status_code = 200
+        resp.json.return_value = {"response": responses[call_count]}
+        resp.raise_for_status = Mock()
+        call_count += 1
+        return resp
+
+    with patch("backend.pipeline.enrich.requests.post", side_effect=mock_post):
+        enrich_all(
+            raw_data_path=str(raw_path),
+            output_path=str(enriched_path),
+            failures_path=str(failures_path),
+        )
+
+    enriched = json.loads(enriched_path.read_text())
+    assert len(enriched) == 3
+    assert all("summary" in c for c in enriched)
+    assert all("need_tags" in c for c in enriched)
+
+    normalize_all(
+        enriched_path=str(enriched_path),
+        vocab_output_path=str(vocab_path),
+    )
+
+    vocab = json.loads(vocab_path.read_text())
+    assert isinstance(vocab, list)
+
+    python_variants = [v for v in vocab if "python" in v]
+    assert len(python_variants) == 1
+
+    dataviz_variants = [v for v in vocab if "data vis" in v]
+    assert len(dataviz_variants) == 1
+
+    updated = json.loads(enriched_path.read_text())
+    for company in updated:
+        for tag in company["need_tags"]:
+            assert tag == tag.lower(), f"Tag not lowercase: {tag}"
