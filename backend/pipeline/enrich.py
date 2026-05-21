@@ -183,13 +183,16 @@ def enrich_all(
     print(f"[INFO] Enriching {len(to_process)} companies ({len(done_names)} skipped)")
 
     for i, company in enumerate(to_process):
+        print(f"[{i + 1}/{len(to_process)}] Enriching {company['name']}...", end=" ", flush=True)
         enriched = enrich_company(company)
 
         if enriched:
             merged = {**company, **enriched}
             results.append(merged)
+            print("OK")
         else:
             failures.append({"name": company["name"], "reason": "max retries exceeded"})
+            print("FAILED")
 
         if (i + 1) % SAVE_EVERY == 0:
             _save_json(results, output_path)
