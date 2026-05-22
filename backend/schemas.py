@@ -30,6 +30,15 @@ class UserUpdate(BaseModel):
     portfolio_url: str | None = None
 
 
+# --- Guidance ---
+
+class Guidance(BaseModel):
+    your_angle: str
+    reference_this: str
+    dont_say: str
+    your_ask: str
+
+
 # --- Companies ---
 
 class CompanyCard(BaseModel):
@@ -72,6 +81,7 @@ class CompanyBrief(BaseModel):
     tags: list[str] = []
     industries: list[str] = []
     match_score: int = 0
+    guidance: Guidance | None = None
 
 
 # --- Outreach ---
