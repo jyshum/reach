@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from backend.auth import get_current_user, get_optional_user
 from backend.db import get_db
 from backend.matching.scorer import rank_companies, match_score
+from backend.guidance.rules import generate_guidance
 from backend.schemas import CompanyCard, CompanyBrief
 
 router = APIRouter()
@@ -80,9 +81,10 @@ def get_brief(
     except Exception:
         pass  # Already viewed — unique constraint prevents duplicate
 
-    # Add match score
+    # Add match score and guidance
     user_skills = user.get("skills", []) or []
     ms = match_score(user_skills, company.get("need_tags", []) or [])
     company["match_score"] = ms
+    company["guidance"] = generate_guidance(user_skills, company)
 
     return company

@@ -158,3 +158,66 @@ def test_get_company_brief_free_tier_limit(client, auth_headers):
 
     assert response.status_code == 403
     assert "upgrade" in response.json()["detail"].lower() or "limit" in response.json()["detail"].lower()
+
+
+def test_get_company_brief_includes_guidance(client, auth_headers):
+    mock_db = MagicMock()
+
+    company = _sample_companies()[0]  # AlphaCo: ai-ml, growing, python scripting + data analysis
+    user_data = [{"id": "user-uuid-123", "skills": ["python scripting", "data analysis"], "tier": "paid"}]
+    brief_views = []
+
+    def table_side_effect(table_name):
+        mock_table = MagicMock()
+        if table_name == "companies":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = [company]
+        elif table_name == "users":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = user_data
+        elif table_name == "brief_views":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = brief_views
+            mock_table.insert.return_value.execute.return_value.data = [{}]
+        return mock_table
+
+    mock_db.table.side_effect = table_side_effect
+
+    with _mock_auth(), patch("backend.routers.companies.get_db", return_value=mock_db):
+        response = client.get("/companies/1", headers=auth_headers)
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["guidance"] is not None
+    assert "your_angle" in data["guidance"]
+    assert "reference_this" in data["guidance"]
+    assert "dont_say" in data["guidance"]
+    assert "your_ask" in data["guidance"]
+    # No unfilled placeholders
+    for field in data["guidance"].values():
+        assert "{" not in field
+
+
+def test_get_company_brief_no_skills_no_guidance(client, auth_headers):
+    mock_db = MagicMock()
+
+    company = _sample_companies()[0]
+    user_data = [{"id": "user-uuid-123", "skills": [], "tier": "paid"}]
+    brief_views = []
+
+    def table_side_effect(table_name):
+        mock_table = MagicMock()
+        if table_name == "companies":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = [company]
+        elif table_name == "users":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = user_data
+        elif table_name == "brief_views":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = brief_views
+            mock_table.insert.return_value.execute.return_value.data = [{}]
+        return mock_table
+
+    mock_db.table.side_effect = table_side_effect
+
+    with _mock_auth(), patch("backend.routers.companies.get_db", return_value=mock_db):
+        response = client.get("/companies/1", headers=auth_headers)
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["guidance"] is None
