@@ -103,3 +103,56 @@ def test_map_unmapped_to_general():
     assert map_industry_cluster("real-estate") == "general"
     assert map_industry_cluster("gaming") == "general"
     assert map_industry_cluster("totally-unknown") == "general"
+
+
+from backend.guidance.rules import select_specific_project, fill_slots
+
+
+def test_select_project_matches_developer():
+    projects = [
+        "Build a dashboard to visualize screening results",
+        "Write case studies explaining cost reduction",
+    ]
+    assert select_specific_project(projects, "developer") == projects[0]
+
+
+def test_select_project_matches_writer():
+    projects = [
+        "Build a dashboard to visualize screening results",
+        "Write case studies explaining cost reduction",
+    ]
+    assert select_specific_project(projects, "writer") == projects[1]
+
+
+def test_select_project_defaults_to_first():
+    projects = [
+        "Analyze enzyme screening data",
+        "Create technical documentation",
+    ]
+    # "business" has no strong keyword match — defaults to first
+    assert select_specific_project(projects, "business") == projects[0]
+
+
+def test_select_project_empty_list():
+    assert select_specific_project([], "developer") is None
+
+
+def test_fill_slots_replaces_all_placeholders():
+    template = "Lead with {matched_skill} — offer to {specific_project} for {company_name}."
+    result = fill_slots(template, {
+        "matched_skill": "Python scripting",
+        "specific_project": "build a dashboard",
+        "company_name": "Pando",
+    })
+    assert result == "Lead with Python scripting — offer to build a dashboard for Pando."
+    assert "{" not in result
+
+
+def test_fill_slots_missing_value_uses_generic():
+    template = "Reference {company_name}'s work on {specific_project}."
+    result = fill_slots(template, {
+        "company_name": "Pando",
+        "specific_project": None,
+    })
+    assert "Pando" in result
+    assert "{" not in result

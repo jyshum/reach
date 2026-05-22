@@ -128,3 +128,70 @@ def map_industry_cluster(industry: str) -> str:
     Returns 'general' for any unmapped industry.
     """
     return INDUSTRY_CLUSTER_MAP.get(industry, "general")
+
+
+# --- Specific Project Selection ---
+
+PROJECT_SKILL_KEYWORDS = {
+    "developer": ["build", "implement", "code", "develop", "integrate", "api", "app", "tool", "platform", "automate", "script", "dashboard"],
+    "designer": ["design", "prototype", "wireframe", "ui", "ux", "layout", "visual", "brand", "mockup", "interface"],
+    "data": ["analyze", "data", "visualization", "model", "metrics", "analytics", "dashboard", "track", "measure", "statistics"],
+    "writer": ["write", "document", "content", "blog", "case study", "copy", "article", "story", "communication", "guide"],
+    "business": ["research", "market", "strategy", "outreach", "campaign", "growth", "sales", "partner", "competitive", "pricing"],
+    "operations": ["organize", "process", "manage", "coordinate", "test", "qa", "support", "onboard", "workflow", "schedule"],
+}
+
+
+def select_specific_project(
+    projects: list[str],
+    skill_type: str,
+) -> str | None:
+    """Pick the specific_project most relevant to the student's skill-type.
+
+    Returns the project with the most keyword matches for the skill-type.
+    Defaults to the first project if no clear match or tie.
+    Returns None if projects list is empty.
+    """
+    if not projects:
+        return None
+
+    keywords = PROJECT_SKILL_KEYWORDS.get(skill_type, [])
+    if not keywords:
+        return projects[0]
+
+    best_project = projects[0]
+    best_count = 0
+    for project in projects:
+        project_lower = project.lower()
+        count = sum(1 for kw in keywords if kw in project_lower)
+        if count > best_count:
+            best_count = count
+            best_project = project
+
+    return best_project
+
+
+# --- Slot Filling ---
+
+GENERIC_FALLBACKS = {
+    "matched_skill": "your strongest relevant skill",
+    "specific_project": "a concrete deliverable they need",
+    "company_name": "the company",
+    "summary_snippet": "what they're building",
+}
+
+
+def fill_slots(template: str, values: dict[str, str | None]) -> str:
+    """Fill {placeholder} slots in a template string.
+
+    Missing or None values are replaced with generic fallbacks.
+    """
+    result = template
+    for key, value in values.items():
+        placeholder = "{" + key + "}"
+        if value:
+            result = result.replace(placeholder, value)
+        else:
+            fallback = GENERIC_FALLBACKS.get(key, "this")
+            result = result.replace(placeholder, fallback)
+    return result
