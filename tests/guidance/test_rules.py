@@ -61,3 +61,45 @@ def test_classify_empty_skills():
 
 def test_classify_unknown_skills_returns_none():
     assert classify_skill_type(["underwater basket weaving"]) is None
+
+
+from backend.guidance.rules import map_industry_cluster
+
+
+def test_map_software_industries():
+    assert map_industry_cluster("enterprise-saas") == "software"
+    assert map_industry_cluster("developer-tools") == "software"
+
+
+def test_map_ai_ml():
+    assert map_industry_cluster("ai-ml") == "ai-ml"
+
+
+def test_map_fintech():
+    assert map_industry_cluster("fintech") == "fintech"
+
+
+def test_map_health_bio():
+    assert map_industry_cluster("healthcare") == "health-bio"
+    assert map_industry_cluster("biotech") == "health-bio"
+
+
+def test_map_commerce():
+    assert map_industry_cluster("e-commerce") == "commerce"
+    assert map_industry_cluster("consumer") == "commerce"
+
+
+def test_map_infrastructure():
+    assert map_industry_cluster("security") == "infrastructure"
+
+
+def test_map_impact():
+    assert map_industry_cluster("climate") == "impact"
+    assert map_industry_cluster("education") == "impact"
+    assert map_industry_cluster("social-impact") == "impact"
+
+
+def test_map_unmapped_to_general():
+    assert map_industry_cluster("real-estate") == "general"
+    assert map_industry_cluster("gaming") == "general"
+    assert map_industry_cluster("totally-unknown") == "general"

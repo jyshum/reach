@@ -93,3 +93,38 @@ def classify_skill_type(
 
     # If still tied, return first alphabetically for determinism
     return sorted(top_buckets)[0]
+
+
+# --- Industry Cluster Mapping ---
+
+INDUSTRY_CLUSTER_MAP = {
+    # software
+    "enterprise-saas": "software",
+    "developer-tools": "software",
+    # ai-ml
+    "ai-ml": "ai-ml",
+    # fintech
+    "fintech": "fintech",
+    # health-bio
+    "healthcare": "health-bio",
+    "biotech": "health-bio",
+    # commerce
+    "e-commerce": "commerce",
+    "consumer": "commerce",
+    # infrastructure
+    "security": "infrastructure",
+    "hardware": "infrastructure",
+    # impact
+    "climate": "impact",
+    "education": "impact",
+    "government": "impact",
+    "social-impact": "impact",
+}
+
+
+def map_industry_cluster(industry: str) -> str:
+    """Map an enrichment industry to one of 8 broader clusters.
+
+    Returns 'general' for any unmapped industry.
+    """
+    return INDUSTRY_CLUSTER_MAP.get(industry, "general")
