@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, DM_Sans } from "next/font/google";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -32,7 +33,8 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${dmSans.variable}`}
     >
       <body className="bg-background font-body text-primary antialiased">
-        {children}
+        <Navbar />
+        <div className="pt-14">{children}</div>
       </body>
     </html>
   );
