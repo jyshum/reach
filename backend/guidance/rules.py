@@ -5,6 +5,8 @@ skill-type, stage, and industry cluster. Templates use slot-filling
 from enriched company data.
 """
 
+from backend.schemas import Guidance
+
 # --- Skill-Type Classification ---
 
 SKILL_TYPE_KEYWORDS = {
@@ -195,3 +197,138 @@ def fill_slots(template: str, values: dict[str, str | None]) -> str:
             fallback = GENERIC_FALLBACKS.get(key, "this")
             result = result.replace(placeholder, fallback)
     return result
+
+
+# --- Rule Dictionaries ---
+
+SKILL_TYPE_RULES = {
+    "developer": {
+        "your_angle": "Lead with something you've built — mention a {matched_skill} project and connect it to {specific_project}.",
+    },
+    "designer": {
+        "your_angle": "Lead with your design eye — show how you'd approach {specific_project} visually, reference a design you've shipped.",
+    },
+    "data": {
+        "your_angle": "Lead with an insight — mention a {matched_skill} project where you found something surprising in the data, and connect it to {specific_project}.",
+    },
+    "writer": {
+        "your_angle": "Lead with your voice — reference a piece you've written and explain how you'd approach {specific_project} for {company_name}.",
+    },
+    "business": {
+        "your_angle": "Lead with a specific observation about their market — show you've done {matched_skill} work and connect it to {specific_project}.",
+    },
+    "operations": {
+        "your_angle": "Lead with how you make things run — describe a time you improved a process, and connect it to {specific_project}.",
+    },
+}
+
+STAGE_RULES = {
+    "building-mvp": {
+        "dont_say": "Don't say 'I love your vision' — they're still figuring it out. Show you understand the problem, not the pitch.",
+        "your_ask": "Offer to build something small and concrete this week: '{specific_project}' — MVPs need hands, not advisors.",
+    },
+    "launched": {
+        "dont_say": "Don't say 'I want to learn from you' — they need doers, not students. Show what you'd contribute.",
+        "your_ask": "Offer a specific deliverable with a deadline: 'I could do {specific_project} and send you a draft by Friday.'",
+    },
+    "growing": {
+        "dont_say": "Don't say 'I'm passionate about {company_name}' — every student says this. Show you understand their actual problem.",
+        "your_ask": "Offer to own {specific_project} end-to-end — growing teams need people who can run with a task independently.",
+    },
+    "scaling": {
+        "dont_say": "Don't say 'I'd love an internship' — they're past informal roles. Frame it as a specific project engagement.",
+        "your_ask": "Propose a defined project: 'I'll spend 2 weeks on {specific_project} and deliver a working result.'",
+    },
+}
+
+INDUSTRY_RULES = {
+    "software": {
+        "reference_this": "Mention {company_name}'s specific product — {summary_snippet}. Reference a feature or user problem, not just the category.",
+    },
+    "ai-ml": {
+        "reference_this": "Mention {company_name}'s AI approach — {summary_snippet}. Show you understand the technical challenge, not just 'they use AI.'",
+    },
+    "fintech": {
+        "reference_this": "Mention the specific financial problem {company_name} solves — {summary_snippet}. Founders know students don't have finance backgrounds; show you get the user pain.",
+    },
+    "health-bio": {
+        "reference_this": "Mention {company_name}'s specific domain — {summary_snippet}. You don't need to know the science; show you understand who they help and why it matters.",
+    },
+    "commerce": {
+        "reference_this": "Mention {company_name}'s target customer — {summary_snippet}. Show you understand who buys and why, not just what the product does.",
+    },
+    "infrastructure": {
+        "reference_this": "Mention the technical problem {company_name} solves — {summary_snippet}. Infrastructure founders appreciate when you reference the hard part.",
+    },
+    "impact": {
+        "reference_this": "Mention the real-world outcome {company_name} drives — {summary_snippet}. Impact founders want people who care about the mission and can execute.",
+    },
+    "general": {
+        "reference_this": "Mention something specific about {company_name} — {summary_snippet}. Generic praise is invisible; one real detail shows you did your homework.",
+    },
+}
+
+
+# --- Guidance Generator ---
+
+def generate_guidance(
+    user_skills: list[str],
+    company: dict,
+) -> Guidance | None:
+    """Generate personalized outreach guidance from composable rule layers.
+
+    Returns None if user has no skills. Assembles guidance from skill-type,
+    stage, and industry cluster rules with slot-filling from company data.
+    """
+    if not user_skills:
+        return None
+
+    # Classify and map
+    company_tags = company.get("need_tags") or []
+    skill_type = classify_skill_type(user_skills, company_tags)
+    if skill_type is None:
+        skill_type = "developer"  # safe fallback for unrecognized skills
+
+    industry = company.get("industry") or ""
+    cluster = map_industry_cluster(industry)
+    stage = company.get("stage_detail") or "launched"
+
+    # Find the best matched skill (first user skill that overlaps with company tags)
+    matched_skill = None
+    if company_tags:
+        user_skills_lower = {s.lower(): s for s in user_skills}
+        for tag in company_tags:
+            if tag.lower() in user_skills_lower:
+                matched_skill = user_skills_lower[tag.lower()]
+                break
+    if not matched_skill:
+        matched_skill = user_skills[0]
+
+    # Select the most relevant specific project
+    projects = company.get("specific_projects") or []
+    specific_project = select_specific_project(projects, skill_type)
+
+    # Build summary snippet (first sentence of summary, or description)
+    summary = company.get("summary") or company.get("description") or ""
+    summary_snippet = summary.split(". ")[0] if summary else None
+
+    # Slot values
+    slots = {
+        "matched_skill": matched_skill,
+        "specific_project": specific_project,
+        "company_name": company.get("name"),
+        "summary_snippet": summary_snippet,
+    }
+
+    # Look up rules
+    skill_rules = SKILL_TYPE_RULES.get(skill_type, SKILL_TYPE_RULES["developer"])
+    stage_rules = STAGE_RULES.get(stage, STAGE_RULES["launched"])
+    industry_rules = INDUSTRY_RULES.get(cluster, INDUSTRY_RULES["general"])
+
+    # Assemble and fill slots
+    return Guidance(
+        your_angle=fill_slots(skill_rules["your_angle"], slots),
+        reference_this=fill_slots(industry_rules["reference_this"], slots),
+        dont_say=fill_slots(stage_rules["dont_say"], slots),
+        your_ask=fill_slots(stage_rules["your_ask"], slots),
+    )

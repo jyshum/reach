@@ -156,3 +156,100 @@ def test_fill_slots_missing_value_uses_generic():
     })
     assert "Pando" in result
     assert "{" not in result
+
+
+from backend.guidance.rules import generate_guidance
+
+
+def _sample_company():
+    return {
+        "name": "Pando Bioscience",
+        "summary": "Pando uses AI to design custom enzymes for pharmaceutical companies. Their platform tests thousands of enzyme variants.",
+        "description": "Gen-AI Designed Enzymes for Pharmaceutical Innovation",
+        "industry": "biotech",
+        "stage_detail": "growing",
+        "technical_level": "technical",
+        "need_tags": ["Python scripting", "data visualization", "scientific writing"],
+        "specific_projects": [
+            "Analyze enzyme screening data to identify patterns",
+            "Create technical documentation for the platform",
+        ],
+    }
+
+
+def test_generate_guidance_developer_biotech_growing():
+    company = _sample_company()
+    user_skills = ["Python scripting", "data visualization"]
+    result = generate_guidance(user_skills, company)
+
+    assert isinstance(result, Guidance)
+    assert len(result.your_angle) > 0
+    assert len(result.reference_this) > 0
+    assert len(result.dont_say) > 0
+    assert len(result.your_ask) > 0
+    # No unfilled placeholders
+    assert "{" not in result.your_angle
+    assert "{" not in result.reference_this
+    assert "{" not in result.dont_say
+    assert "{" not in result.your_ask
+
+
+def test_generate_guidance_writer_commerce_mvp():
+    company = {
+        "name": "ShopFlow",
+        "summary": "ShopFlow helps small retailers build online stores. Their drag-and-drop builder requires no coding.",
+        "description": "E-commerce builder for small retailers",
+        "industry": "e-commerce",
+        "stage_detail": "building-mvp",
+        "technical_level": "non-technical",
+        "need_tags": ["content writing", "social media marketing", "graphic design"],
+        "specific_projects": [
+            "Write launch blog posts for the product announcement",
+            "Design social media templates for retailer success stories",
+        ],
+    }
+    user_skills = ["content writing", "blog writing"]
+    result = generate_guidance(user_skills, company)
+
+    assert isinstance(result, Guidance)
+    assert "{" not in result.your_angle
+    assert "{" not in result.reference_this
+
+
+def test_generate_guidance_no_skills_returns_none():
+    company = _sample_company()
+    result = generate_guidance([], company)
+    assert result is None
+
+
+def test_generate_guidance_no_need_tags():
+    company = _sample_company()
+    company["need_tags"] = []
+    user_skills = ["Python scripting"]
+    result = generate_guidance(user_skills, company)
+
+    # Still generates guidance from stage + industry layers
+    assert isinstance(result, Guidance)
+    assert len(result.your_angle) > 0
+
+
+def test_generate_guidance_no_specific_projects():
+    company = _sample_company()
+    company["specific_projects"] = []
+    user_skills = ["Python scripting"]
+    result = generate_guidance(user_skills, company)
+
+    assert isinstance(result, Guidance)
+    # Falls back to generic — no unfilled placeholders
+    assert "{" not in result.your_angle
+    assert "{" not in result.your_ask
+
+
+def test_generate_guidance_no_summary_uses_description():
+    company = _sample_company()
+    company["summary"] = None
+    user_skills = ["Python scripting"]
+    result = generate_guidance(user_skills, company)
+
+    assert isinstance(result, Guidance)
+    assert "{" not in result.reference_this
