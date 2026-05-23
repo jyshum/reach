@@ -2,11 +2,13 @@
 
 import { useState, useEffect, use } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchBrief, ApiError } from "@/lib/api";
-import type { CompanyBrief } from "@/lib/types";
+import { fetchBrief, fetchOutreach, ApiError } from "@/lib/api";
+import type { CompanyBrief, OutreachEntry } from "@/lib/types";
 import FounderBrief from "@/components/FounderBrief";
 import GuidanceCard from "@/components/GuidanceCard";
 import EmailWorkspace from "@/components/EmailWorkspace";
+import OutreachForm from "@/components/OutreachForm";
+import OutreachRow from "@/components/OutreachRow";
 
 export default function BriefPage({
   params,
@@ -18,6 +20,7 @@ export default function BriefPage({
   const [brief, setBrief] = useState<CompanyBrief | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [outreach, setOutreach] = useState<OutreachEntry[]>([]);
 
   useEffect(() => {
     if (!authenticated) return;
@@ -26,6 +29,8 @@ export default function BriefPage({
       try {
         const data = await fetchBrief(Number(id));
         setBrief(data);
+        const allOutreach = await fetchOutreach();
+        setOutreach(allOutreach.filter((e) => e.company_id === Number(id)));
       } catch (err) {
         if (err instanceof ApiError && err.status === 403) {
           setError("paywall");
@@ -41,6 +46,13 @@ export default function BriefPage({
 
     load();
   }, [authenticated, id]);
+
+  const handleOutreachCreated = (entry: OutreachEntry) => {
+    setOutreach((prev) => [entry, ...prev]);
+  };
+  const handleOutreachUpdated = (updated: OutreachEntry) => {
+    setOutreach((prev) => prev.map((e) => (e.id === updated.id ? { ...e, ...updated } : e)));
+  };
 
   if (authLoading || loading) {
     return (
@@ -99,6 +111,18 @@ export default function BriefPage({
         founderEmail={null}
         companyName={brief.name}
       />
+
+      <div className="mt-8 space-y-4">
+        <h3 className="font-display text-lg text-primary">Outreach</h3>
+        <OutreachForm companyId={brief.id} onCreated={handleOutreachCreated} />
+        {outreach.length > 0 && (
+          <div className="space-y-2">
+            {outreach.map((entry) => (
+              <OutreachRow key={entry.id} entry={entry} showCompanyName={false} onUpdated={handleOutreachUpdated} />
+            ))}
+          </div>
+        )}
+      </div>
     </main>
   );
 }
