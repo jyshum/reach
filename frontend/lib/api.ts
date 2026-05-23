@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { CompanyCard, CompanyBrief } from "./types";
+import type { CompanyCard, CompanyBrief, UserProfile, OutreachEntry } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -54,4 +54,46 @@ export async function fetchCompanies(params?: {
 
 export async function fetchBrief(id: number): Promise<CompanyBrief> {
   return apiFetch<CompanyBrief>(`/companies/${id}`);
+}
+
+export async function fetchProfile(): Promise<UserProfile> {
+  return apiFetch<UserProfile>("/me");
+}
+
+export async function updateProfile(
+  data: Partial<Pick<UserProfile, "skills" | "school" | "grad_year" | "bio" | "github_url" | "portfolio_url">>,
+): Promise<UserProfile> {
+  return apiFetch<UserProfile>("/me", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchOutreach(): Promise<OutreachEntry[]> {
+  return apiFetch<OutreachEntry[]>("/outreach");
+}
+
+export async function createOutreach(data: {
+  company_id: number;
+  status: OutreachEntry["status"];
+  notes?: string;
+  sent_at?: string;
+}): Promise<OutreachEntry> {
+  return apiFetch<OutreachEntry>("/outreach", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateOutreach(
+  id: number,
+  data: { status?: OutreachEntry["status"]; notes?: string },
+): Promise<OutreachEntry> {
+  return apiFetch<OutreachEntry>(`/outreach/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 }
