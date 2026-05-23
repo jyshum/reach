@@ -35,7 +35,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
       }
 
       const q = searchParams.get("q");
-      router.push(q ? `/feed?q=${encodeURIComponent(q)}` : "/feed");
+      if (mode === "signup") {
+        router.push("/onboard");
+      } else {
+        router.push(q ? `/feed?q=${encodeURIComponent(q)}` : "/feed");
+      }
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Something went wrong";

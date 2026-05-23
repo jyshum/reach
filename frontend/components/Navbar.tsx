@@ -31,6 +31,8 @@ export default function Navbar() {
                 >
                   Feed
                 </Link>
+                <Link href="/tracker" className="text-sm text-secondary hover:text-primary">Tracker</Link>
+                <Link href="/profile" className="text-sm text-secondary hover:text-primary">Profile</Link>
                 <button
                   onClick={handleSignOut}
                   className="text-sm text-secondary hover:text-primary"
