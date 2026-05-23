@@ -60,6 +60,17 @@ export interface UserProfile {
   tier: string;
 }
 
+export interface OutreachEntry {
+  id: number;
+  company_id: number;
+  company_name: string | null;
+  status: "sent" | "replied" | "meeting" | "no-response";
+  sent_at: string | null;
+  followup_date: string | null;
+  notes: string | null;
+  created_at: string | null;
+}
+
 export const INDUSTRIES = [
   "fintech",
   "healthcare",
