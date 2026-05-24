@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
@@ -29,19 +30,38 @@ interface FounderCardProps {
 }
 
 export default function FounderCard({ company, onClick }: FounderCardProps) {
-  const displayName = company.name;
-  const initials = getInitials(displayName);
+  const founderName = company.founder_name || company.name;
+  const founderTitle = company.founder_title || "Founder";
+  const founderInitials = getInitials(founderName);
+  const companyInitials = getInitials(company.name);
+  const primaryTags = [
+    company.industry,
+    company.team_size ? `${company.team_size} people` : null,
+    company.match_score > 0
+      ? `${company.match_score} skill${company.match_score === 1 ? "" : "s"} match`
+      : null,
+  ].filter(Boolean);
 
   const content = (
-    <div className="flex items-center gap-5 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
-      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 font-display text-lg text-accent">
-        {initials}
+    <div className="flex items-center gap-4 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
+      <div className="h-14 w-14 flex-shrink-0">
+        {company.founder_avatar_url ? (
+          <img
+            src={company.founder_avatar_url}
+            alt={founderName}
+            className="h-14 w-14 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 font-display text-lg text-accent">
+            {founderInitials}
+          </div>
+        )}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-3">
           <h3 className="truncate text-base font-semibold text-primary">
-            {displayName}
+            {founderName}
           </h3>
           {company.reachability_score && (
             <span
@@ -53,7 +73,7 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
         </div>
 
         <p className="mt-0.5 text-sm text-secondary">
-          Founder · {company.name}
+          {founderTitle} · {company.name}
           {company.yc_batch ? ` · ${company.yc_batch}` : ""}
         </p>
 
@@ -64,23 +84,37 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
         )}
 
         <div className="mt-2.5 flex flex-wrap gap-1.5">
-          {company.industry && (
-            <span className="rounded bg-background px-2 py-0.5 text-xs text-secondary">
-              {company.industry}
+          {primaryTags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded bg-background px-2 py-0.5 text-xs text-secondary"
+            >
+              {tag}
             </span>
-          )}
-          {company.team_size && (
-            <span className="rounded bg-background px-2 py-0.5 text-xs text-secondary">
-              {company.team_size} people
+          ))}
+          {company.need_tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded bg-accent/10 px-2 py-0.5 text-xs text-accent"
+            >
+              {tag}
             </span>
-          )}
-          {company.match_score > 0 && (
-            <span className="rounded bg-accent/10 px-2 py-0.5 text-xs text-accent">
-              {company.match_score} skill{company.match_score !== 1 ? "s" : ""}{" "}
-              match
-            </span>
-          )}
+          ))}
         </div>
+      </div>
+
+      <div className="hidden h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-card-border bg-background sm:flex">
+        {company.small_logo_url ? (
+          <img
+            src={company.small_logo_url}
+            alt={`${company.name} logo`}
+            className="h-8 w-8 object-contain"
+          />
+        ) : (
+          <span className="text-xs font-semibold text-tertiary">
+            {companyInitials}
+          </span>
+        )}
       </div>
     </div>
   );
