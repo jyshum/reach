@@ -36,6 +36,8 @@ def extract_company(hit: dict) -> dict:
         "subindustry": hit.get("subindustry", ""),
         "long_description": hit.get("long_description", ""),
         "all_locations": hit.get("all_locations", ""),
+        "slug": hit.get("slug", ""),
+        "small_logo_thumb_url": hit.get("small_logo_thumb_url", ""),
     }
 
 
