@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useMemo, useState, type ChangeEvent, type KeyboardEvent } from "react";
 import { POPULAR_SKILLS, ALL_SKILLS } from "@/lib/skills";
 
 interface SkillPickerProps {
@@ -15,146 +15,133 @@ export default function SkillPicker({
   max = 5,
 }: SkillPickerProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<string[]>([]);
-  const debounceTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [open, setOpen] = useState(false);
 
-  function toggleSkill(skill: string) {
+  const suggestions = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const source = query ? ALL_SKILLS : POPULAR_SKILLS;
+
+    return source
+      .filter((skill) => {
+        const matchesQuery = query
+          ? skill.toLowerCase().includes(query)
+          : true;
+        return matchesQuery && !selected.includes(skill);
+      })
+      .slice(0, 12);
+  }, [searchQuery, selected]);
+
+  function addSkill(skill: string) {
     if (selected.includes(skill)) {
-      onChange(selected.filter((s) => s !== skill));
-    } else {
-      onChange([...selected, skill]);
+      return;
     }
+
+    onChange([...selected, skill]);
+    setSearchQuery("");
+    setOpen(false);
   }
 
   function removeSkill(skill: string) {
     onChange(selected.filter((s) => s !== skill));
   }
 
-  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const query = e.target.value;
-    setSearchQuery(query);
+  function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
+    setSearchQuery(e.target.value);
+    setOpen(true);
+  }
 
-    if (debounceTimer.current !== undefined) {
-      clearTimeout(debounceTimer.current);
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && suggestions.length > 0) {
+      e.preventDefault();
+      addSkill(suggestions[0]);
     }
-
-    if (!query.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    debounceTimer.current = setTimeout(() => {
-      const lower = query.toLowerCase();
-      const results = ALL_SKILLS.filter(
-        (skill) =>
-          skill.toLowerCase().includes(lower) && !selected.includes(skill)
-      ).slice(0, 20);
-      setSearchResults(results);
-    }, 300);
   }
 
   const isOverMax = selected.length > max;
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Popular Skills */}
+    <div className="flex flex-col gap-3">
       <div>
-        <p className="mb-2 text-sm font-medium text-secondary">
-          Popular skills
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {POPULAR_SKILLS.map((skill) => {
-            const isSelected = selected.includes(skill);
-            return (
-              <button
-                key={skill}
-                type="button"
-                onClick={() => toggleSkill(skill)}
-                className={`rounded-full px-3 py-1 text-sm transition-colors ${
-                  isSelected
-                    ? "bg-accent text-white"
-                    : "border border-card-border bg-card text-secondary hover:text-primary"
-                }`}
-              >
-                {skill}
-              </button>
-            );
-          })}
+        <div className="relative">
+          <div className="flex rounded-lg border border-card-border bg-card focus-within:border-accent">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onFocus={() => setOpen(true)}
+              onKeyDown={handleKeyDown}
+              placeholder="Search skills or choose a popular skill"
+              className="min-w-0 flex-1 rounded-l-lg bg-transparent px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none"
+              role="combobox"
+              aria-expanded={open}
+              aria-controls="skill-picker-suggestions"
+            />
+            <button
+              type="button"
+              onClick={() => setOpen((current) => !current)}
+              className="flex w-10 items-center justify-center rounded-r-lg border-l border-card-border text-sm text-secondary transition-colors hover:text-primary"
+              aria-label="Toggle skill suggestions"
+            >
+              v
+            </button>
+          </div>
+
+          {open && (
+            <div
+              id="skill-picker-suggestions"
+              className="absolute z-20 mt-2 max-h-72 w-full overflow-y-auto rounded-lg border border-card-border bg-card shadow-lg"
+            >
+              {suggestions.length > 0 ? (
+                suggestions.map((skill) => (
+                  <button
+                    key={skill}
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => addSkill(skill)}
+                    className="block w-full px-3 py-2 text-left text-sm text-secondary transition-colors hover:bg-background hover:text-primary"
+                  >
+                    {skill}
+                  </button>
+                ))
+              ) : (
+                <p className="px-3 py-2 text-sm text-tertiary">
+                  No matching skills
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Search */}
       <div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search for more skills..."
-          className="w-full rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:border-accent focus:outline-none"
-        />
-        {searchResults.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {searchResults.map((skill) => (
-              <button
-                key={skill}
-                type="button"
-                onClick={() => {
-                  toggleSkill(skill);
-                  setSearchQuery("");
-                  setSearchResults([]);
-                }}
-                className="rounded-full border border-card-border bg-card px-3 py-1 text-sm text-secondary hover:text-primary transition-colors"
-              >
-                {skill}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Selected Skills */}
-      {selected.length > 0 && (
-        <div>
-          <p
-            className={`mb-2 text-sm font-medium ${
-              isOverMax ? "text-reach-med" : "text-secondary"
-            }`}
-          >
-            {selected.length} of {max} selected
-          </p>
+        <p
+          className={`mb-2 text-sm font-medium ${
+            isOverMax ? "text-reach-med" : "text-secondary"
+          }`}
+        >
+          {selected.length} of {max} selected
+        </p>
+        {selected.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {selected.map((skill) => (
               <span
                 key={skill}
-                className="flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-sm text-white"
+                className="flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-sm text-white"
               >
                 {skill}
                 <button
                   type="button"
                   onClick={() => removeSkill(skill)}
-                  className="flex items-center justify-center rounded-full hover:opacity-75 transition-opacity"
+                  className="flex h-4 w-4 items-center justify-center rounded-full text-xs leading-none transition-opacity hover:opacity-75"
                   aria-label={`Remove ${skill}`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  x
                 </button>
               </span>
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
