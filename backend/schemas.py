@@ -52,6 +52,9 @@ class CompanyCard(BaseModel):
     team_size: int | None = None
     reachability_score: str | None = None
     small_logo_url: str | None = None
+    founder_name: str | None = None
+    founder_title: str | None = None
+    founder_avatar_url: str | None = None
     need_tags: list[str] = []
     match_score: int = 0
     rank_score: float = 0.0

@@ -8,6 +8,10 @@ export interface CompanyCard {
   technical_level: string | null;
   team_size: number | null;
   reachability_score: string | null;
+  small_logo_url: string | null;
+  founder_name: string | null;
+  founder_title: string | null;
+  founder_avatar_url: string | null;
   need_tags: string[];
   match_score: number;
   rank_score: number;
@@ -41,6 +45,10 @@ export interface CompanyBrief {
   founder_title: string | null;
   founder_linkedin: string | null;
   founder_twitter: string | null;
+  founder_avatar_url: string | null;
+  founder_email: string | null;
+  small_logo_url: string | null;
+  slug: string | null;
   all_locations: string | null;
   tags: string[];
   industries: string[];
