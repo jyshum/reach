@@ -51,6 +51,7 @@ class CompanyCard(BaseModel):
     technical_level: str | None = None
     team_size: int | None = None
     reachability_score: str | None = None
+    small_logo_url: str | None = None
     need_tags: list[str] = []
     match_score: int = 0
     rank_score: float = 0.0
@@ -77,6 +78,10 @@ class CompanyBrief(BaseModel):
     founder_title: str | None = None
     founder_linkedin: str | None = None
     founder_twitter: str | None = None
+    founder_avatar_url: str | None = None
+    founder_email: str | None = None
+    small_logo_url: str | None = None
+    slug: str | None = None
     all_locations: str | None = None
     tags: list[str] = []
     industries: list[str] = []
