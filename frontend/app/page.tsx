@@ -11,7 +11,7 @@ import FloatingCards from "@/components/FloatingCards";
 const PREVIEW_LIMIT = 20;
 
 export default function LandingPage() {
-  const { loading: authLoading } = useAuth();
+  const { session, loading: authLoading } = useAuth();
   const router = useRouter();
   const [companies, setCompanies] = useState<CompanyCard[]>([]);
 
@@ -44,11 +44,14 @@ export default function LandingPage() {
   }, []);
 
   const handleSubmit = (query: string) => {
-    router.push(`/login?q=${encodeURIComponent(query)}`);
+    const encodedQuery = encodeURIComponent(query);
+    router.push(
+      session ? `/feed?q=${encodedQuery}` : `/login?q=${encodedQuery}`,
+    );
   };
 
-  const handleCardClick = () => {
-    router.push("/login");
+  const handleCardClick = (company: CompanyCard) => {
+    router.push(session ? `/founder/${company.id}` : "/login");
   };
 
   if (authLoading) return null;
@@ -93,14 +96,11 @@ export default function LandingPage() {
 
       <footer className="relative z-10 mt-auto flex w-full max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-16 text-sm text-tertiary">
         <span>Reach</span>
-        <a className="transition-colors hover:text-primary" href="mailto:hello@example.com">
+        <a
+          className="transition-colors hover:text-primary"
+          href="mailto:jaredshum101@gmail.com"
+        >
           Contact
-        </a>
-        <a className="transition-colors hover:text-primary" href="#replace-linkedin-url">
-          LinkedIn
-        </a>
-        <a className="transition-colors hover:text-primary" href="#replace-x-url">
-          X
         </a>
       </footer>
     </main>
