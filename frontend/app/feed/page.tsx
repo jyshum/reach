@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRequireAuth } from "@/lib/useAuth";
 import { fetchCompanies } from "@/lib/api";
@@ -21,7 +21,7 @@ function FeedContent() {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [industry, setIndustry] = useState("");
   const [reachability, setReachability] = useState("");
-  const [page, setPage] = useState(1);
+  const pageRef = useRef(1);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -57,14 +57,14 @@ function FeedContent() {
 
   useEffect(() => {
     if (authenticated) {
-      setPage(1);
-      loadCompanies(1, false);
+      pageRef.current = 1;
+      queueMicrotask(() => loadCompanies(1, false));
     }
   }, [authenticated, industry, reachability, loadCompanies]);
 
   const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
+    const nextPage = pageRef.current + 1;
+    pageRef.current = nextPage;
     loadCompanies(nextPage, true);
   };
 
@@ -72,15 +72,26 @@ function FeedContent() {
     setSearchQuery(query);
   }, []);
 
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
   // Client-side filter on search query
-  const filtered = searchQuery
+  const filtered = normalizedSearchQuery
     ? companies.filter(
-        (c) =>
-          c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (c.one_liner &&
-            c.one_liner.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (c.industry &&
-            c.industry.toLowerCase().includes(searchQuery.toLowerCase())),
+        (c) => {
+          const fields = [
+            c.name,
+            c.founder_name,
+            c.one_liner,
+            c.industry,
+            c.stage_detail,
+            c.technical_level,
+            ...c.need_tags,
+          ];
+
+          return fields.some((field) =>
+            field?.toLowerCase().includes(normalizedSearchQuery),
+          );
+        },
       )
     : companies;
 
@@ -97,7 +108,7 @@ function FeedContent() {
       <div className="mb-6 flex flex-col items-center gap-4">
         <SearchBar
           onSearch={handleSearch}
-          placeholder="Search founders..."
+          placeholder="Search AI automation, data pipelines, healthcare, React..."
           initialValue={initialQuery}
         />
         <FilterBar
@@ -114,7 +125,8 @@ function FeedContent() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-20 text-center text-secondary">
-          No founders match your search. Try different keywords.
+          No startups match that search yet. Try a skill, industry, or product
+          area.
         </div>
       ) : (
         <div className="space-y-3">
@@ -127,7 +139,7 @@ function FeedContent() {
       <LoadMoreButton
         onClick={handleLoadMore}
         loading={loadingMore}
-        hasMore={hasMore && !searchQuery}
+        hasMore={hasMore && !normalizedSearchQuery}
       />
     </main>
   );
