@@ -30,18 +30,29 @@ def parse_founders_from_html(page_html: str) -> dict | None:
     The page embeds company data as HTML-entity-encoded JSON.
     We find the founders array and return the first active founder.
     """
-    # Find the encoded JSON blob containing founders
-    match = re.search(
-        r'&quot;founders&quot;:\[(.+?)\],?\s*&quot;(?:editUrl|jobPostings)',
-        page_html,
-    )
+    # Decode HTML entities first, then find the founders JSON array
+    decoded = html.unescape(page_html)
+    match = re.search(r'"founders":\[', decoded)
     if not match:
         return None
 
-    # Decode HTML entities and parse
-    raw = "[" + html.unescape(match.group(1)) + "]"
+    # Bracket-match to find the full array (regex is unreliable with nested JSON)
+    start = match.start() + len('"founders":')
+    depth = 0
+    end = start
+    for i, c in enumerate(decoded[start:], start):
+        if c == "[":
+            depth += 1
+        elif c == "]":
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+    if depth != 0:
+        return None
+
     try:
-        founders = json.loads(raw)
+        founders = json.loads(decoded[start:end])
     except json.JSONDecodeError:
         return None
 
