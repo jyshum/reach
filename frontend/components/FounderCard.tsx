@@ -43,8 +43,8 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
   ].filter(Boolean);
 
   const content = (
-    <div className="flex items-center gap-4 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
-      <div className="h-14 w-14 flex-shrink-0">
+    <span className="flex items-center gap-4 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
+      <span className="h-14 w-14 flex-shrink-0">
         {company.founder_avatar_url ? (
           <img
             src={company.founder_avatar_url}
@@ -52,17 +52,17 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
             className="h-14 w-14 rounded-full object-cover"
           />
         ) : (
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 font-display text-lg text-accent">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 font-display text-lg text-accent">
             {founderInitials}
-          </div>
+          </span>
         )}
-      </div>
+      </span>
 
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="truncate text-base font-semibold text-primary">
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center justify-between gap-3">
+          <span className="truncate text-base font-semibold text-primary">
             {founderName}
-          </h3>
+          </span>
           {company.reachability_score && (
             <span
               className={`flex-shrink-0 rounded px-2 py-0.5 text-xs font-semibold uppercase ${reachabilityColor(company.reachability_score)}`}
@@ -70,20 +70,20 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
               {company.reachability_score}
             </span>
           )}
-        </div>
+        </span>
 
-        <p className="mt-0.5 text-sm text-secondary">
+        <span className="mt-0.5 block text-sm text-secondary">
           {founderTitle} · {company.name}
           {company.yc_batch ? ` · ${company.yc_batch}` : ""}
-        </p>
+        </span>
 
         {company.one_liner && (
-          <p className="mt-1.5 truncate text-sm text-tertiary">
+          <span className="mt-1.5 block truncate text-sm text-tertiary">
             {company.one_liner}
-          </p>
+          </span>
         )}
 
-        <div className="mt-2.5 flex flex-wrap gap-1.5">
+        <span className="mt-2.5 flex flex-wrap gap-1.5">
           {primaryTags.map((tag) => (
             <span
               key={tag}
@@ -100,10 +100,10 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
               {tag}
             </span>
           ))}
-        </div>
-      </div>
+        </span>
+      </span>
 
-      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-card-border bg-background">
+      <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-card-border bg-background">
         {company.small_logo_url ? (
           <img
             src={company.small_logo_url}
@@ -115,13 +115,13 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
             {companyInitials}
           </span>
         )}
-      </div>
-    </div>
+      </span>
+    </span>
   );
 
   if (onClick) {
     return (
-      <button onClick={onClick} className="block w-full text-left">
+      <button type="button" onClick={onClick} className="block w-full text-left">
         {content}
       </button>
     );
