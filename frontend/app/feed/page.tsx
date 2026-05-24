@@ -177,6 +177,8 @@ function FeedContent() {
   }, [authenticated, industry, reachability]);
 
   const handleLoadMore = () => {
+    if (loading || loadingMore || !hasMore) return;
+
     const nextPage = pageRef.current + 1;
     pageRef.current = nextPage;
     loadCompanies(nextPage, true);
@@ -265,7 +267,7 @@ function FeedContent() {
       <LoadMoreButton
         onClick={handleLoadMore}
         loading={loadingMore}
-        hasMore={hasMore}
+        hasMore={hasMore && !loading}
       />
     </main>
   );
