@@ -74,6 +74,7 @@ export default function LandingPage() {
             onSearch={handleSearch}
             onSubmit={handleSubmit}
             placeholder="Search AI automation, data pipelines, healthcare, React..."
+            size="large"
           />
         </div>
       </div>
