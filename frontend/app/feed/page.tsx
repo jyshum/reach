@@ -47,8 +47,12 @@ function FeedContent() {
 
       if (requestSeq !== requestSeqRef.current) return;
 
-      if (requestAppend) setLoadingMore(true);
-      else setLoading(true);
+      if (requestAppend) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+        setLoadingMore(false);
+      }
 
       try {
         const data = await fetchCompanies({
@@ -191,12 +195,14 @@ function FeedContent() {
   const handleIndustryChange = useCallback((value: string) => {
     pageRef.current = 1;
     setLoading(true);
+    setLoadingMore(false);
     setIndustry(value);
   }, []);
 
   const handleReachabilityChange = useCallback((value: string) => {
     pageRef.current = 1;
     setLoading(true);
+    setLoadingMore(false);
     setReachability(value);
   }, []);
 
