@@ -12,6 +12,9 @@ import LoadMoreButton from "@/components/LoadMoreButton";
 
 const PAGE_SIZE = 20;
 
+const filterKey = (industry: string, reachability: string) =>
+  `${industry}\u0000${reachability}`;
+
 function FeedContent() {
   const { authenticated, loading: authLoading } = useRequireAuth();
   const searchParams = useSearchParams();
@@ -22,45 +25,156 @@ function FeedContent() {
   const [industry, setIndustry] = useState("");
   const [reachability, setReachability] = useState("");
   const pageRef = useRef(1);
+  const requestSeqRef = useRef(0);
+  const filterRef = useRef({ industry: "", reachability: "" });
+  const activeResultsFilterKeyRef = useRef("");
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  useEffect(() => {
+    filterRef.current = { industry, reachability };
+  }, [industry, reachability]);
+
   const loadCompanies = useCallback(
     async (pageNum: number, append: boolean) => {
-      if (append) setLoadingMore(true);
+      const requestSeq = ++requestSeqRef.current;
+      const requestIndustry = industry;
+      const requestReachability = reachability;
+      const requestPageNum = pageNum;
+      const requestAppend = append;
+      const requestFilterKey = filterKey(requestIndustry, requestReachability);
+
+      if (requestSeq !== requestSeqRef.current) return;
+
+      if (requestAppend) setLoadingMore(true);
       else setLoading(true);
 
       try {
         const data = await fetchCompanies({
-          industry: industry || undefined,
-          reachability: reachability || undefined,
-          page: pageNum,
+          industry: requestIndustry || undefined,
+          reachability: requestReachability || undefined,
+          page: requestPageNum,
           limit: PAGE_SIZE,
         });
 
-        if (append) {
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+        const isCurrentRequest = requestSeq === requestSeqRef.current;
+        const filterStillMatches = requestFilterKey === currentFilterKey;
+
+        if (!isCurrentRequest || !filterStillMatches) return;
+
+        if (requestAppend) {
+          if (
+            activeResultsFilterKeyRef.current !== requestFilterKey ||
+            pageRef.current !== requestPageNum
+          ) {
+            return;
+          }
+
           setCompanies((prev) => [...prev, ...data]);
         } else {
+          activeResultsFilterKeyRef.current = requestFilterKey;
           setCompanies(data);
         }
         setHasMore(data.length === PAGE_SIZE);
       } catch {
-        setHasMore(false);
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+
+        if (
+          requestSeq === requestSeqRef.current &&
+          requestFilterKey === currentFilterKey
+        ) {
+          setHasMore(false);
+        }
       } finally {
-        setLoading(false);
-        setLoadingMore(false);
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+
+        if (
+          requestSeq === requestSeqRef.current &&
+          requestFilterKey === currentFilterKey
+        ) {
+          if (requestAppend) setLoadingMore(false);
+          else setLoading(false);
+        }
       }
     },
     [industry, reachability],
   );
 
   useEffect(() => {
-    if (authenticated) {
-      pageRef.current = 1;
-      queueMicrotask(() => loadCompanies(1, false));
+    if (!authenticated) return;
+
+    const requestSeq = ++requestSeqRef.current;
+    const requestIndustry = industry;
+    const requestReachability = reachability;
+    const requestPageNum = 1;
+    const requestFilterKey = filterKey(requestIndustry, requestReachability);
+
+    pageRef.current = requestPageNum;
+
+    async function loadFirstPage() {
+      try {
+        const data = await fetchCompanies({
+          industry: requestIndustry || undefined,
+          reachability: requestReachability || undefined,
+          page: requestPageNum,
+          limit: PAGE_SIZE,
+        });
+
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+
+        if (
+          requestSeq !== requestSeqRef.current ||
+          requestFilterKey !== currentFilterKey
+        ) {
+          return;
+        }
+
+        activeResultsFilterKeyRef.current = requestFilterKey;
+        setCompanies(data);
+        setHasMore(data.length === PAGE_SIZE);
+      } catch {
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+
+        if (
+          requestSeq === requestSeqRef.current &&
+          requestFilterKey === currentFilterKey
+        ) {
+          setHasMore(false);
+        }
+      } finally {
+        const currentFilterKey = filterKey(
+          filterRef.current.industry,
+          filterRef.current.reachability,
+        );
+
+        if (
+          requestSeq === requestSeqRef.current &&
+          requestFilterKey === currentFilterKey
+        ) {
+          setLoading(false);
+        }
+      }
     }
-  }, [authenticated, industry, reachability, loadCompanies]);
+
+    void loadFirstPage();
+  }, [authenticated, industry, reachability]);
 
   const handleLoadMore = () => {
     const nextPage = pageRef.current + 1;
@@ -70,6 +184,18 @@ function FeedContent() {
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
+  }, []);
+
+  const handleIndustryChange = useCallback((value: string) => {
+    pageRef.current = 1;
+    setLoading(true);
+    setIndustry(value);
+  }, []);
+
+  const handleReachabilityChange = useCallback((value: string) => {
+    pageRef.current = 1;
+    setLoading(true);
+    setReachability(value);
   }, []);
 
   const normalizedSearchQuery = searchQuery.trim().toLowerCase();
@@ -114,8 +240,8 @@ function FeedContent() {
         <FilterBar
           industry={industry}
           reachability={reachability}
-          onIndustryChange={setIndustry}
-          onReachabilityChange={setReachability}
+          onIndustryChange={handleIndustryChange}
+          onReachabilityChange={handleReachabilityChange}
         />
       </div>
 
@@ -139,7 +265,7 @@ function FeedContent() {
       <LoadMoreButton
         onClick={handleLoadMore}
         loading={loadingMore}
-        hasMore={hasMore && !normalizedSearchQuery}
+        hasMore={hasMore}
       />
     </main>
   );
