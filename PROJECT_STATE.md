@@ -1,6 +1,6 @@
 # REACH — PROJECT STATE DOC
 *Handoff document. Architecture-focused. No code blocks.*
-*Last updated: May 2026*
+*Last updated: May 24, 2026*
 
 ---
 
@@ -20,143 +20,167 @@ A web app that takes ambitious high schoolers and first/second-year uni students
 
 ---
 
+## HOW WE'RE DIFFERENT FROM COMPETITORS
+
+| Platform | What they do | Why REACH is different |
+|---|---|---|
+| **WellFound (AngelList)** | Companies post open roles → students apply → HR decides | REACH needs no open roles. Students cold-email founders directly with specific offers. |
+| **LinkedIn** | Professional networking, job search, recruiter-driven | REACH targets founders who respond to cold emails from nobodies. LinkedIn rewards existing connections. |
+| **YC Company Directory** | Raw list of all YC companies, no curation | REACH curates for reachability — small team, early stage, likely to respond. |
+| **Hunter.io** | Email finding tool | REACH is not an email finder. The value is knowing *who* to email and *what* to say. |
+| **Handshake** | Campus recruiting platform for employers | Employer-driven, formal applications. REACH is student-initiated cold outreach to founders. |
+
+---
+
 ## STACK
 
 | Layer | Tool |
 |---|---|
-| Frontend | Next.js + Tailwind (Vercel) |
+| Frontend | Next.js 16 + Tailwind v4 (Vercel) |
 | Backend | FastAPI (Railway ~$5/mo) |
-| Database | Supabase (free tier) |
-| Local LLM | Qwen3 8B via Ollama (offline pipeline only) |
-| Email resolution | Hunter.io (optional, low priority, not core) |
-
-Hunter.io is a nice-to-have fallback only. If a user can find the founder on LinkedIn themselves, that is fine. Email resolution is not the value prop.
-
----
-
-## DATA PIPELINE (OFFLINE, RUNS ON DEV MACHINE)
-
-Runs on developer's RTX 3060 12GB. Not user-facing. Scheduled manually or on batch release.
-
-**Sources:** YC directory only (MVP). Last 4 batches: W23, S23, W24, S24. ~600-800 companies before filtering. Target ~150-250 after curation for genuine reachability.
-
-**Pipeline steps:**
-1. Scrape YC directory → raw company data (name, description, batch, tags, website)
-2. Activity filter → ping website (resolves?) + check GitHub last commit date. Dead companies dropped.
-3. Scrape company website team page → founder name, title, social links
-4. Local LLM enrichment (Qwen3 8B) → structured JSON per company
-5. Write enriched records to Supabase companies table
-6. Hunter.io → deferred, optional, only if user explicitly triggers it on brief page
-
-**Local LLM outputs per company:**
-- 2-sentence summary
-- Industry category
-- Team size estimate (1-5 / 6-15 / 16-30 / 30+)
-- Need tags (2-3 extracted from description)
-- Stage (pre-seed / seed / series-a)
-- is_active boolean
-- reachability_score: estimate of how likely a HS student gets a response (low/medium/high) based on team size + stage
-
-**Pipeline refresh schedule:**
-- YC directory: once per batch release (~2x/year, manually triggered)
-- Activity filter: runs with each scrape
-- No live API calls during user sessions (Hunter optional on demand only)
+| Database | Supabase PostgreSQL (free tier) |
+| Auth | Supabase Auth (email+password, ES256 JWT) |
+| Local LLM | Qwen3 4B via Ollama (offline pipeline, runs on M2 Mac) |
+| ML Model | XGBoost (offline scoring, runs on dev machine) |
 
 ---
 
-## MATCHING LOGIC (RULE-BASED, $0)
+## DATA PIPELINE (OFFLINE, RUNS ON DEV MACHINE) — ALL COMPLETE
 
-User selects up to 3 skills on signup from 12 options across 4 categories:
-- Technical: Coding, Data & Analytics, Design (UI/UX)
-- Creative: Graphic Design, Video & Editing, Photography
-- Business: Marketing, Writing & Content, Research
-- Community: Social Media, Operations, Finance
+Pipeline runs on developer's M2 Mac. Not user-facing. Scheduled manually on batch release.
 
-Match score = overlap between user skill categories and company need_tags via a SKILL_TO_CATEGORY lookup table.
+**Sources:** YC directory only. 7 batches: W23, S23, W24, S24, W25, S25, W26. 1517 companies total after dedup (count varies slightly per run).
 
-Local LLM generates one specific match reason sentence per company-user pair during pipeline (not live). Stored in DB.
+**Pipeline order:**
+```
+scrape_yc → scrape_founders → ml_predict → enrich (LLM) → normalize_tags → supabase_write
+```
 
-Example: "Your pandas experience maps directly to their data pipeline infrastructure work."
+### Step 1: YC Scraper — COMPLETE
+**File:** `backend/pipeline/scrape_yc.py`
+Pulls company data from YC's Algolia API for all target batches. Extracts slug, small_logo_thumb_url, and all other company fields.
+**Output:** `data/raw_companies.json`
 
----
+### Step 1b: Founder Scraper — COMPLETE
+**File:** `backend/pipeline/scrape_founders.py`
+Scrapes individual YC company pages (`ycombinator.com/companies/{slug}`) for founder data. Parses HTML-entity-encoded JSON embedded in page HTML using bracket-matching. Extracts first active founder's name, title, avatar URL (stripped of AWS signatures), LinkedIn, and Twitter. Rate limited at 1 req/sec with resume support on interruption.
+- 1509/1517 founders found (99.5% coverage)
+- 1504 with LinkedIn URLs
+- 8 tests passing
+**Output:** `data/founders.json`
 
-## CONFIDENCE LAYER — OUTREACH GUIDANCE PANEL (RULE-BASED, $0)
+### Step 2: ML Reachability Scoring — COMPLETE
+**Files:** `backend/ml/` — features.py, train.py, predict.py, labeling.py, config.py, plus artifacts/
+- XGBoost binary classifier, F1 = 0.907 (5-fold CV)
+- 200 hand-labeled companies, 10 features
+- Thresholds: high >= 0.95, medium >= 0.7, low < 0.7
+- Distribution: 755 high / 396 medium / 368 low
+- 26 tests passing
+**Output:** `data/reachability_scores.json`
 
-**This is the heart of the product.** Not a utility feature — it's what separates REACH from a company list.
+### Step 3: LLM Enrichment — COMPLETE
+**Files:** `backend/pipeline/enrich.py`, `enrich_config.py`, `normalize_tags.py`
+Qwen3 4B via Ollama. Generates: summary, one_liner, need_tags, industry, technical_level, stage_detail, specific_projects.
+**Output:** `data/enriched_companies.json`, `data/skill_vocabulary.json`
 
-Shown on the brief page. Four fields:
-
-- **Your angle:** what to lead with given your skill + this company's stage
-- **Reference this:** one specific thing to mention from their background
-- **Don't say:** the most common mistake for this company type
-- **Your ask:** what to actually request (never "internship" — offer a specific deliverable)
-
-Built from ~30-40 rules across skill × stage × industry combinations. No AI. No API cost.
-
-The goal of this panel is to give a nervous first-timer enough structure that they actually send the email. That activation is the product outcome we care about.
-
----
-
-## FOUNDER CARD FIELDS
-
-- Photo, name, title
-- Company name + YC batch
-- One-line description
-- Tags: industry, stage, team size estimate, reachability signal
-- Skill match badge + one-sentence reason
-- "View Brief" button
-
----
-
-## FOUNDER BRIEF FIELDS (SLIM)
-
-- **WHO:** name + 1-sentence background
-- **WHAT:** 2-sentence description of what they're building
-- **STAGE:** batch, team size, active signal
-- **WHY YOU MATCH:** specific sentence (pre-generated by pipeline)
-- **FIND THEM:** website, Twitter, LinkedIn (email via Hunter only if user requests it)
+### Step 4: Supabase Write — COMPLETE
+**File:** `backend/pipeline/supabase_write.py`
+Merges enriched + scored + raw + founder data, upserts to Supabase companies table in batches of 500.
+1519 companies loaded to production Supabase (project: kclvufnaebzqfjwrelbv).
+Includes: slug, small_logo_url, founder_name, founder_title, founder_avatar_url, founder_linkedin, founder_twitter, founder_email (placeholder null).
 
 ---
 
-## EMAIL WORKSPACE
+## BACKEND API — COMPLETE
 
-- Simple textarea in-app
-- Character/word count indicator (target: under 150 words)
-- "Open in Gmail" button → mailto: link with founder email + subject pre-filled (if email resolved)
-- No AI generation. No AI feedback. User writes it themselves.
-- The guidance panel next to the workspace is the coach.
+**File:** `backend/main.py` — FastAPI app with CORS (localhost:3000). Loads .env via python-dotenv.
 
----
+### Routers (all complete):
 
-## OUTREACH TRACKER
+**`backend/routers/users.py`** — `GET /me`, `PUT /me` with auto-create on first call
+**`backend/routers/companies.py`** — `GET /companies` (browse, ranked by match+reachability), `GET /companies/{id}` (brief with guidance, 3-brief free limit)
+**`backend/routers/outreach.py`** — `POST /outreach`, `GET /outreach`, `PUT /outreach/{id}` with status enum enforcement
 
-- Log: company, status (sent / replied / meeting / no response), sent date, notes
-- Follow-up reminder: sent_date + 5 days → banner appears on tracker page
-- Response rate stats: emails sent, replies, meetings booked
+### Auth: `backend/auth.py`
+JWT verification supporting both ES256 (ECC P-256, current Supabase default) and HS256 (legacy). ES256 tokens verified via JWKS fetched from Supabase. JWKS response is cached in memory. Extracts user_id from `sub` claim with `audience="authenticated"`.
 
----
+### Database: `backend/db.py` + `backend/db/schema.sql`
+Supabase Python SDK singleton. Service role key for full access.
 
-## AUTH + PAYWALL
+Tables: users, companies, brief_views, outreach_log. RLS on users/brief_views/outreach_log. Companies table is public (no RLS).
 
-- Signup: email + password
-- No school email verification (high schools have no standardized domain)
-
-Unlock tiers:
-- **Free:** browse all cards, view 3 briefs
-- **Unlocked:** complete full profile (skills, bio, optional GitHub/portfolio) → unlimited briefs + tracker + reminders
-- **Paid:** $9 one-time → removes all limits, early v2 feature access
+**Companies table columns include:** name, yc_batch, description, long_description, summary, one_liner, website, industry, stage, stage_detail, technical_level, team_size, need_tags, specific_projects, is_hiring, status, reachability_score, reachability_probability, founder_name, founder_title, founder_linkedin, founder_twitter, founder_avatar_url, founder_email, slug, small_logo_url, all_locations, tags, industries.
 
 ---
 
-## DATABASE SCHEMA
+## MATCHING + GUIDANCE — COMPLETE
 
-**users:** id, email, school, grad_year, skills[], bio, github_url, portfolio_url, tier, created_at
+### Skill Matching: `backend/matching/scorer.py`
+- match_score = overlap between user skills[] and company need_tags[]
+- rank_score = 0.6 * match + 0.4 * reachability
+- rank_companies() sorts all companies by rank_score desc
 
-**companies:** id, name, yc_batch, description, summary, website, industry, stage, team_size_estimate, need_tags[], is_active, reachability_score, founder_name, founder_title, founder_email, founder_linkedin, founder_twitter, github_url, last_github_commit, created_at, updated_at
+### Outreach Guidance: `backend/guidance/rules.py`
+Composable rule-based engine. No AI, no API cost.
+- 6 skill-type buckets (coding, design, data, marketing, operations, writing)
+- 4 stage rules (building-mvp, launched, growing, scaling)
+- 8 industry clusters (30 enrichment industries → 8 clusters + general fallback)
+- Template slot-filling with generic fallbacks for missing values
+- Generates 4 fields: your_angle, reference_this, dont_say, your_ask
+- 38 tests passing
 
-**outreach_log:** id, user_id, company_id, status, sent_at, followup_date, notes, created_at
+---
 
-**brief_views:** id, user_id, company_id, viewed_at (enforces 3-brief free limit)
+## FRONTEND ROUND 1 — COMPLETE
+
+**Stack:** Next.js 16 (App Router), Tailwind v4 (@theme inline), Supabase Auth JS, TypeScript
+**Fonts:** Instrument Serif (display), DM Sans (body)
+**Theme:** Light, off-white background (#fafafa), teal accent (#0d9488)
+
+### Pages:
+
+| Route | Page | Auth | Status |
+|---|---|---|---|
+| `/` | Landing | No | COMPLETE — Hero headline, live search bar, floating founder cards with drift animation. Visible to both logged-in and logged-out users. |
+| `/login` | Login | No | COMPLETE — Email+password form, preserves ?q= across redirect |
+| `/signup` | Signup | No | COMPLETE — Email+password form, redirects to /onboard |
+| `/feed` | Feed | Yes | COMPLETE — Search + wide founder cards + industry/reachability filters + load more |
+| `/founder/[id]` | Brief | Yes | COMPLETE — Full enriched data, guidance card, email workspace with word count, outreach logging |
+| `/onboard` | Onboarding | Yes | COMPLETE — Skill selection (popular chips + search), saves to profile |
+| `/profile` | Profile | Yes | COMPLETE — Edit school, grad year, skills, bio, GitHub, portfolio |
+| `/tracker` | Tracker | Yes | COMPLETE — Outreach log with stats header, status dropdown, follow-up banner |
+
+### Components (16 total):
+AuthForm, Navbar, SearchBar, FounderCard, FloatingCards, FilterBar, LoadMoreButton, FounderBrief, GuidanceCard, EmailWorkspace, SkillPicker, OutreachRow, OutreachForm, StatsHeader
+
+### Lib (5 files):
+types.ts (matches backend schemas), supabase.ts (client singleton), api.ts (fetch wrapper with auth headers + token auto-refresh), useAuth.ts (session hook + requireAuth redirect), skills.ts (3128 skill tags + top 30 popular)
+
+### Data flow:
+- Landing: unauthenticated GET /companies?limit=6 → floating cards. Search filters client-side.
+- Feed: authenticated GET /companies with industry/reachability params. Client-side search on name/one_liner/industry. Pagination via load more (20 per page).
+- Brief: GET /companies/{id} → full brief with guidance. 403 = paywall (3 free briefs). Email workspace is local state only. Outreach section for logging.
+- Tracker: GET /outreach → list with inline status editing.
+
+---
+
+## ENVIRONMENT CONFIGURATION
+
+### Backend (`backend/.env`):
+- SUPABASE_URL — Supabase project URL
+- SUPABASE_KEY — Service role key (bypasses RLS)
+- SUPABASE_JWT_SECRET — For HS256 fallback (ES256 uses JWKS)
+
+### Frontend (`frontend/.env.local`):
+- NEXT_PUBLIC_SUPABASE_URL — Supabase project URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY — Anon/public key
+- NEXT_PUBLIC_API_URL — Backend URL (localhost:8000 for dev)
+
+### Deployment (not yet done):
+- Frontend: Vercel — add same 3 env vars, change API_URL to production backend
+- Backend: Railway/Render — add same 3 env vars
+- CORS: Update backend/main.py allow_origins with production domain
+- Supabase: Add production URL to Auth > URL Configuration
 
 ---
 
@@ -166,78 +190,135 @@ Unlock tiers:
 reach/
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx                  # landing
-│   │   ├── onboard/page.tsx          # signup + profile
-│   │   ├── feed/page.tsx             # card feed
-│   │   ├── brief/[id]/page.tsx       # founder brief + guidance
-│   │   └── tracker/page.tsx          # outreach tracker
-│   └── components/
-│       ├── FounderCard.tsx
-│       ├── FounderBrief.tsx
-│       ├── GuidancePanel.tsx
-│       ├── EmailWorkspace.tsx
-│       └── OutreachTracker.tsx
+│   │   ├── page.tsx                   # Landing page — COMPLETE
+│   │   ├── login/page.tsx             # Login — COMPLETE
+│   │   ├── signup/page.tsx            # Signup — COMPLETE
+│   │   ├── feed/page.tsx              # Feed — COMPLETE
+│   │   ├── founder/[id]/page.tsx      # Brief page — COMPLETE
+│   │   ├── onboard/page.tsx           # Onboarding — COMPLETE
+│   │   ├── profile/page.tsx           # Profile — COMPLETE
+│   │   └── tracker/page.tsx           # Tracker — COMPLETE
+│   ├── components/
+│   │   ├── AuthForm.tsx               # COMPLETE
+│   │   ├── Navbar.tsx                 # COMPLETE
+│   │   ├── SearchBar.tsx              # COMPLETE
+│   │   ├── FounderCard.tsx            # COMPLETE
+│   │   ├── FloatingCards.tsx          # COMPLETE
+│   │   ├── FilterBar.tsx              # COMPLETE
+│   │   ├── LoadMoreButton.tsx         # COMPLETE
+│   │   ├── FounderBrief.tsx           # COMPLETE
+│   │   ├── GuidanceCard.tsx           # COMPLETE
+│   │   ├── EmailWorkspace.tsx         # COMPLETE
+│   │   ├── SkillPicker.tsx            # COMPLETE
+│   │   ├── OutreachRow.tsx            # COMPLETE
+│   │   ├── OutreachForm.tsx           # COMPLETE
+│   │   └── StatsHeader.tsx            # COMPLETE
+│   └── lib/
+│       ├── types.ts                   # COMPLETE
+│       ├── supabase.ts                # COMPLETE
+│       ├── api.ts                     # COMPLETE
+│       ├── useAuth.ts                 # COMPLETE
+│       └── skills.ts                  # COMPLETE
 │
 ├── backend/
-│   ├── main.py
+│   ├── main.py                        # COMPLETE — FastAPI + CORS + dotenv
+│   ├── auth.py                        # COMPLETE — JWT verification (ES256 + HS256)
+│   ├── db.py                          # COMPLETE — Supabase client
+│   ├── schemas.py                     # COMPLETE — Pydantic models
 │   ├── routers/
-│   │   ├── auth.py
-│   │   ├── companies.py
-│   │   ├── briefs.py
-│   │   └── tracker.py
+│   │   ├── users.py                   # COMPLETE
+│   │   ├── companies.py               # COMPLETE
+│   │   └── outreach.py                # COMPLETE
 │   ├── pipeline/
-│   │   ├── scrape_yc.py
-│   │   ├── scrape_website.py
-│   │   ├── activity_filter.py
-│   │   ├── enrich.py
-│   │   ├── hunter.py                 # optional, low priority
-│   │   └── run_pipeline.py
+│   │   ├── scrape_yc.py               # COMPLETE — extracts slug + logo
+│   │   ├── scrape_founders.py         # COMPLETE — scrapes founder data from YC pages
+│   │   ├── enrich.py                  # COMPLETE
+│   │   ├── enrich_config.py           # COMPLETE
+│   │   ├── normalize_tags.py          # COMPLETE
+│   │   └── supabase_write.py          # COMPLETE — merges enriched + scores + raw + founders
+│   ├── ml/
+│   │   ├── config.py                  # COMPLETE
+│   │   ├── features.py                # COMPLETE
+│   │   ├── train.py                   # COMPLETE
+│   │   ├── predict.py                 # COMPLETE
+│   │   ├── labeling.py                # COMPLETE
+│   │   └── artifacts/                 # COMPLETE
 │   ├── matching/
-│   │   ├── skill_map.py
-│   │   └── scorer.py
+│   │   └── scorer.py                  # COMPLETE
 │   ├── guidance/
-│   │   └── rules.py
+│   │   └── rules.py                   # COMPLETE
 │   └── db/
-│       ├── schema.sql
-│       └── queries.py
+│       └── schema.sql                 # COMPLETE
 │
-├── pipeline_runner.py
+├── data/
+│   ├── raw_companies.json             # 1517 companies (with slug + logo)
+│   ├── founders.json                  # 1509 founders scraped
+│   ├── reachability_scores.json       # 1519 scored
+│   ├── enriched_companies.json        # 1519 enriched
+│   ├── skill_vocabulary.json          # Canonical skill taxonomy
+│   └── labeling/                      # 200 hand-labeled
+│
+├── tests/
+│   ├── ml/                            # 26 tests
+│   ├── matching/                      # Tests for scorer
+│   ├── guidance/                      # 38 tests
+│   ├── pipeline/                      # 8 tests (founder scraper)
+│   └── api/                           # 87 tests (some need auth mock update for ES256)
+│
+├── docs/superpowers/
+│   ├── specs/                         # Design specs
+│   └── plans/                         # Implementation plans
+│
 ├── PROJECT_STATE.md
-└── README.md
+└── requirements.txt
 ```
 
 ---
 
 ## BUILD ORDER
 
-| Week | Focus |
-|---|---|
-| 1 | Pipeline: scrape_yc → activity filter → website scrape → enrich → Supabase write |
-| 2 | Backend API: schema, FastAPI setup, /companies, /briefs, /tracker, auth |
-| 3 | Matching + guidance: skill_map, scorer, rules.py, wire into API |
-| 4 | Frontend: landing, onboarding, feed, brief page, email workspace, tracker |
-| 5 | Polish + deploy: auth gates, paywall, Vercel + Railway deploy, E2E test |
+| Phase | Focus | Status |
+|---|---|---|
+| 1a | Pipeline: scrape_yc | COMPLETE |
+| 1b | Pipeline: scrape_founders (founder name, title, avatar, LinkedIn, Twitter) | COMPLETE |
+| 1c | ML: reachability model + scoring | COMPLETE |
+| 1d | Pipeline: LLM enrichment + tag normalization | COMPLETE |
+| 1e | Pipeline: supabase_write (enriched + scores + raw + founders) | COMPLETE |
+| 2 | Backend API: FastAPI, auth, /companies, /me, /outreach | COMPLETE |
+| 3 | Matching + guidance: scorer, rules engine | COMPLETE (38 tests) |
+| 4a | Frontend Round 1: landing, login/signup, feed, brief | COMPLETE |
+| 4b | Frontend Round 2: onboarding, profile, tracker | COMPLETE |
+| 5 | Frontend visual overhaul | PLANNED — user designing aesthetics direction |
+| 6 | Polish + deploy: Vercel + Railway, custom domain, E2E | Not started |
 
 ---
 
-## WHAT TO BUILD FIRST
+## KNOWN ISSUES
 
-**File:** `backend/pipeline/scrape_yc.py`
-**Goal:** Scrape YC directory for last 4 batches. Return raw company records (name, description, batch, tags, website). No LLM yet. Just get the data.
+- **API tests**: 11 tests fail because test auth mocks target `backend.auth._decode_token` but need updating for ES256 JWKS flow. Non-blocking — production auth works correctly.
+- **Supabase email confirmations**: Still using default Supabase-branded emails. User aware, deferring to polish phase.
+- **Pre-existing test**: `test_get_companies_with_auth_ranked` fails due to ranking order assertion — unrelated to recent changes.
 
-**Prerequisites before starting:**
-- Python + VSCode on Windows ✓
-- Ollama installed + `ollama pull qwen3:8b` completed
-- Supabase project created (free tier)
-- Hunter.io account (optional, not needed for Week 1)
+---
+
+## WHAT TO BUILD NEXT
+
+**Frontend Visual Overhaul** — User is planning a full aesthetics redesign. No piecemeal frontend changes until design direction is set.
+
+**After that:**
+- Deploy (Vercel + Railway)
+- Founder email resolution (schema column `founder_email` already exists as placeholder)
 
 ---
 
 ## V2 FEATURES (NOT MVP)
 
-- Mission-driven org track (nonprofits, research labs open to HS students)
+- Personalized reachability scoring (user-company pair, composed scoring)
+- Feedback loop from outreach outcomes → updated reachability scores
+- Founder email resolution pipeline
+- SEO/SSR optimization
+- Stripe payment integration ($9 one-time)
+- Mobile responsiveness fine-tuning
 - AI writing feedback on email drafts
-- Response rate analytics + ML optimization
-- Founder signal alerts ("new match added")
+- Response rate analytics
 - Direct email sending via Gmail OAuth
-- Hunter.io as a smoother integrated flow (if demand warrants it)
