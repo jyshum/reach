@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REACH — Architecture Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0f0f0f;
+    color: #e5e5e5;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    user-select: none;
+  }
+
+  #header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding: 20px 24px 0;
+    pointer-events: none;
+  }
+
+  #title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  #subtitle {
+    font-size: 11px;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  #controls {
+    position: fixed;
+    top: 68px;
+    left: 24px;
+    z-index: 10;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 560px;
+  }
+
+  .filter-btn {
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--c);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--c);
+    opacity: 0.55;
+    transition: all 0.18s ease;
+  }
+
+  .filter-btn.on {
+    background: var(--c);
+    color: #000;
+    opacity: 1;
+  }
+
+  #reset-btn {
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #444;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #555;
+    transition: all 0.18s ease;
+  }
+
+  #reset-btn:hover { color: #aaa; border-color: #666; }
+
+  svg { display: block; }
+
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 340px;
+    height: 100vh;
+    background: #141414;
+    border-left: 1px solid #222;
+    z-index: 30;
+    transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #sidebar.open { right: 0; }
+
+  #sb-head {
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid #1e1e1e;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  #sb-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    word-break: break-all;
+    line-height: 1.4;
+  }
+
+  #sb-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-top: 5px;
+    color: #000;
+  }
+
+  #sb-close {
+    background: none;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 4px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+
+  #sb-close:hover { color: #aaa; }
+
+  #sb-body {
+    padding: 18px;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a #141414;
+  }
+
+  #sb-desc {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+
+  .conn-section { margin-bottom: 18px; }
+
+  .conn-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: #444;
+    margin-bottom: 8px;
+  }
+
+  .conn-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #1a1a1a;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .conn-item:hover { opacity: 0.65; }
+  .conn-item:last-child { border-bottom: none; }
+
+  .conn-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .conn-name {
+    font-size: 11px;
+    color: #bbb;
+    word-break: break-all;
+  }
+
+  /* Legend */
+  #legend {
+    position: fixed;
+    bottom: 22px;
+    left: 24px;
+    background: #141414;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 12px 14px;
+    z-index: 10;
+  }
+
+  .leg-title {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: #444;
+    margin-bottom: 9px;
+  }
+
+  .leg-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+  }
+
+  .leg-row:last-child { margin-bottom: 0; }
+
+  .leg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .leg-name {
+    font-size: 10px;
+    color: #666;
+  }
+
+  /* Node count badge */
+  #info {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 10;
+    font-size: 10px;
+    color: #333;
+    text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="title">REACH — Architecture Map</div>
+  <div id="subtitle">Click any node to explore. Drag to rearrange. Scroll to zoom.</div>
+</div>
+
+<div id="controls"></div>
+
+<svg id="graph"></svg>
+
+<div id="sidebar">
+  <div id="sb-head">
+    <div>
+      <div id="sb-name"></div>
+      <div id="sb-badge"></div>
+    </div>
+    <button id="sb-close">✕</button>
+  </div>
+  <div id="sb-body">
+    <p id="sb-desc"></p>
+    <div id="sb-conns"></div>
+  </div>
+</div>
+
+<div id="legend"></div>
+
+<div id="info">
+  <div id="info-nodes"></div>
+  <div id="info-edges"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const LAYERS = {
+  pipeline: { color: '#f97316', label: 'Pipeline' },
+  ml:       { color: '#a855f7', label: 'ML' },
+  backend:  { color: '#3b82f6', label: 'Backend' },
+  frontend: { color: '#22c55e', label: 'Frontend' },
+  data:     { color: '#eab308', label: 'Data' },
+  external: { color: '#ef4444', label: 'External' },
+};
+
+const LAYER_X = {
+  external: -680,
+  pipeline: -380,
+  data:     -80,
+  ml:        200,
+  backend:   480,
+  frontend:  820,
+};
+
+const nodes = [
+  // Pipeline
+  { id: 'scrape_yc',       label: 'scrape_yc.py',        layer: 'pipeline', desc: 'Fetches raw company records from YC\'s Algolia API across 7 target batches.' },
+  { id: 'scrape_founders', label: 'scrape_founders.py',   layer: 'pipeline', desc: 'Scrapes individual YC company pages for founder name, title, avatar, LinkedIn, and Twitter.' },
+  { id: 'enrich',          label: 'enrich.py',            layer: 'pipeline', desc: 'Runs Qwen3 4B locally to generate summaries, need_tags, industry, and stage detail per company.' },
+  { id: 'enrich_config',   label: 'enrich_config.py',     layer: 'pipeline', desc: 'Configuration and prompt templates for the LLM enrichment step.' },
+  { id: 'normalize_tags',  label: 'normalize_tags.py',    layer: 'pipeline', desc: 'Normalizes raw LLM-generated tags into a canonical skill vocabulary.' },
+  { id: 'supabase_write',  label: 'supabase_write.py',    layer: 'pipeline', desc: 'Merges all pipeline outputs and upserts to Supabase in batches of 500.' },
+  // ML
+  { id: 'ml_config',    label: 'ml/config.py',    layer: 'ml', desc: 'Central config for all ML file paths and hyperparameters.' },
+  { id: 'ml_features',  label: 'ml/features.py',  layer: 'ml', desc: 'Converts raw company dicts into a numeric feature matrix for model training.' },
+  { id: 'ml_labeling',  label: 'ml/labeling.py',  layer: 'ml', desc: 'Exports companies to CSV for hand-labeling and imports validated labels back.' },
+  { id: 'ml_train',     label: 'ml/train.py',     layer: 'ml', desc: 'Trains logistic regression and XGBoost with 5-fold CV, saves the winning model.' },
+  { id: 'ml_predict',   label: 'ml/predict.py',   layer: 'ml', desc: 'Scores all companies with reachability probability and high/medium/low category.' },
+  { id: 'ml_artifacts', label: 'ml/artifacts/',   layer: 'ml', desc: 'Saved model (model.joblib) and feature column order (feature_cols.json).' },
+  // Backend
+  { id: 'main',             label: 'main.py',                layer: 'backend', desc: 'FastAPI entry point with CORS and environment config.' },
+  { id: 'auth',             label: 'auth.py',                layer: 'backend', desc: 'Verifies ES256 and HS256 JWTs via Supabase JWKS with in-memory caching.' },
+  { id: 'db',               label: 'db.py',                  layer: 'backend', desc: 'Supabase client singleton using service role key.' },
+  { id: 'schemas',          label: 'schemas.py',             layer: 'backend', desc: 'Pydantic models for all request and response types.' },
+  { id: 'router_users',     label: 'routers/users.py',       layer: 'backend', desc: 'GET /me and PUT /me with auto-create on first call.' },
+  { id: 'router_companies', label: 'routers/companies.py',   layer: 'backend', desc: 'GET /companies (ranked feed) and GET /companies/{id} (brief + guidance + 3-brief limit).' },
+  { id: 'router_outreach',  label: 'routers/outreach.py',    layer: 'backend', desc: 'POST, GET, PUT for outreach log with status enum enforcement.' },
+  { id: 'scorer',           label: 'matching/scorer.py',     layer: 'backend', desc: 'Computes match score from skill overlap and combines with reachability into rank score.' },
+  { id: 'rules',            label: 'guidance/rules.py',      layer: 'backend', desc: 'Rule-based engine generating 4-field outreach guidance from skill × stage × industry.' },
+  // Frontend — pages
+  { id: 'page_landing', label: 'app/page.tsx',               layer: 'frontend', desc: 'Landing page with hero, live search, and floating founder card animation.' },
+  { id: 'page_login',   label: 'app/login/page.tsx',         layer: 'frontend', desc: 'Email and password login with redirect preservation.' },
+  { id: 'page_signup',  label: 'app/signup/page.tsx',        layer: 'frontend', desc: 'Signup form that redirects to onboarding on success.' },
+  { id: 'page_feed',    label: 'app/feed/page.tsx',          layer: 'frontend', desc: 'Founder card feed with search, industry and reachability filters, and pagination.' },
+  { id: 'page_founder', label: 'app/founder/[id]/page.tsx',  layer: 'frontend', desc: 'Full founder brief with guidance card, email workspace, and outreach logging.' },
+  { id: 'page_onboard', label: 'app/onboard/page.tsx',       layer: 'frontend', desc: 'Skill selection flow that saves to user profile.' },
+  { id: 'page_profile', label: 'app/profile/page.tsx',       layer: 'frontend', desc: 'Edit school, grad year, skills, bio, GitHub, and portfolio URL.' },
+  { id: 'page_tracker', label: 'app/tracker/page.tsx',       layer: 'frontend', desc: 'Outreach log with stats header, status dropdowns, and follow-up banners.' },
+  // Frontend — components
+  { id: 'c_foundercard',    label: 'components/FounderCard.tsx',    layer: 'frontend', desc: 'Card showing founder photo, company, match badge, and reachability score.' },
+  { id: 'c_floatingcards',  label: 'components/FloatingCards.tsx',  layer: 'frontend', desc: 'Animated drifting founder cards on the landing page.' },
+  { id: 'c_founderbief',    label: 'components/FounderBrief.tsx',   layer: 'frontend', desc: 'Detailed founder and company info panel on the brief page.' },
+  { id: 'c_guidancecard',   label: 'components/GuidanceCard.tsx',   layer: 'frontend', desc: 'Displays rule-based outreach guidance alongside the email workspace.' },
+  { id: 'c_emailworkspace', label: 'components/EmailWorkspace.tsx', layer: 'frontend', desc: 'Textarea with word count and Gmail mailto link generation.' },
+  { id: 'c_skillpicker',    label: 'components/SkillPicker.tsx',    layer: 'frontend', desc: 'Chip-based skill selection with search across 3128 skill tags.' },
+  { id: 'c_outreachrow',    label: 'components/OutreachRow.tsx',    layer: 'frontend', desc: 'Single row in the tracker table with inline status editing.' },
+  { id: 'c_outreachform',   label: 'components/OutreachForm.tsx',   layer: 'frontend', desc: 'Form for logging a new outreach entry on the brief page.' },
+  { id: 'c_statsheader',    label: 'components/StatsHeader.tsx',    layer: 'frontend', desc: 'Summary stats (sent, replied, meetings) at the top of the tracker.' },
+  { id: 'c_filterbar',      label: 'components/FilterBar.tsx',      layer: 'frontend', desc: 'Industry and reachability filter controls on the feed page.' },
+  // Frontend — lib
+  { id: 'lib_api',      label: 'lib/api.ts',      layer: 'frontend', desc: 'Fetch wrapper with auth headers and automatic token refresh.' },
+  { id: 'lib_useauth',  label: 'lib/useAuth.ts',  layer: 'frontend', desc: 'Session hook with requireAuth redirect for protected pages.' },
+  { id: 'lib_skills',   label: 'lib/skills.ts',   layer: 'frontend', desc: '3128 skill tags and top 30 popular tags for the skill picker.' },
+  // Data
+  { id: 'd_raw',      label: 'data/raw_companies.json',        layer: 'data', desc: 'Raw Algolia output — 1517 companies with slug and logo.' },
+  { id: 'd_founders', label: 'data/founders.json',             layer: 'data', desc: 'Scraped founder data — 1509 founders with 99.5% coverage.' },
+  { id: 'd_scores',   label: 'data/reachability_scores.json',  layer: 'data', desc: 'ML output — probability and category for 1519 companies.' },
+  { id: 'd_enriched', label: 'data/enriched_companies.json',   layer: 'data', desc: 'LLM-enriched records with summaries, tags, and stage detail.' },
+  { id: 'd_skillvocab', label: 'data/skill_vocabulary.json',   layer: 'data', desc: 'Canonical skill taxonomy generated during tag normalization.' },
+  { id: 'd_labeling', label: 'data/labeling/',                 layer: 'data', desc: '200 hand-labeled companies used to train the reachability classifier.' },
+  // External
+  { id: 'ext_supabase', label: 'Supabase',       layer: 'external', desc: 'Hosted Postgres database and auth provider (project: kclvufnaebzqfjwrelbv).' },
+  { id: 'ext_algolia',  label: 'Algolia API',    layer: 'external', desc: "YC's search backend used to fetch the company directory." },
+  { id: 'ext_ollama',   label: 'Ollama/Qwen3',   layer: 'external', desc: 'Local LLM runtime for offline company enrichment on M2 Mac.' },
+  { id: 'ext_vercel',   label: 'Vercel',          layer: 'external', desc: 'Frontend deployment platform.' },
+  { id: 'ext_railway',  label: 'Railway',         layer: 'external', desc: 'Backend FastAPI deployment platform.' },
+];
+
+const RAW_EDGES = [
+  ['ext_algolia',  'scrape_yc'],
+  ['scrape_yc',    'd_raw'],
+  ['scrape_founders', 'd_founders'],
+  ['d_raw',        'ml_labeling'],
+  ['ml_labeling',  'ml_train'],
+  ['d_raw',        'ml_features'],
+  ['ml_features',  'ml_train'],
+  ['ml_train',     'ml_artifacts'],
+  ['ml_artifacts', 'ml_predict'],
+  ['ml_predict',   'd_scores'],
+  ['d_raw',        'enrich'],
+  ['ext_ollama',   'enrich'],
+  ['enrich',       'd_enriched'],
+  ['d_enriched',   'normalize_tags'],
+  ['normalize_tags', 'd_skillvocab'],
+  ['d_scores',     'supabase_write'],
+  ['d_enriched',   'supabase_write'],
+  ['d_founders',   'supabase_write'],
+  ['d_raw',        'supabase_write'],
+  ['supabase_write', 'ext_supabase'],
+  ['ext_supabase', 'auth'],
+  ['ext_supabase', 'router_companies'],
+  ['ext_supabase', 'router_users'],
+  ['ext_supabase', 'router_outreach'],
+  ['auth',         'router_companies'],
+  ['auth',         'router_users'],
+  ['auth',         'router_outreach'],
+  ['scorer',       'router_companies'],
+  ['rules',        'router_companies'],
+  ['main',         'router_users'],
+  ['main',         'router_companies'],
+  ['main',         'router_outreach'],
+  ['schemas',      'router_users'],
+  ['schemas',      'router_companies'],
+  ['schemas',      'router_outreach'],
+  ['router_companies', 'lib_api'],
+  ['router_users',     'lib_api'],
+  ['router_outreach',  'lib_api'],
+  ['lib_api',      'page_feed'],
+  ['lib_api',      'page_founder'],
+  ['lib_api',      'page_tracker'],
+  ['lib_api',      'page_onboard'],
+  ['lib_api',      'page_profile'],
+  ['lib_useauth',  'page_feed'],
+  ['lib_useauth',  'page_founder'],
+  ['lib_useauth',  'page_tracker'],
+  ['page_landing', 'c_floatingcards'],
+  ['page_feed',    'c_foundercard'],
+  ['page_feed',    'c_filterbar'],
+  ['page_founder', 'c_founderbief'],
+  ['page_founder', 'c_guidancecard'],
+  ['page_founder', 'c_emailworkspace'],
+  ['page_founder', 'c_outreachform'],
+  ['page_tracker', 'c_outreachrow'],
+  ['page_tracker', 'c_statsheader'],
+  ['page_onboard', 'c_skillpicker'],
+  ['lib_skills',   'c_skillpicker'],
+  ['ext_vercel',   'page_landing'],
+  ['ext_railway',  'main'],
+];
+
+// ─── SETUP ───────────────────────────────────────────────────────────────────
+
+const W = window.innerWidth;
+const H = window.innerHeight;
+
+const svg = d3.select('#graph')
+  .attr('width', W)
+  .attr('height', H);
+
+const g = svg.append('g');
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.08, 5])
+  .on('zoom', (event) => g.attr('transform', event.transform));
+
+svg.call(zoom);
+
+// Initial transform: center the graph horizontally
+svg.call(zoom.transform, d3.zoomIdentity.translate(W / 2 + 60, H / 2).scale(0.62));
+
+// ─── NODE PREP ───────────────────────────────────────────────────────────────
+
+const nodeById = new Map(nodes.map(n => [n.id, n]));
+
+// Degree count
+const degree = new Map(nodes.map(n => [n.id, 0]));
+RAW_EDGES.forEach(([s, t]) => {
+  degree.set(s, (degree.get(s) || 0) + 1);
+  degree.set(t, (degree.get(t) || 0) + 1);
+});
+
+const maxDeg = Math.max(...degree.values());
+const rScale = d3.scaleSqrt().domain([0, maxDeg]).range([7, 22]);
+
+nodes.forEach(n => {
+  n.r = Math.max(7, rScale(degree.get(n.id) || 0));
+  n.x = LAYER_X[n.layer] + (Math.random() - 0.5) * 120;
+  n.y = (Math.random() - 0.5) * 480;
+});
+
+// Adjacency maps for sidebar (string-keyed, independent of D3 mutation)
+const outMap = new Map(nodes.map(n => [n.id, []]));
+const inMap  = new Map(nodes.map(n => [n.id, []]));
+RAW_EDGES.forEach(([s, t]) => {
+  outMap.get(s)?.push(t);
+  inMap.get(t)?.push(s);
+});
+
+// Edges for D3
+const edges = RAW_EDGES.map(([s, t]) => ({ source: s, target: t }));
+
+// ─── SVG DEFS ────────────────────────────────────────────────────────────────
+
+const defs = svg.append('defs');
+
+// Glow filter
+const filter = defs.append('filter').attr('id', 'glow').attr('x', '-50%').attr('y', '-50%').attr('width', '200%').attr('height', '200%');
+filter.append('feGaussianBlur').attr('stdDeviation', '3.5').attr('result', 'blur');
+const feMerge = filter.append('feMerge');
+feMerge.append('feMergeNode').attr('in', 'blur');
+feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+// Arrow marker (dim)
+defs.append('marker')
+  .attr('id', 'arrow')
+  .attr('viewBox', '0 -4 10 8')
+  .attr('refX', 10)
+  .attr('refY', 0)
+  .attr('orient', 'auto')
+  .attr('markerWidth', 7)
+  .attr('markerHeight', 7)
+  .append('path')
+  .attr('d', 'M0,-4L10,0L0,4')
+  .attr('fill', '#2e2e2e');
+
+// Arrow marker (highlighted)
+defs.append('marker')
+  .attr('id', 'arrow-hi')
+  .attr('viewBox', '0 -4 10 8')
+  .attr('refX', 10)
+  .attr('refY', 0)
+  .attr('orient', 'auto')
+  .attr('markerWidth', 7)
+  .attr('markerHeight', 7)
+  .append('path')
+  .attr('d', 'M0,-4L10,0L0,4')
+  .attr('fill', '#555');
+
+// ─── FORCE SIMULATION ────────────────────────────────────────────────────────
+
+const sim = d3.forceSimulation(nodes)
+  .force('link',    d3.forceLink(edges).id(d => d.id).distance(130).strength(0.7))
+  .force('charge',  d3.forceManyBody().strength(-320).distanceMax(500))
+  .force('collide', d3.forceCollide().radius(d => d.r + 16).strength(0.8))
+  .force('x',       d3.forceX(d => LAYER_X[d.layer]).strength(0.09))
+  .force('y',       d3.forceY(0).strength(0.025));
+
+// ─── DRAW EDGES ──────────────────────────────────────────────────────────────
+
+const linkG = g.append('g').attr('class', 'links');
+
+const link = linkG.selectAll('line')
+  .data(edges)
+  .join('line')
+  .attr('stroke', '#222')
+  .attr('stroke-width', 1.2)
+  .attr('marker-end', 'url(#arrow)');
+
+// ─── DRAW NODES ──────────────────────────────────────────────────────────────
+
+const nodeG = g.append('g').attr('class', 'nodes');
+
+const node = nodeG.selectAll('.node')
+  .data(nodes)
+  .join('g')
+  .attr('class', 'node')
+  .style('cursor', 'pointer')
+  .call(
+    d3.drag()
+      .on('start', (ev, d) => { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag',  (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
+      .on('end',   (ev, d) => { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
+  )
+  .on('click', (ev, d) => { ev.stopPropagation(); selectNode(d); })
+  .on('mouseover', (ev, d) => { if (!sidebarNode) highlight(d.id); })
+  .on('mouseout',  () =>      { if (!sidebarNode) clearHighlight(); });
+
+// Circle
+node.append('circle')
+  .attr('r', d => d.r)
+  .attr('fill', d => LAYERS[d.layer].color)
+  .attr('fill-opacity', 0.82)
+  .attr('stroke', d => d3.color(LAYERS[d.layer].color).brighter(0.8))
+  .attr('stroke-width', 1.5);
+
+// Short label beneath node
+node.append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dy', d => d.r + 11)
+  .attr('font-size', 8.5)
+  .attr('font-family', 'Inter, sans-serif')
+  .attr('fill', '#4a4a4a')
+  .text(d => shortLabel(d.label));
+
+// ─── TICK ────────────────────────────────────────────────────────────────────
+
+sim.on('tick', () => {
+  link
+    .attr('x1', d => edgePt(d.source, d.target, d.source.r).x)
+    .attr('y1', d => edgePt(d.source, d.target, d.source.r).y)
+    .attr('x2', d => edgePt(d.target, d.source, d.target.r + 11).x)
+    .attr('y2', d => edgePt(d.target, d.source, d.target.r + 11).y);
+
+  node.attr('transform', d => `translate(${d.x},${d.y})`);
+});
+
+function edgePt(from, to, offset) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+  return { x: from.x + (dx / dist) * offset, y: from.y + (dy / dist) * offset };
+}
+
+// ─── LABEL HELPER ────────────────────────────────────────────────────────────
+
+function shortLabel(label) {
+  const parts = label.split('/').filter(Boolean);
+  if (!parts.length) return label;
+  const last = parts[parts.length - 1];
+  // Disambiguate page.tsx files by their parent dir
+  if (last === 'page.tsx') {
+    const parent = parts[parts.length - 2] || 'page';
+    if (parent === 'app') return 'landing';
+    if (parent === '[id]') return 'founder/[id]';
+    return parent;
+  }
+  const name = last.replace(/\.(py|tsx?|json)$/, '');
+  return name.length > 17 ? name.slice(0, 15) + '…' : name;
+}
+
+// ─── HIGHLIGHT ───────────────────────────────────────────────────────────────
+
+let sidebarNode = null;
+
+function highlight(id) {
+  const connected = new Set([id]);
+  edges.forEach(e => {
+    const sid = e.source.id, tid = e.target.id;
+    if (sid === id) connected.add(tid);
+    if (tid === id) connected.add(sid);
+  });
+
+  node.select('circle')
+    .attr('fill-opacity', d => connected.has(d.id) ? 1 : 0.12)
+    .attr('stroke-opacity', d => connected.has(d.id) ? 1 : 0.1)
+    .attr('filter', d => d.id === id ? 'url(#glow)' : null);
+
+  node.select('text')
+    .attr('fill', d => connected.has(d.id) ? '#888' : '#252525');
+
+  link
+    .attr('stroke', e => (e.source.id === id || e.target.id === id) ? '#555' : '#161616')
+    .attr('stroke-width', e => (e.source.id === id || e.target.id === id) ? 1.8 : 0.8)
+    .attr('marker-end', e => (e.source.id === id || e.target.id === id) ? 'url(#arrow-hi)' : 'url(#arrow)');
+}
+
+function clearHighlight() {
+  node.select('circle')
+    .attr('fill-opacity', 0.82)
+    .attr('stroke-opacity', 1)
+    .attr('filter', null);
+
+  node.select('text').attr('fill', '#4a4a4a');
+
+  link
+    .attr('stroke', '#222')
+    .attr('stroke-width', 1.2)
+    .attr('marker-end', 'url(#arrow)');
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
+
+function selectNode(d) {
+  sidebarNode = d;
+  highlight(d.id);
+
+  document.getElementById('sb-name').textContent = d.label;
+  const badge = document.getElementById('sb-badge');
+  badge.textContent = LAYERS[d.layer].label;
+  badge.style.background = LAYERS[d.layer].color;
+  document.getElementById('sb-desc').textContent = d.desc;
+
+  const connsEl = document.getElementById('sb-conns');
+  connsEl.innerHTML = '';
+
+  const outs = (outMap.get(d.id) || []).map(id => nodeById.get(id)).filter(Boolean);
+  const ins  = (inMap.get(d.id)  || []).map(id => nodeById.get(id)).filter(Boolean);
+
+  if (outs.length) {
+    connsEl.appendChild(connSection(`Outputs to (${outs.length})`, outs));
+  }
+  if (ins.length) {
+    connsEl.appendChild(connSection(`Receives from (${ins.length})`, ins));
+  }
+
+  document.getElementById('sidebar').classList.add('open');
+}
+
+function connSection(title, targets) {
+  const sec = document.createElement('div');
+  sec.className = 'conn-section';
+  const lbl = document.createElement('div');
+  lbl.className = 'conn-label';
+  lbl.textContent = title;
+  sec.appendChild(lbl);
+  targets.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'conn-item';
+    row.innerHTML = `<div class="conn-dot" style="background:${LAYERS[t.layer].color}"></div><div class="conn-name">${t.label}</div>`;
+    row.addEventListener('click', () => selectNode(t));
+    sec.appendChild(row);
+  });
+  return sec;
+}
+
+function closeSidebar() {
+  sidebarNode = null;
+  clearHighlight();
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+document.getElementById('sb-close').addEventListener('click', e => { e.stopPropagation(); closeSidebar(); });
+svg.on('click', () => closeSidebar());
+
+// ─── LAYER FILTERS ───────────────────────────────────────────────────────────
+
+const activeL = new Set(Object.keys(LAYERS));
+const controls = document.getElementById('controls');
+
+Object.entries(LAYERS).forEach(([key, { color, label }]) => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn on';
+  btn.style.setProperty('--c', color);
+  btn.textContent = label;
+  btn.addEventListener('click', () => {
+    if (activeL.has(key)) { activeL.delete(key); btn.classList.remove('on'); }
+    else                   { activeL.add(key);    btn.classList.add('on'); }
+    applyFilter();
+  });
+  controls.appendChild(btn);
+});
+
+// Reset view button
+const resetBtn = document.createElement('button');
+resetBtn.id = 'reset-btn';
+resetBtn.textContent = 'Reset View';
+resetBtn.addEventListener('click', () => {
+  svg.transition().duration(600).call(
+    zoom.transform,
+    d3.zoomIdentity.translate(W / 2 + 60, H / 2).scale(0.62)
+  );
+});
+controls.appendChild(resetBtn);
+
+function applyFilter() {
+  node.style('display', d => activeL.has(d.layer) ? null : 'none');
+  link.style('display', e => activeL.has(e.source.layer) && activeL.has(e.target.layer) ? null : 'none');
+}
+
+// ─── LEGEND ──────────────────────────────────────────────────────────────────
+
+const legendEl = document.getElementById('legend');
+const legTitle = document.createElement('div');
+legTitle.className = 'leg-title';
+legTitle.textContent = 'Layers';
+legendEl.appendChild(legTitle);
+
+Object.entries(LAYERS).forEach(([, { color, label }]) => {
+  const row = document.createElement('div');
+  row.className = 'leg-row';
+  row.innerHTML = `<div class="leg-dot" style="background:${color}"></div><div class="leg-name">${label}</div>`;
+  legendEl.appendChild(row);
+});
+
+// Node size hint
+const legSize = document.createElement('div');
+legSize.className = 'leg-title';
+legSize.style.marginTop = '10px';
+legSize.textContent = 'Node size = connections';
+legendEl.appendChild(legSize);
+
+// ─── INFO ─────────────────────────────────────────────────────────────────────
+
+document.getElementById('info-nodes').textContent = `${nodes.length} nodes`;
+document.getElementById('info-edges').textContent = `${RAW_EDGES.length} edges`;
+
+// ─── RESIZE ──────────────────────────────────────────────────────────────────
+
+window.addEventListener('resize', () => {
+  svg.attr('width', window.innerWidth).attr('height', window.innerHeight);
+});
+</script>
+</body>
+</html>
