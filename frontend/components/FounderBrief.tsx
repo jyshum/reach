@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { CompanyBrief } from "@/lib/types";
 
 function getInitials(name: string): string {
@@ -28,13 +29,38 @@ export default function FounderBrief({ brief }: FounderBriefProps) {
   const displayName = brief.founder_name || brief.name;
   const title = brief.founder_title || "Founder";
   const initials = getInitials(displayName);
+  const companyInitials = getInitials(brief.name);
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-start gap-5">
-        <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 font-display text-2xl text-accent">
-          {initials}
+        <div className="flex w-24 flex-shrink-0 flex-col items-center gap-3">
+          {brief.founder_avatar_url ? (
+            <img
+              src={brief.founder_avatar_url}
+              alt={displayName}
+              className="h-20 w-20 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/10 font-display text-2xl text-accent">
+              {initials}
+            </div>
+          )}
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-card-border bg-background">
+            {brief.small_logo_url ? (
+              <img
+                src={brief.small_logo_url}
+                alt={`${brief.name} logo`}
+                className="h-8 w-8 object-contain"
+              />
+            ) : (
+              <span className="text-xs font-semibold text-tertiary">
+                {companyInitials}
+              </span>
+            )}
+          </div>
         </div>
         <div>
           <h1 className="font-display text-3xl text-primary">{displayName}</h1>

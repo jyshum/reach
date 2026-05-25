@@ -43,8 +43,8 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
   ].filter(Boolean);
 
   const content = (
-    <span className="flex items-center gap-4 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
-      <span className="h-14 w-14 flex-shrink-0">
+    <span className="flex items-start gap-4 rounded-xl border border-card-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
+      <span className="flex w-16 flex-shrink-0 flex-col items-center gap-3 pt-1">
         {company.founder_avatar_url ? (
           <img
             src={company.founder_avatar_url}
@@ -56,6 +56,20 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
             {founderInitials}
           </span>
         )}
+
+        <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-card-border bg-background">
+          {company.small_logo_url ? (
+            <img
+              src={company.small_logo_url}
+              alt={`${company.name} logo`}
+              className="h-7 w-7 object-contain"
+            />
+          ) : (
+            <span className="text-[11px] font-semibold text-tertiary">
+              {companyInitials}
+            </span>
+          )}
+        </span>
       </span>
 
       <span className="min-w-0 flex-1">
@@ -101,20 +115,6 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
             </span>
           ))}
         </span>
-      </span>
-
-      <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-card-border bg-background">
-        {company.small_logo_url ? (
-          <img
-            src={company.small_logo_url}
-            alt={`${company.name} logo`}
-            className="h-8 w-8 object-contain"
-          />
-        ) : (
-          <span className="text-xs font-semibold text-tertiary">
-            {companyInitials}
-          </span>
-        )}
       </span>
     </span>
   );
