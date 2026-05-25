@@ -21,7 +21,8 @@ def test_extract_company_maps_fields():
         "long_description": "We are building a safer supply chain.",
         "all_locations": "San Francisco, CA, USA",
         "objectID": "acme-corp",
-        "logo": "https://example.com/logo.png",
+        "slug": "acme-corp",
+        "small_logo_thumb_url": "https://example.com/logo.png",
         "extra_field": "should be ignored",
     }
     result = extract_company(hit)
@@ -42,6 +43,8 @@ def test_extract_company_maps_fields():
         "subindustry": "B2B -> Supply Chain and Logistics",
         "long_description": "We are building a safer supply chain.",
         "all_locations": "San Francisco, CA, USA",
+        "slug": "acme-corp",
+        "small_logo_thumb_url": "https://example.com/logo.png",
     }
 
 
@@ -68,6 +71,8 @@ def test_extract_company_handles_missing_fields():
         "subindustry": "",
         "long_description": "",
         "all_locations": "",
+        "slug": "",
+        "small_logo_thumb_url": "",
     }
 
 
@@ -196,6 +201,10 @@ def test_scrape_yc_directory_creates_parent_dir(tmp_path):
 
 
 @pytest.mark.integration
+@pytest.mark.skipif(
+    os.environ.get("RUN_INTEGRATION_TESTS") != "1",
+    reason="live Algolia test requires RUN_INTEGRATION_TESTS=1",
+)
 def test_fetch_batch_live_returns_companies():
     """Smoke test: hit real Algolia API for W24 batch."""
     result = fetch_batch("Winter 2024")

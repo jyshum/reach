@@ -17,7 +17,7 @@ def auth_headers():
 
 def _mock_auth(user_id="user-uuid-123"):
     """Patch auth to return a fixed user ID."""
-    return patch("backend.auth.jwt.decode", return_value={"sub": user_id, "email": "test@school.edu"})
+    return patch("backend.auth._decode_token", return_value={"sub": user_id, "email": "test@school.edu"})
 
 
 def test_get_me_creates_new_user(client, auth_headers):
