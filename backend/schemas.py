@@ -15,6 +15,7 @@ class UserProfile(BaseModel):
     school: str | None = None
     grad_year: int | None = None
     skills: list[str] = []
+    location: str | None = None
     bio: str | None = None
     github_url: str | None = None
     portfolio_url: str | None = None
@@ -25,6 +26,7 @@ class UserUpdate(BaseModel):
     school: str | None = None
     grad_year: int | None = None
     skills: list[str] | None = None
+    location: str | None = None
     bio: str | None = None
     github_url: str | None = None
     portfolio_url: str | None = None
@@ -56,6 +58,7 @@ class CompanyCard(BaseModel):
     founder_title: str | None = None
     founder_avatar_url: str | None = None
     need_tags: list[str] = []
+    capability_tags: list[str] = []
     match_score: int = 0
     rank_score: float = 0.0
 
@@ -74,9 +77,11 @@ class CompanyBrief(BaseModel):
     technical_level: str | None = None
     team_size: int | None = None
     need_tags: list[str] = []
+    capability_tags: list[str] = []
     specific_projects: list[str] = []
     reachability_score: str | None = None
     reachability_probability: float | None = None
+    reachability_factors: list[str] = []
     founder_name: str | None = None
     founder_title: str | None = None
     founder_linkedin: str | None = None
