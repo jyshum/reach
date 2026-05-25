@@ -30,3 +30,11 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
