@@ -108,7 +108,7 @@ export default function BriefPage({
       </div>
 
       <EmailWorkspace
-        founderEmail={null}
+        founderEmail={brief.founder_email}
         companyName={brief.name}
       />
 
