@@ -13,7 +13,7 @@ def test_small_team_building_mvp_hiring_nearby_contactable():
     }
     score, factors = compute_reachability(company, student_location="San Francisco")
     assert score >= 0.9
-    assert "Small team" in factors
+    assert any("Small team" in f for f in factors)
     assert "Building MVP" in factors
     assert "Hiring" in factors
     assert "Near you" in factors
@@ -47,7 +47,7 @@ def test_missing_team_size_no_penalty():
     }
     score, factors = compute_reachability(company)
     assert score > 0.0
-    assert "Small team" not in factors
+    assert not any("Small team" in f for f in factors)
 
 
 def test_no_student_location_skips_proximity():

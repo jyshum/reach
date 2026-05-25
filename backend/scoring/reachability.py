@@ -27,7 +27,7 @@ def compute_reachability(
     team_size = company.get("team_size")
     if team_size is not None and 1 <= team_size <= SMALL_TEAM_MAX:
         score += TEAM_SIZE_WEIGHT
-        factors.append("Small team")
+        factors.append(f"Small team ({team_size} people)")
 
     # Factor 2: Stage
     stage = company.get("stage_detail")
