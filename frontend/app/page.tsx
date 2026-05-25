@@ -65,8 +65,9 @@ export default function LandingPage() {
       </div>
 
       <div className="relative z-10 flex w-full flex-col items-center text-center">
-        <h1 className="max-w-2xl font-display text-4xl leading-tight text-primary md:text-5xl">
-          You don&apos;t need connections. You need the right founder.
+        <h1 className="max-w-3xl font-display text-4xl leading-tight text-primary md:text-5xl">
+          <span className="block">You don&apos;t need connections.</span>
+          <span className="block">You need the right founder.</span>
         </h1>
 
         <div className="mt-8 w-full max-w-3xl">
