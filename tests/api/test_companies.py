@@ -129,37 +129,6 @@ def test_get_company_brief_success(client, auth_headers):
     assert response.json()["name"] == "AlphaCo"
 
 
-def test_get_company_brief_free_tier_limit(client, auth_headers):
-    mock_db = MagicMock()
-
-    company = _sample_companies()[0]
-    user_data = [{"id": "user-uuid-123", "skills": [], "tier": "free"}]
-    # Already viewed 3 different companies
-    existing_views = [
-        {"user_id": "user-uuid-123", "company_id": 10},
-        {"user_id": "user-uuid-123", "company_id": 20},
-        {"user_id": "user-uuid-123", "company_id": 30},
-    ]
-
-    def table_side_effect(table_name):
-        mock_table = MagicMock()
-        if table_name == "companies":
-            mock_table.select.return_value.eq.return_value.execute.return_value.data = [company]
-        elif table_name == "users":
-            mock_table.select.return_value.eq.return_value.execute.return_value.data = user_data
-        elif table_name == "brief_views":
-            mock_table.select.return_value.eq.return_value.execute.return_value.data = existing_views
-        return mock_table
-
-    mock_db.table.side_effect = table_side_effect
-
-    with _mock_auth(), patch("backend.routers.companies.get_db", return_value=mock_db):
-        response = client.get("/companies/1", headers=auth_headers)
-
-    assert response.status_code == 403
-    assert "upgrade" in response.json()["detail"].lower() or "limit" in response.json()["detail"].lower()
-
-
 def test_get_company_brief_includes_guidance(client, auth_headers):
     mock_db = MagicMock()
 

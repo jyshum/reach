@@ -10,8 +10,6 @@ from backend.schemas import CompanyCard, CompanyBrief
 
 router = APIRouter()
 
-FREE_BRIEF_LIMIT = 3
-
 
 @router.get("/companies", response_model=list[CompanyCard])
 def list_companies(
@@ -72,17 +70,9 @@ def get_brief(
         raise HTTPException(status_code=404, detail="Company not found")
     company = result.data[0]
 
-    # Get user for matching, location and tier check
-    user_result = db.table("users").select("skills, location, tier").eq("id", user_id).execute()
-    user = user_result.data[0] if user_result.data else {"skills": [], "location": None, "tier": "free"}
-
-    # Check brief limit for free tier
-    if user.get("tier") == "free":
-        views_result = db.table("brief_views").select("company_id").eq("user_id", user_id).execute()
-        viewed_ids = [v["company_id"] for v in views_result.data]
-
-        if company_id not in viewed_ids and len(viewed_ids) >= FREE_BRIEF_LIMIT:
-            raise HTTPException(status_code=403, detail="Free tier limit reached. Upgrade to unlock more briefs.")
+    # Get user for matching and location
+    user_result = db.table("users").select("skills, location").eq("id", user_id).execute()
+    user = user_result.data[0] if user_result.data else {"skills": [], "location": None}
 
     # Record the view (ignore if already exists due to unique constraint)
     try:
