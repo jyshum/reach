@@ -4,7 +4,18 @@ import { useState, useEffect, useRef } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
 import { fetchProfile, updateProfile } from "@/lib/api";
 import type { UserProfile } from "@/lib/types";
-import SkillPicker from "@/components/SkillPicker";
+import CapabilityPicker from "@/components/CapabilityPicker";
+import { TIER2_CAPABILITIES, type Tier1Key } from "@/lib/capabilities";
+
+function deriveTier1(tier2: string[]): Tier1Key[] {
+  const categories = new Set<Tier1Key>();
+  for (const [cat, caps] of Object.entries(TIER2_CAPABILITIES)) {
+    if (tier2.some((t) => (caps as string[]).includes(t))) {
+      categories.add(cat as Tier1Key);
+    }
+  }
+  return Array.from(categories);
+}
 
 export default function ProfilePage() {
   const { authenticated, loading: authLoading } = useRequireAuth();
@@ -19,9 +30,12 @@ export default function ProfilePage() {
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+  const [selectedTier1, setSelectedTier1] = useState<Tier1Key[]>([]);
+  const [location, setLocation] = useState("");
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const skillsDebounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const savedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -38,6 +52,8 @@ export default function ProfilePage() {
         setGithubUrl(p.github_url ?? "");
         setPortfolioUrl(p.portfolio_url ?? "");
         setSkills(p.skills ?? []);
+        setSelectedTier1(deriveTier1(p.skills ?? []));
+        setLocation(p.location ?? "");
       })
       .catch(() => {
         // leave defaults
@@ -47,21 +63,26 @@ export default function ProfilePage() {
       });
   }, [authenticated]);
 
-  function handleSkillsChange(newSkills: string[]) {
-    setSkills(newSkills);
+  function handleTier1Change(newTier1: Tier1Key[]) {
+    setSelectedTier1(newTier1);
+  }
+
+  function handleTier2Change(newTier2: string[]) {
+    setSkills(newTier2);
 
     if (skillsDebounceRef.current !== undefined) {
       clearTimeout(skillsDebounceRef.current);
     }
 
     skillsDebounceRef.current = setTimeout(() => {
-      updateProfile({ skills: newSkills }).catch(() => {});
+      updateProfile({ skills: newTier2 }).catch(() => {});
     }, 500);
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setSaveError(null);
 
     try {
       await updateProfile({
@@ -70,6 +91,7 @@ export default function ProfilePage() {
         bio: bio || null,
         github_url: githubUrl || null,
         portfolio_url: portfolioUrl || null,
+        location: location || null,
       });
 
       setSaved(true);
@@ -80,8 +102,8 @@ export default function ProfilePage() {
       savedTimeoutRef.current = setTimeout(() => {
         setSaved(false);
       }, 2000);
-    } catch {
-      // silently fail for now
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Failed to save");
     } finally {
       setSaving(false);
     }
@@ -125,10 +147,15 @@ export default function ProfilePage() {
           )}
         </section>
 
-        {/* Section 2: Skills */}
+        {/* Section 2: Capabilities */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-display text-2xl text-primary">Skills</h2>
-          <SkillPicker selected={skills} onChange={handleSkillsChange} />
+          <h2 className="font-display text-2xl text-primary">Capabilities</h2>
+          <CapabilityPicker
+            selectedTier1={selectedTier1}
+            selectedTier2={skills}
+            onChangeTier1={handleTier1Change}
+            onChangeTier2={handleTier2Change}
+          />
         </section>
 
         {/* Section 3: Profile Details */}
@@ -147,6 +174,21 @@ export default function ProfilePage() {
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
                 placeholder="e.g. Stanford University"
+                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+              />
+            </div>
+
+            {/* Location */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="location" className="text-sm font-medium text-secondary">
+                Location
+              </label>
+              <input
+                id="location"
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="e.g. San Francisco, New York, Austin..."
                 className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
               />
             </div>
@@ -225,6 +267,9 @@ export default function ProfilePage() {
 
               {saved && (
                 <span className="text-sm text-reach-high">Saved</span>
+              )}
+              {saveError && (
+                <span className="text-sm text-red-600">{saveError}</span>
               )}
             </div>
           </form>
