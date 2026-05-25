@@ -5,6 +5,7 @@ from backend.auth import get_current_user, get_optional_user
 from backend.db import get_db
 from backend.matching.scorer import rank_companies, match_score
 from backend.guidance.rules import generate_guidance
+from backend.scoring.reachability import compute_reachability, bucket_score
 from backend.schemas import CompanyCard, CompanyBrief
 
 router = APIRouter()
@@ -35,15 +36,23 @@ def list_companies(
     result = query.execute()
     companies = result.data
 
-    # Get user skills if authenticated
-    user_skills = None
+    # Get user capabilities and location if authenticated
+    user_capabilities = None
+    student_location = None
     if user_id:
-        user_result = db.table("users").select("skills").eq("id", user_id).execute()
-        if user_result.data and user_result.data[0].get("skills"):
-            user_skills = user_result.data[0]["skills"]
+        user_result = db.table("users").select("skills, location").eq("id", user_id).execute()
+        if user_result.data:
+            user_capabilities = user_result.data[0].get("skills")
+            student_location = user_result.data[0].get("location")
+
+    # Compute reachability scores on the fly
+    for company in companies:
+        score, factors = compute_reachability(company, student_location)
+        company["reachability_probability"] = score
+        company["reachability_score"] = bucket_score(score)
 
     # Rank and paginate
-    ranked = rank_companies(companies, user_skills)
+    ranked = rank_companies(companies, user_capabilities)
     start = (page - 1) * limit
     return ranked[start:start + limit]
 
@@ -54,7 +63,7 @@ def get_brief(
     request: Request,
     user_id: str = Depends(get_current_user),
 ):
-    """Get full company brief. Gated by tier for free users."""
+    """Get full company brief."""
     db = get_db()
 
     # Get company
@@ -63,12 +72,12 @@ def get_brief(
         raise HTTPException(status_code=404, detail="Company not found")
     company = result.data[0]
 
-    # Get user for tier check
-    user_result = db.table("users").select("skills, tier").eq("id", user_id).execute()
-    user = user_result.data[0] if user_result.data else {"skills": [], "tier": "free"}
+    # Get user for matching, location and tier check
+    user_result = db.table("users").select("skills, location, tier").eq("id", user_id).execute()
+    user = user_result.data[0] if user_result.data else {"skills": [], "location": None, "tier": "free"}
 
     # Check brief limit for free tier
-    if user["tier"] == "free":
+    if user.get("tier") == "free":
         views_result = db.table("brief_views").select("company_id").eq("user_id", user_id).execute()
         viewed_ids = [v["company_id"] for v in views_result.data]
 
@@ -81,9 +90,16 @@ def get_brief(
     except Exception:
         pass  # Already viewed — unique constraint prevents duplicate
 
-    # Add match score and guidance
+    # Compute reachability
     user_skills = user.get("skills", []) or []
-    ms = match_score(user_skills, company.get("need_tags", []) or [])
+    student_location = user.get("location")
+    score, factors = compute_reachability(company, student_location)
+    company["reachability_probability"] = score
+    company["reachability_score"] = bucket_score(score)
+    company["reachability_factors"] = factors
+
+    # Match score and guidance
+    ms = match_score(user_skills, company.get("capability_tags") or company.get("need_tags") or [])
     company["match_score"] = ms
     company["guidance"] = generate_guidance(user_skills, company)
 

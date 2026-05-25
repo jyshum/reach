@@ -52,8 +52,8 @@ def test_get_companies_anonymous(client):
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 2
-    # Sorted by reachability when no auth
-    assert data[0]["name"] == "AlphaCo"
+    # Sorted by reachability when no auth — BetaCo scores higher (building-mvp + hiring)
+    assert data[0]["name"] == "BetaCo"
 
 
 def test_get_companies_with_auth_ranked(client, auth_headers):
