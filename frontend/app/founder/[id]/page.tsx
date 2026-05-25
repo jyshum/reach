@@ -32,9 +32,7 @@ export default function BriefPage({
         const allOutreach = await fetchOutreach();
         setOutreach(allOutreach.filter((e) => e.company_id === Number(id)));
       } catch (err) {
-        if (err instanceof ApiError && err.status === 403) {
-          setError("paywall");
-        } else if (err instanceof ApiError && err.status === 404) {
+        if (err instanceof ApiError && err.status === 404) {
           setError("not-found");
         } else {
           setError("unknown");
@@ -59,19 +57,6 @@ export default function BriefPage({
       <div className="flex min-h-screen items-center justify-center">
         <p className="text-secondary">Loading...</p>
       </div>
-    );
-  }
-
-  if (error === "paywall") {
-    return (
-      <main className="mx-auto max-w-2xl px-6 py-20 text-center">
-        <h2 className="font-display text-2xl text-primary">
-          You&apos;ve used your 3 free briefs
-        </h2>
-        <p className="mt-3 text-secondary">
-          Complete your profile to unlock unlimited access.
-        </p>
-      </main>
     );
   }
 
@@ -102,6 +87,35 @@ export default function BriefPage({
   return (
     <main className="mx-auto max-w-2xl px-6 py-8">
       <FounderBrief brief={brief} />
+
+      {brief.reachability_factors && brief.reachability_factors.length > 0 && (
+        <div className="my-4 rounded-lg border border-card-border bg-card p-4">
+          <p className="text-sm font-medium text-primary">
+            Why this founder is{" "}
+            <span
+              className={
+                brief.reachability_score === "high"
+                  ? "text-reach-high"
+                  : brief.reachability_score === "medium"
+                    ? "text-reach-med"
+                    : "text-reach-low"
+              }
+            >
+              {brief.reachability_score} reachability
+            </span>
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {brief.reachability_factors.map((factor) => (
+              <span
+                key={factor}
+                className="rounded-full bg-background px-2.5 py-0.5 text-xs text-secondary"
+              >
+                {factor}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="my-8">
         <GuidanceCard guidance={brief.guidance} />
