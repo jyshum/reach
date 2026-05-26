@@ -1,20 +1,20 @@
 """Re-enrich companies with constrained capability tags from fixed vocabulary."""
 
 import json
+import re
 import time
 import requests
 
 from backend.capabilities import ALL_TIER2, TIER2_LABELS
-from backend.pipeline.enrich_config import (
-    OLLAMA_URL,
-    OLLAMA_MODEL,
-    OLLAMA_TEMPERATURE,
-)
+from backend.pipeline.enrich_config import OLLAMA_TEMPERATURE
+
+OLLAMA_BASE_URL = "http://localhost:11434"
+ENRICHMENT_MODEL = "llama3.2:3b"
 
 SAVE_EVERY = 50
 MAX_RETRIES = 3
 
-SYSTEM_PROMPT = "You are a startup analyst. Given a company description, select the most relevant capabilities from the provided list. RESPOND WITH VALID JSON ONLY."
+SYSTEM_PROMPT = "You output ONLY valid JSON. No explanation, no text, no markdown. Just the JSON object."
 
 PROMPT_TEMPLATE = """Company: {name}
 Description: {description}
@@ -44,25 +44,40 @@ def build_prompt(company: dict) -> str:
 def call_ollama(prompt: str) -> dict | None:
     try:
         response = requests.post(
-            f"{OLLAMA_URL}/api/generate",
+            f"{OLLAMA_BASE_URL}/api/generate",
             json={
-                "model": OLLAMA_MODEL,
+                "model": ENRICHMENT_MODEL,
                 "prompt": prompt,
                 "system": SYSTEM_PROMPT,
                 "stream": False,
-                "options": {"temperature": OLLAMA_TEMPERATURE, "num_predict": 128},
+                "think": False,
+                "options": {"temperature": OLLAMA_TEMPERATURE, "num_predict": 64},
             },
             timeout=60,
         )
         response.raise_for_status()
-        text = response.json()["response"]
-        # Strip markdown code fences if present
+        data = response.json()
+        # Qwen3 puts output in "thinking" field when in thinking mode
+        text = data.get("response") or ""
+        if not text.strip():
+            text = data.get("thinking") or ""
+        # Try to extract JSON from the text (may contain reasoning)
         text = text.strip()
-        if text.startswith("```"):
-            text = text.split("\n", 1)[1] if "\n" in text else text[3:]
-        if text.endswith("```"):
-            text = text[:-3]
-        return json.loads(text.strip())
+        # Try direct parse first
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            pass
+        # Strip markdown code fences
+        if "```" in text:
+            match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL)
+            if match:
+                return json.loads(match.group(1))
+        # Find JSON object anywhere in text
+        match = re.search(r'\{"capability_tags"\s*:\s*\[.*?\]\}', text, re.DOTALL)
+        if match:
+            return json.loads(match.group(0))
+        return None
     except Exception:
         return None
 
