@@ -75,11 +75,40 @@ create table if not exists outreach_log (
   created_at timestamptz not null default now()
 );
 
+-- Gmail OAuth tokens (encrypted, one per user)
+create table if not exists gmail_tokens (
+  user_id uuid primary key references users(id) on delete cascade,
+  encrypted_refresh_token text not null,
+  gmail_email text not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Email log (tracks generated drafts, edits, and sends)
+create table if not exists email_log (
+  id serial primary key,
+  user_id uuid not null references users(id) on delete cascade,
+  company_id int not null references companies(id) on delete cascade,
+  original_draft text not null,
+  final_text text,
+  subject_line text,
+  tone text not null default 'curious',
+  gmail_thread_id text,
+  gmail_message_id text,
+  status text not null default 'draft' check (status in ('draft', 'sent', 'replied', 'no_response')),
+  sent_at timestamptz,
+  reply_detected_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
 -- Indexes for common queries
 create index if not exists idx_companies_reachability on companies(reachability_probability desc);
 create index if not exists idx_companies_industry on companies(industry);
 create index if not exists idx_brief_views_user on brief_views(user_id);
 create index if not exists idx_outreach_user on outreach_log(user_id);
+create index if not exists idx_email_log_user on email_log(user_id);
+create index if not exists idx_email_log_status on email_log(status);
+create index if not exists idx_email_log_thread on email_log(gmail_thread_id);
 
 -- Auto-update updated_at on users
 create or replace function update_updated_at()
@@ -96,6 +125,10 @@ create or replace trigger users_updated_at
 
 create or replace trigger companies_updated_at
   before update on companies
+  for each row execute function update_updated_at();
+
+create or replace trigger gmail_tokens_updated_at
+  before update on gmail_tokens
   for each row execute function update_updated_at();
 
 -- Enable Row Level Security
@@ -117,3 +150,16 @@ create policy "Users can insert own brief_views" on brief_views for insert with 
 create policy "Users can view own outreach" on outreach_log for select using (auth.uid() = user_id);
 create policy "Users can insert own outreach" on outreach_log for insert with check (auth.uid() = user_id);
 create policy "Users can update own outreach" on outreach_log for update using (auth.uid() = user_id);
+
+-- Gmail tokens RLS
+alter table gmail_tokens enable row level security;
+create policy "Users can view own gmail_tokens" on gmail_tokens for select using (auth.uid() = user_id);
+create policy "Users can insert own gmail_tokens" on gmail_tokens for insert with check (auth.uid() = user_id);
+create policy "Users can update own gmail_tokens" on gmail_tokens for update using (auth.uid() = user_id);
+create policy "Users can delete own gmail_tokens" on gmail_tokens for delete using (auth.uid() = user_id);
+
+-- Email log RLS
+alter table email_log enable row level security;
+create policy "Users can view own email_log" on email_log for select using (auth.uid() = user_id);
+create policy "Users can insert own email_log" on email_log for insert with check (auth.uid() = user_id);
+create policy "Users can update own email_log" on email_log for update using (auth.uid() = user_id);
