@@ -115,3 +115,18 @@ export const INDUSTRIES = [
   "energy",
   "other",
 ] as const;
+
+// --- Email ---
+
+export interface EmailDraft {
+  draft: string;
+  tone: string;
+  company_id: number;
+  company_name: string;
+  founder_name: string | null;
+}
+
+export interface GmailStatus {
+  connected: boolean;
+  gmail_email: string | null;
+}
