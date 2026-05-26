@@ -82,11 +82,22 @@ def call_ollama(prompt: str) -> dict | None:
         return None
 
 
+_LABEL_TO_SLUG = {label.lower(): slug for slug, label in TIER2_LABELS.items()}
+_SLUG_SET = set(ALL_TIER2)
+
+
+def _normalize_tag(tag: str) -> str | None:
+    """Accept either a slug or a display label, return the slug."""
+    if tag in _SLUG_SET:
+        return tag
+    return _LABEL_TO_SLUG.get(tag.lower())
+
+
 def validate_tags(data: dict) -> list[str]:
     tags = data.get("capability_tags", [])
     if not isinstance(tags, list):
         return []
-    valid = [t for t in tags if t in ALL_TIER2]
+    valid = [s for t in tags if (s := _normalize_tag(t)) is not None]
     return valid
 
 
