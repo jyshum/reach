@@ -120,3 +120,44 @@ class OutreachEntry(BaseModel):
     followup_date: str | None = None
     notes: str | None = None
     created_at: str | None = None
+
+
+# --- Email ---
+
+class EmailGenerate(BaseModel):
+    company_id: int
+    tone: Literal["curious", "friendly"] = "curious"
+
+
+class EmailDraft(BaseModel):
+    draft: str
+    tone: str
+    company_id: int
+    company_name: str
+    founder_name: str | None = None
+
+
+class EmailSend(BaseModel):
+    company_id: int
+    subject_line: str
+    final_text: str
+    original_draft: str
+    tone: str = "curious"
+
+
+class EmailLogEntry(BaseModel):
+    id: int
+    company_id: int
+    original_draft: str
+    final_text: str | None = None
+    subject_line: str | None = None
+    tone: str
+    status: str
+    sent_at: str | None = None
+    reply_detected_at: str | None = None
+    created_at: str | None = None
+
+
+class GmailStatus(BaseModel):
+    connected: bool
+    gmail_email: str | None = None
