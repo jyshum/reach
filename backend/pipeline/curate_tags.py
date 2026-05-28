@@ -13,16 +13,31 @@ RAW_DATA_PATH = os.path.join(_ROOT, "data", "raw_companies.json")
 OUTPUT_PATH = os.path.join(_ROOT, "data", "curated_tags.json")
 
 MIN_TAG_COUNT = 5
-MAX_TAG_COUNT = 300
+MAX_TAG_COUNT = 500
+
+# Tags to remove entirely — too generic to be useful as interest filters.
+# "AI" and "Artificial Intelligence" are vague; specific sub-tags (Generative AI,
+# Machine Learning, Computer Vision) are kept. "B2B" and "SaaS" are business
+# models, not domains.
+REMOVE_TAGS = {"AI", "Artificial Intelligence", "B2B", "SaaS"}
 
 # Tags that should be merged into a single canonical tag.
 COLLAPSE_MAP = {
-    "AI": "AI / Machine Learning",
-    "Artificial Intelligence": "AI / Machine Learning",
-    "Machine Learning": "AI / Machine Learning",
-    "AIOps": "AI / Machine Learning",
+    "AIOps": "Machine Learning",
     "Enterprise": "Enterprise Software",
     "Enterprise Software": "Enterprise Software",
+    "Hard Tech": "Hardware",
+    "Digital Health": "Health Tech",
+    "Supply Chain": "Logistics",
+    # Industry name aliases (from fallback)
+    "Engineering, Product and Design": "Developer Tools & Infrastructure",
+    "Industrials": "Hardware & Robotics",
+    "Manufacturing and Robotics": "Hardware & Robotics",
+    "Supply Chain and Logistics": "Operations & Automation",
+    "Finance and Accounting": "Finance & Payments",
+    "Healthcare IT": "Healthcare & Bio",
+    "Healthcare Services": "Healthcare & Bio",
+    "Aviation and Space": "Hardware & Robotics",
 }
 
 # Manual assignment of curated tags to visual categories.
@@ -32,6 +47,7 @@ CATEGORY_ASSIGNMENTS = {
     "Conversational AI": "AI / Machine Learning",
     "Computer Vision": "AI / Machine Learning",
     "NLP": "AI / Machine Learning",
+    "Machine Learning": "AI / Machine Learning",
     "Developer Tools": "Developer Tools & Infrastructure",
     "Infrastructure": "Developer Tools & Infrastructure",
     "Open Source": "Developer Tools & Infrastructure",
@@ -50,25 +66,58 @@ CATEGORY_ASSIGNMENTS = {
     "Automation": "Operations & Automation",
     "Workflow Automation": "Operations & Automation",
     "Logistics": "Operations & Automation",
+    "Manufacturing": "Operations & Automation",
     "Sales": "Sales & Marketing",
     "Marketing": "Sales & Marketing",
+    "E-commerce": "Sales & Marketing",
+    "Marketplace": "Sales & Marketing",
     "Compliance": "Security & Compliance",
     "Security": "Security & Compliance",
-    "Education": "Education & Research",
+    "Education": "Education",
     "Climate": "Climate & Energy",
     "Robotics": "Hardware & Robotics",
+    "Hardware": "Hardware & Robotics",
     "Consumer": "Consumer",
+    "Video": "Consumer",
     "Productivity": "Productivity",
+    "Enterprise Software": "Productivity",
+    # Additional industry-name tags from fallback
+    "Legal": "Security & Compliance",
+    "Operations": "Operations & Automation",
+    "Insurance": "Finance & Payments",
+    "Real Estate and Construction": "Real Estate",
+    "Energy": "Climate & Energy",
+    "Gaming": "Consumer",
+    "Defense": "Security & Compliance",
+    "Agriculture": "Climate & Energy",
+    "Recruiting": "Productivity",
+    "Government": "Security & Compliance",
 }
 
 
+def get_company_raw_tags(company: dict) -> list[str]:
+    """Get a company's tags, falling back to industries if tags is empty.
+
+    Many YC companies (~28%) have empty tags arrays but always have
+    industries. We use industries as a fallback source for domain tagging.
+    """
+    tags = [t for t in company.get("tags", []) if t not in REMOVE_TAGS]
+    if tags:
+        return tags
+    # Fallback: use industries (skip "B2B" which is a business model, not a domain)
+    return [ind for ind in company.get("industries", []) if ind != "B2B"]
+
+
 def count_raw_tags(raw_path: str = RAW_DATA_PATH) -> dict[str, int]:
-    """Count occurrences of each tag across all companies."""
+    """Count occurrences of each tag across all companies.
+
+    Strips tags in REMOVE_TAGS. Falls back to industries for tagless companies.
+    """
     with open(raw_path) as f:
         companies = json.load(f)
     counts: dict[str, int] = Counter()
     for company in companies:
-        for tag in company.get("tags", []):
+        for tag in get_company_raw_tags(company):
             counts[tag] += 1
     return dict(counts)
 
@@ -110,13 +159,13 @@ def build_categories(
 
 
 def map_company_tags(
-    company_raw_tags: list[str],
+    company: dict,
     collapse_map: dict[str, str],
     valid_tags: set[str],
 ) -> list[str]:
-    """Map a company's raw YC tags to curated tags, dropping invalid ones."""
+    """Map a company's raw tags (with industry fallback) to curated tags."""
     mapped = set()
-    for tag in company_raw_tags:
+    for tag in get_company_raw_tags(company):
         canonical = collapse_map.get(tag, tag)
         if canonical in valid_tags:
             mapped.add(canonical)
