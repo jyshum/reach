@@ -4,17 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useRequireAuth } from "@/lib/useAuth";
 import { fetchProfile, updateProfile } from "@/lib/api";
-import CapabilityPicker from "@/components/CapabilityPicker";
-import type { Tier1Key } from "@/lib/capabilities";
+import InterestPicker from "@/components/InterestPicker";
 
 export default function OnboardPage() {
   const { authenticated, loading: authLoading } = useRequireAuth();
   const router = useRouter();
 
   const [profileLoading, setProfileLoading] = useState(true);
-  const [step, setStep] = useState<"capabilities" | "location">("capabilities");
-  const [selectedTier1, setSelectedTier1] = useState<Tier1Key[]>([]);
-  const [selectedTier2, setSelectedTier2] = useState<string[]>([]);
+  const [step, setStep] = useState<"interests" | "location">("interests");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [location, setLocation] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -23,7 +21,7 @@ export default function OnboardPage() {
 
     fetchProfile()
       .then((profile) => {
-        if (profile.skills && profile.skills.length > 0) {
+        if (profile.interests && profile.interests.length > 0) {
           router.replace("/feed");
         } else {
           setProfileLoading(false);
@@ -38,7 +36,7 @@ export default function OnboardPage() {
     setSaving(true);
     try {
       await updateProfile({
-        skills: selectedTier2,
+        interests: selectedInterests,
         location: location.trim() || null,
       });
     } catch {
@@ -60,30 +58,27 @@ export default function OnboardPage() {
   return (
     <main className="mx-auto max-w-2xl px-6 py-20">
       <div className="flex flex-col gap-6">
-        {step === "capabilities" && (
+        {step === "interests" && (
           <>
             <div className="flex flex-col gap-2">
               <h1 className="font-display text-4xl text-primary">
-                What are you good at?
+                What domains excite you?
               </h1>
               <p className="text-secondary">
-                Pick your focus areas so we can match you with the right
-                founders.
+                Pick up to 2 domains so we can match you with founders building in those areas.
               </p>
             </div>
 
-            <CapabilityPicker
-              selectedTier1={selectedTier1}
-              selectedTier2={selectedTier2}
-              onChangeTier1={setSelectedTier1}
-              onChangeTier2={setSelectedTier2}
+            <InterestPicker
+              selected={selectedInterests}
+              onChange={setSelectedInterests}
             />
 
             <div className="flex flex-col items-start gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setStep("location")}
-                disabled={selectedTier2.length === 0}
+                disabled={selectedInterests.length === 0}
                 className="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white transition-opacity disabled:opacity-40"
               >
                 Continue

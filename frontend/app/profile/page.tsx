@@ -2,20 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchProfile, updateProfile } from "@/lib/api";
+import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail } from "@/lib/api";
+import type { GmailStatus } from "@/lib/types";
 import type { UserProfile } from "@/lib/types";
-import CapabilityPicker from "@/components/CapabilityPicker";
-import { TIER2_CAPABILITIES, type Tier1Key } from "@/lib/capabilities";
-
-function deriveTier1(tier2: string[]): Tier1Key[] {
-  const categories = new Set<Tier1Key>();
-  for (const [cat, caps] of Object.entries(TIER2_CAPABILITIES)) {
-    if (tier2.some((t) => (caps as string[]).includes(t))) {
-      categories.add(cat as Tier1Key);
-    }
-  }
-  return Array.from(categories);
-}
+import InterestPicker from "@/components/InterestPicker";
 
 export default function ProfilePage() {
   const { authenticated, loading: authLoading } = useRequireAuth();
@@ -29,15 +19,18 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
-  const [skills, setSkills] = useState<string[]>([]);
-  const [selectedTier1, setSelectedTier1] = useState<Tier1Key[]>([]);
+  const [interests, setInterests] = useState<string[]>([]);
+  const [projects, setProjects] = useState("");
+  const [resumeUrl, setResumeUrl] = useState("");
   const [location, setLocation] = useState("");
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  const skillsDebounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [gmail, setGmail] = useState<GmailStatus>({ connected: false, gmail_email: null });
+  const [gmailLoading, setGmailLoading] = useState(false);
+
   const savedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
@@ -51,8 +44,9 @@ export default function ProfilePage() {
         setBio(p.bio ?? "");
         setGithubUrl(p.github_url ?? "");
         setPortfolioUrl(p.portfolio_url ?? "");
-        setSkills(p.skills ?? []);
-        setSelectedTier1(deriveTier1(p.skills ?? []));
+        setInterests(p.interests ?? []);
+        setProjects(p.projects ?? "");
+        setResumeUrl(p.resume_url ?? "");
         setLocation(p.location ?? "");
       })
       .catch(() => {
@@ -61,23 +55,11 @@ export default function ProfilePage() {
       .finally(() => {
         setProfileLoading(false);
       });
+
+    getGmailStatus()
+      .then((status) => setGmail(status))
+      .catch(() => {});
   }, [authenticated]);
-
-  function handleTier1Change(newTier1: Tier1Key[]) {
-    setSelectedTier1(newTier1);
-  }
-
-  function handleTier2Change(newTier2: string[]) {
-    setSkills(newTier2);
-
-    if (skillsDebounceRef.current !== undefined) {
-      clearTimeout(skillsDebounceRef.current);
-    }
-
-    skillsDebounceRef.current = setTimeout(() => {
-      updateProfile({ skills: newTier2 }).catch(() => {});
-    }, 500);
-  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -92,6 +74,9 @@ export default function ProfilePage() {
         github_url: githubUrl || null,
         portfolio_url: portfolioUrl || null,
         location: location || null,
+        interests,
+        projects: projects || null,
+        resume_url: resumeUrl || null,
       });
 
       setSaved(true);
@@ -106,6 +91,29 @@ export default function ProfilePage() {
       setSaveError(err instanceof Error ? err.message : "Failed to save");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleConnectGmail() {
+    setGmailLoading(true);
+    try {
+      const { url } = await getGmailAuthUrl();
+      window.location.href = url;
+    } catch {
+      setSaveError("Failed to get Gmail auth URL");
+      setGmailLoading(false);
+    }
+  }
+
+  async function handleDisconnectGmail() {
+    setGmailLoading(true);
+    try {
+      await disconnectGmail();
+      setGmail({ connected: false, gmail_email: null });
+    } catch {
+      setSaveError("Failed to disconnect Gmail");
+    } finally {
+      setGmailLoading(false);
     }
   }
 
@@ -147,18 +155,51 @@ export default function ProfilePage() {
           )}
         </section>
 
-        {/* Section 2: Capabilities */}
+        {/* Section 2: Gmail */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-display text-2xl text-primary">Capabilities</h2>
-          <CapabilityPicker
-            selectedTier1={selectedTier1}
-            selectedTier2={skills}
-            onChangeTier1={handleTier1Change}
-            onChangeTier2={handleTier2Change}
+          <h2 className="font-display text-2xl text-primary">Gmail</h2>
+          {gmail.connected ? (
+            <div className="flex items-center justify-between rounded-lg border border-card-border bg-card px-4 py-3">
+              <div>
+                <p className="text-sm font-medium text-primary">{gmail.gmail_email}</p>
+                <p className="text-xs text-secondary">Connected — emails will send from this account</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleDisconnectGmail}
+                disabled={gmailLoading}
+                className="text-sm text-red-500 hover:text-red-600 disabled:opacity-40"
+              >
+                Disconnect
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between rounded-lg border border-dashed border-card-border px-4 py-3">
+              <p className="text-sm text-secondary">
+                Connect Gmail to send emails directly from REACH
+              </p>
+              <button
+                type="button"
+                onClick={handleConnectGmail}
+                disabled={gmailLoading}
+                className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-40"
+              >
+                {gmailLoading ? "Connecting..." : "Connect"}
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* Section 3: Interests */}
+        <section className="flex flex-col gap-3">
+          <h2 className="font-display text-2xl text-primary">Interests</h2>
+          <InterestPicker
+            selected={interests}
+            onChange={setInterests}
           />
         </section>
 
-        {/* Section 3: Profile Details */}
+        {/* Section 4: Profile Details */}
         <section className="flex flex-col gap-4">
           <h2 className="font-display text-2xl text-primary">Profile Details</h2>
 
@@ -251,6 +292,36 @@ export default function ProfilePage() {
                 value={portfolioUrl}
                 onChange={(e) => setPortfolioUrl(e.target.value)}
                 placeholder="https://yoursite.com"
+                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+              />
+            </div>
+
+            {/* Projects */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="projects" className="text-sm font-medium text-secondary">
+                Projects
+              </label>
+              <textarea
+                id="projects"
+                rows={3}
+                value={projects}
+                onChange={(e) => setProjects(e.target.value)}
+                placeholder="Briefly describe something you've built or worked on (e.g., 'Built a trading bot in Python that tracks crypto prices')"
+                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
+              />
+            </div>
+
+            {/* Resume URL */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="resume_url" className="text-sm font-medium text-secondary">
+                Resume URL
+              </label>
+              <input
+                id="resume_url"
+                type="url"
+                value={resumeUrl}
+                onChange={(e) => setResumeUrl(e.target.value)}
+                placeholder="Link to your resume (Google Doc, Dropbox, etc.)"
                 className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
               />
             </div>
