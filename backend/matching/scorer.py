@@ -1,42 +1,38 @@
-"""Match scoring: rank companies by capability overlap + reachability."""
+"""Match scoring: rank companies by interest overlap, reachability as tiebreaker.
 
-REACHABILITY_WEIGHT = 0.4
-MATCH_WEIGHT = 0.6
-MAX_MATCH_SCORE = 3  # Students pick up to 3 tier-2 capabilities
+New matching logic: count overlapping curated tags between user's interests
+and company's yc_tags. Sort by match_score descending, then by
+reachability_probability descending. No weighted formula.
+"""
 
 
-def match_score(user_capabilities: list[str], company_capabilities: list[str]) -> int:
-    """Count overlapping capabilities between user and company."""
-    if not user_capabilities or not company_capabilities:
+def match_score(user_interests: list[str], company_tags: list[str]) -> int:
+    """Count overlapping curated tags between user interests and company tags."""
+    if not user_interests or not company_tags:
         return 0
-    return len(set(user_capabilities) & set(company_capabilities))
+    return len(set(user_interests) & set(company_tags))
 
 
 def rank_companies(
     companies: list[dict],
-    user_capabilities: list[str] | None = None,
+    user_interests: list[str] | None = None,
 ) -> list[dict]:
-    """Rank companies by combined match + reachability score.
+    """Rank companies: match_score descending, reachability as tiebreaker.
 
-    Uses capability_tags for matching, falls back to need_tags if
-    capability_tags is empty (for companies not yet re-enriched).
+    Companies with zero overlap are still returned, ranked below matches.
+    If user has no interests, rank by reachability only.
     """
     scored = []
     for company in companies:
-        company_caps = company.get("capability_tags") or []
-        if not company_caps:
-            company_caps = company.get("need_tags") or []
+        company_tags = company.get("yc_tags") or []
         reachability = company.get("reachability_probability", 0.0) or 0.0
 
-        if user_capabilities:
-            ms = match_score(user_capabilities, company_caps)
-            normalized_match = min(ms / MAX_MATCH_SCORE, 1.0)
-            rank = (REACHABILITY_WEIGHT * reachability) + (MATCH_WEIGHT * normalized_match)
+        if user_interests:
+            ms = match_score(user_interests, company_tags)
         else:
             ms = 0
-            rank = reachability
 
-        scored.append({**company, "match_score": ms, "rank_score": round(rank, 4)})
+        scored.append({**company, "match_score": ms})
 
-    scored.sort(key=lambda c: c["rank_score"], reverse=True)
+    scored.sort(key=lambda c: (c["match_score"], c.get("reachability_probability", 0.0) or 0.0), reverse=True)
     return scored

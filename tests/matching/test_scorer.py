@@ -1,58 +1,75 @@
+"""Tests for interest-based matching scorer."""
+
 from backend.matching.scorer import match_score, rank_companies
 
 
 def test_match_score_full_overlap():
-    user_caps = ["frontend-development", "backend-apis", "data-pipelines"]
-    company_caps = ["frontend-development", "backend-apis", "data-pipelines"]
-    assert match_score(user_caps, company_caps) == 3
+    user_interests = ["Generative AI", "Developer Tools"]
+    company_tags = ["Generative AI", "Developer Tools", "Open Source"]
+    assert match_score(user_interests, company_tags) == 2
 
 
 def test_match_score_partial_overlap():
-    user_caps = ["frontend-development", "backend-apis"]
-    company_caps = ["frontend-development", "deep-learning", "ui-design"]
-    assert match_score(user_caps, company_caps) == 1
+    user_interests = ["Generative AI", "Fintech"]
+    company_tags = ["Generative AI", "Healthcare"]
+    assert match_score(user_interests, company_tags) == 1
 
 
 def test_match_score_no_overlap():
-    user_caps = ["ui-design", "ux-research"]
-    company_caps = ["frontend-development", "data-pipelines"]
-    assert match_score(user_caps, company_caps) == 0
+    user_interests = ["Fintech", "Payments"]
+    company_tags = ["Generative AI", "Developer Tools"]
+    assert match_score(user_interests, company_tags) == 0
 
 
 def test_match_score_empty():
-    assert match_score([], ["frontend-development"]) == 0
-    assert match_score(["frontend-development"], []) == 0
+    assert match_score([], ["Generative AI"]) == 0
+    assert match_score(["Generative AI"], []) == 0
     assert match_score([], []) == 0
 
 
-def test_rank_uses_capability_tags():
+def test_rank_matches_first_then_reachability():
     companies = [
-        {"id": 1, "name": "NoMatch", "capability_tags": ["ui-design"], "reachability_probability": 0.9},
-        {"id": 2, "name": "FullMatch", "capability_tags": ["frontend-development", "backend-apis"], "reachability_probability": 0.5},
-        {"id": 3, "name": "PartialMatch", "capability_tags": ["frontend-development"], "reachability_probability": 0.7},
+        {"id": 1, "name": "HighReachNoMatch", "yc_tags": ["Healthcare"], "reachability_probability": 0.95},
+        {"id": 2, "name": "LowReachFullMatch", "yc_tags": ["Generative AI", "Fintech"], "reachability_probability": 0.3},
+        {"id": 3, "name": "MidReachOneMatch", "yc_tags": ["Generative AI", "Healthcare"], "reachability_probability": 0.6},
     ]
-    user_caps = ["frontend-development", "backend-apis"]
-    ranked = rank_companies(companies, user_caps)
+    ranked = rank_companies(companies, ["Generative AI", "Fintech"])
 
-    assert ranked[0]["name"] == "FullMatch"
+    # Full match (2) comes first despite lowest reachability
+    assert ranked[0]["name"] == "LowReachFullMatch"
     assert ranked[0]["match_score"] == 2
+    # Partial match (1) second
+    assert ranked[1]["name"] == "MidReachOneMatch"
+    assert ranked[1]["match_score"] == 1
+    # No match last despite highest reachability
+    assert ranked[2]["name"] == "HighReachNoMatch"
+    assert ranked[2]["match_score"] == 0
 
 
-def test_rank_no_caps_uses_reachability_only():
+def test_rank_tiebreaks_by_reachability():
     companies = [
-        {"id": 1, "name": "Low", "capability_tags": ["x"], "reachability_probability": 0.3},
-        {"id": 2, "name": "High", "capability_tags": ["y"], "reachability_probability": 0.9},
+        {"id": 1, "name": "LowReach", "yc_tags": ["Generative AI"], "reachability_probability": 0.3},
+        {"id": 2, "name": "HighReach", "yc_tags": ["Generative AI"], "reachability_probability": 0.9},
     ]
-    ranked = rank_companies(companies, user_capabilities=None)
+    ranked = rank_companies(companies, ["Generative AI"])
 
+    # Same match score, higher reachability wins
+    assert ranked[0]["name"] == "HighReach"
+    assert ranked[1]["name"] == "LowReach"
+
+
+def test_rank_no_interests_uses_reachability_only():
+    companies = [
+        {"id": 1, "name": "Low", "yc_tags": ["AI"], "reachability_probability": 0.3},
+        {"id": 2, "name": "High", "yc_tags": ["AI"], "reachability_probability": 0.9},
+    ]
+    ranked = rank_companies(companies, user_interests=None)
     assert ranked[0]["name"] == "High"
-    assert ranked[1]["name"] == "Low"
 
 
-def test_rank_falls_back_to_need_tags():
-    """Companies without capability_tags yet should fall back to need_tags."""
+def test_rank_zero_match_still_included():
     companies = [
-        {"id": 1, "name": "OldData", "need_tags": ["frontend-development"], "reachability_probability": 0.5},
+        {"id": 1, "name": "NoMatch", "yc_tags": ["Healthcare"], "reachability_probability": 0.9},
     ]
-    ranked = rank_companies(companies, ["frontend-development"])
-    assert ranked[0]["match_score"] == 1
+    ranked = rank_companies(companies, ["Fintech"])
+    assert len(ranked) == 1
