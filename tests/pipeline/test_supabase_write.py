@@ -126,3 +126,79 @@ def test_full_pipeline_writes(tmp_path):
     assert call_args[0]["reachability_score"] == "high"
     assert call_args[0]["slug"] == "testco"
     assert call_args[0]["founder_name"] == "Test Founder"
+
+
+def test_merge_includes_new_fields():
+    """Verify founder_bio, has_email, email fields, and yc_tags are included."""
+    enriched = [
+        {"name": "FinCo", "batch": "S24", "summary": "Fintech startup.", "one_liner": "Payments",
+         "need_tags": ["python"], "industry": "fintech", "technical_level": "technical",
+         "stage_detail": "growing", "specific_projects": ["Build API"],
+         "description": "FinCo.", "long_description": "Full finco.", "tags": ["Fintech"],
+         "industries": ["Finance and Accounting"], "website": "https://finco.com", "team_size": 8,
+         "stage": "Growth", "status": "Active", "is_hiring": True, "all_locations": "NYC"},
+    ]
+    scores = [
+        {"name": "FinCo", "reachability_score": "high", "reachability_probability": 0.92},
+    ]
+    raw = [
+        {"name": "FinCo", "slug": "finco", "small_logo_thumb_url": "https://example.com/finco.png",
+         "tags": ["Fintech", "Payments"], "industries": ["Finance and Accounting"]},
+    ]
+    founders = [
+        {"company_name": "FinCo", "founder_name": "Fin Founder", "founder_title": "CEO",
+         "founder_avatar_url": "https://example.com/fin.png", "founder_linkedin": "https://linkedin.com/in/fin",
+         "founder_twitter": None, "founder_bio": "Serial fintech entrepreneur with 10 years experience.",
+         "has_email": True},
+    ]
+    emails = [
+        {"company_name": "FinCo", "founder_email": "fin@finco.com",
+         "email_source": "linkedin", "email_confidence": 0.95},
+    ]
+    tag_mapping_data = {
+        "collapse_map": {
+            "AIOps": "Machine Learning",
+            "Finance and Accounting": "Finance & Payments",
+        },
+        "valid_tags": {"Fintech", "Payments", "Finance & Payments", "Machine Learning", "Developer Tools"},
+    }
+
+    merged = merge_company_data(enriched, scores, raw, founders, emails=emails, tag_mapping_data=tag_mapping_data)
+
+    assert len(merged) == 1
+    record = merged[0]
+
+    # founder_bio and has_email
+    assert record["founder_bio"] == "Serial fintech entrepreneur with 10 years experience."
+    assert record["has_email"] is True
+
+    # email fields
+    assert record["founder_email"] == "fin@finco.com"
+    assert record["email_source"] == "linkedin"
+    assert record["email_confidence"] == 0.95
+
+    # yc_tags mapped from raw data
+    assert "Fintech" in record["yc_tags"]
+    assert "Payments" in record["yc_tags"]
+
+
+def test_merge_new_fields_defaults_without_data():
+    """Verify defaults when no email/tag data is provided."""
+    enriched = [
+        {"name": "NoCo", "batch": "W24", "summary": "No extras.", "one_liner": "No",
+         "need_tags": [], "industry": "other", "technical_level": "mixed",
+         "stage_detail": "building-mvp", "specific_projects": [],
+         "description": "No.", "long_description": "", "tags": [],
+         "industries": [], "website": "", "team_size": None,
+         "stage": "", "status": "Active", "is_hiring": False, "all_locations": ""},
+    ]
+
+    merged = merge_company_data(enriched, [], [], [])
+
+    record = merged[0]
+    assert record["founder_bio"] is None
+    assert record["has_email"] is False
+    assert record["founder_email"] is None
+    assert record["email_source"] is None
+    assert record["email_confidence"] is None
+    assert record["yc_tags"] == []
