@@ -1,46 +1,119 @@
-from backend.email.prompt import build_email_prompt
+"""Tests for the interest-aligned email prompt."""
+
+from backend.email.prompt import build_email_prompt, TONES
 
 
-def test_build_prompt_contains_student_info():
+def test_prompt_includes_student_projects():
     result = build_email_prompt(
-        student_bio="HS junior interested in ML, built a sentiment analysis project",
-        student_capabilities=["deep-learning", "data-pipelines"],
+        student_bio="HS junior",
+        student_projects="Built a CNN plant disease classifier using PyTorch",
+        student_interests=["Generative AI", "Healthcare"],
+        portfolio_url="https://alice.dev",
+        github_url="https://github.com/alice",
+        resume_url=None,
         company_name="Pando Bioscience",
-        company_summary="Pando uses AI to design custom enzymes for pharma",
-        specific_projects=["Analyze enzyme screening data", "Create technical docs"],
-        founder_name="Alex Chen",
-        guidance_angle="Lead with your ML project experience",
+        company_summary="AI-driven enzyme engineering",
+        specific_projects=["Enzyme screening pipeline"],
+        founder_name="Will Cao",
+        founder_bio="Will changed her major from engineering machines to engineering bacteria.",
+        tone="curious",
     )
-    assert "sentiment analysis" in result
+    assert "plant disease classifier" in result
     assert "Pando Bioscience" in result
-    assert "Alex Chen" in result
-    assert "enzyme" in result.lower()
+    assert "Will Cao" in result
+    assert "alice.dev" in result
+    assert "github.com/alice" in result
 
 
-def test_build_prompt_with_missing_optionals():
-    result = build_email_prompt(
-        student_bio="CS student",
-        student_capabilities=["frontend-development"],
-        company_name="Acme Corp",
-        company_summary="Building dev tools",
-        specific_projects=[],
-        founder_name="Jane Doe",
-        guidance_angle=None,
-    )
-    assert "Acme Corp" in result
-    assert "Jane Doe" in result
-
-
-def test_prompt_enforces_constraints():
+def test_prompt_includes_founder_bio():
     result = build_email_prompt(
         student_bio="Student",
-        student_capabilities=["backend-apis"],
-        company_name="Test Co",
-        company_summary="Test summary",
-        specific_projects=["Build an API"],
-        founder_name="Sam",
-        guidance_angle="Lead with API experience",
+        student_projects=None,
+        student_interests=["Developer Tools"],
+        portfolio_url=None,
+        github_url=None,
+        resume_url=None,
+        company_name="TestCo",
+        company_summary="Dev tools for teams",
+        specific_projects=[],
+        founder_name="Bob",
+        founder_bio="Bob spent 10 years at Google building infrastructure tools.",
+        tone="friendly",
     )
-    # Prompt should instruct short, student-voice email
-    assert "4-5 sentences" in result or "short" in result.lower()
-    assert "student" in result.lower()
+    assert "10 years at Google" in result
+
+
+def test_prompt_handles_all_none_optionals():
+    result = build_email_prompt(
+        student_bio="Student",
+        student_projects=None,
+        student_interests=[],
+        portfolio_url=None,
+        github_url=None,
+        resume_url=None,
+        company_name="TestCo",
+        company_summary="Building things",
+        specific_projects=[],
+        founder_name="Sam",
+        founder_bio=None,
+        tone="curious",
+    )
+    assert "TestCo" in result
+    assert "Sam" in result
+
+
+def test_prompt_includes_resume_url():
+    result = build_email_prompt(
+        student_bio="Student",
+        student_projects=None,
+        student_interests=[],
+        portfolio_url=None,
+        github_url=None,
+        resume_url="https://docs.google.com/my-resume",
+        company_name="TestCo",
+        company_summary="Building things",
+        specific_projects=[],
+        founder_name="Sam",
+        founder_bio=None,
+        tone="earnest",
+    )
+    assert "docs.google.com/my-resume" in result
+
+
+def test_tone_changes_voice():
+    base = dict(
+        student_bio="Student",
+        student_projects=None,
+        student_interests=[],
+        portfolio_url=None,
+        github_url=None,
+        resume_url=None,
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        founder_bio=None,
+    )
+    curious = build_email_prompt(**base, tone="curious")
+    scrappy = build_email_prompt(**base, tone="scrappy")
+    assert "curious" in curious.lower()
+    assert "Resourceful" in scrappy
+
+
+def test_prompt_emphasizes_domain_alignment():
+    result = build_email_prompt(
+        student_bio="Student",
+        student_projects="Built a trading bot",
+        student_interests=["Fintech", "Payments"],
+        portfolio_url=None,
+        github_url=None,
+        resume_url=None,
+        company_name="PayCo",
+        company_summary="Payment infrastructure for SMBs",
+        specific_projects=[],
+        founder_name="Jane",
+        founder_bio=None,
+        tone="curious",
+    )
+    # Prompt should emphasize interest alignment, not skill-gap filling
+    assert "interest" in result.lower() or "into" in result.lower() or "domain" in result.lower()

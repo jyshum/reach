@@ -97,29 +97,24 @@ def generate_email(body: EmailGenerate, user_id: str = Depends(get_current_user)
         raise HTTPException(status_code=404, detail="Company not found")
     company = company_result.data[0]
 
-    user_result = db.table("users").select("skills, bio, location").eq("id", user_id).execute()
+    user_result = db.table("users").select(
+        "interests, projects, bio, portfolio_url, github_url, resume_url"
+    ).eq("id", user_id).execute()
     user = user_result.data[0] if user_result.data else {}
 
-    student_bio = user.get("bio") or "High school student"
-    student_capabilities = user.get("skills") or []
-
-    guidance_angle = None
-    company_caps = company.get("capability_tags") or company.get("need_tags") or []
-    overlap = [c for c in student_capabilities if c in company_caps]
-    if overlap:
-        from backend.capabilities import TIER2_LABELS
-        labels = [TIER2_LABELS.get(c, c) for c in overlap]
-        guidance_angle = f"Lead with your experience in {', '.join(labels)}"
-
     draft = generate_draft(
-        student_bio=student_bio,
-        student_capabilities=student_capabilities,
+        student_bio=user.get("bio") or "High school student",
+        student_projects=user.get("projects"),
+        student_interests=user.get("interests") or [],
+        portfolio_url=user.get("portfolio_url"),
+        github_url=user.get("github_url"),
+        resume_url=user.get("resume_url"),
         company_name=company.get("name", ""),
         company_summary=company.get("summary") or company.get("description") or "",
         specific_projects=company.get("specific_projects") or [],
         founder_name=company.get("founder_name") or "the founder",
+        founder_bio=company.get("founder_bio"),
         tone=body.tone,
-        guidance_angle=guidance_angle,
     )
 
     return {
