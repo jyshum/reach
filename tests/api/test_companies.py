@@ -24,7 +24,7 @@ def _sample_companies():
         {"id": 1, "name": "AlphaCo", "yc_batch": "Winter 2024", "one_liner": "AI for alpha",
          "industry": "ai-ml", "stage_detail": "growing", "technical_level": "technical",
          "team_size": 5, "reachability_score": "high", "reachability_probability": 0.98,
-         "need_tags": ["python scripting", "data analysis"], "status": "Active",
+         "need_tags": ["python scripting", "data analysis"], "yc_tags": ["Machine Learning"], "status": "Active",
          "description": "Alpha does alpha.", "summary": "Alpha builds AI tools.",
          "website": "https://alpha.com", "stage": "Early", "specific_projects": ["Build dashboard", "Write docs"],
          "is_hiring": False, "founder_name": None, "founder_title": None,
@@ -33,7 +33,7 @@ def _sample_companies():
         {"id": 2, "name": "BetaCo", "yc_batch": "Summer 2024", "one_liner": "Design for beta",
          "industry": "consumer", "stage_detail": "building-mvp", "technical_level": "mixed",
          "team_size": 3, "reachability_score": "medium", "reachability_probability": 0.75,
-         "need_tags": ["graphic design", "content writing"], "status": "Active",
+         "need_tags": ["graphic design", "content writing"], "yc_tags": ["Consumer"], "status": "Active",
          "description": "Beta does beta.", "summary": "Beta builds consumer tools.",
          "website": "https://beta.com", "stage": "Early", "specific_projects": ["Design logo", "Write blog"],
          "is_hiring": True, "founder_name": None, "founder_title": None,
@@ -61,8 +61,8 @@ def test_get_companies_with_auth_ranked(client, auth_headers):
     # Companies query
     mock_db.table.return_value.select.return_value.eq.return_value.execute.return_value.data = _sample_companies()
 
-    # User query (has graphic design skill — should boost BetaCo)
-    user_data = [{"id": "user-uuid-123", "skills": ["graphic design", "content writing"]}]
+    # User query (has Consumer interest — should boost BetaCo)
+    user_data = [{"id": "user-uuid-123", "interests": ["Consumer"]}]
 
     def table_side_effect(table_name):
         mock_table = MagicMock()
@@ -80,7 +80,7 @@ def test_get_companies_with_auth_ranked(client, auth_headers):
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 2
-    # BetaCo should rank higher due to skill match
+    # BetaCo should rank higher due to interest match
     assert data[0]["name"] == "BetaCo"
 
 
@@ -106,7 +106,7 @@ def test_get_company_brief_success(client, auth_headers):
     mock_db = MagicMock()
 
     company = _sample_companies()[0]
-    user_data = [{"id": "user-uuid-123", "skills": ["python scripting"], "tier": "paid"}]
+    user_data = [{"id": "user-uuid-123", "interests": ["Machine Learning"], "tier": "paid"}]
     brief_views = []
 
     def table_side_effect(table_name):
@@ -132,8 +132,8 @@ def test_get_company_brief_success(client, auth_headers):
 def test_get_company_brief_includes_guidance(client, auth_headers):
     mock_db = MagicMock()
 
-    company = _sample_companies()[0]  # AlphaCo: ai-ml, growing, python scripting + data analysis
-    user_data = [{"id": "user-uuid-123", "skills": ["python scripting", "data analysis"], "tier": "paid"}]
+    company = _sample_companies()[0]  # AlphaCo: ai-ml, growing, Machine Learning tag
+    user_data = [{"id": "user-uuid-123", "interests": ["Machine Learning"], "tier": "paid"}]
     brief_views = []
 
     def table_side_effect(table_name):
@@ -168,7 +168,7 @@ def test_get_company_brief_no_skills_no_guidance(client, auth_headers):
     mock_db = MagicMock()
 
     company = _sample_companies()[0]
-    user_data = [{"id": "user-uuid-123", "skills": [], "tier": "paid"}]
+    user_data = [{"id": "user-uuid-123", "interests": [], "tier": "paid"}]
     brief_views = []
 
     def table_side_effect(table_name):

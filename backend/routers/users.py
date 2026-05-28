@@ -4,8 +4,15 @@ from fastapi import APIRouter, Depends, Request
 from backend.auth import get_current_user
 from backend.db import get_db
 from backend.schemas import UserProfile, UserUpdate
+from backend.interests import get_categories
 
 router = APIRouter()
+
+
+@router.get("/interests")
+def list_interests():
+    """Return curated interest categories for the frontend picker."""
+    return {"categories": get_categories()}
 
 
 @router.get("/me", response_model=UserProfile)

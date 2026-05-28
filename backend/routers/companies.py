@@ -16,6 +16,7 @@ def list_companies(
     request: Request,
     industry: str | None = Query(None),
     reachability: str | None = Query(None),
+    search: str | None = Query(None),
     page: int = Query(1, ge=1),
     limit: int = Query(50, ge=1, le=100),
 ):
@@ -30,17 +31,19 @@ def list_companies(
         query = query.eq("industry", industry)
     if reachability:
         query = query.eq("reachability_score", reachability)
+    if search:
+        query = query.or_(f"name.ilike.%{search}%,founder_name.ilike.%{search}%")
 
     result = query.execute()
     companies = result.data
 
-    # Get user capabilities and location if authenticated
-    user_capabilities = None
+    # Get user interests and location if authenticated
+    user_interests = None
     student_location = None
     if user_id:
-        user_result = db.table("users").select("skills, location").eq("id", user_id).execute()
+        user_result = db.table("users").select("interests, location").eq("id", user_id).execute()
         if user_result.data:
-            user_capabilities = user_result.data[0].get("skills")
+            user_interests = user_result.data[0].get("interests")
             student_location = user_result.data[0].get("location")
 
     # Compute reachability scores on the fly
@@ -50,7 +53,7 @@ def list_companies(
         company["reachability_score"] = bucket_score(score)
 
     # Rank and paginate
-    ranked = rank_companies(companies, user_capabilities)
+    ranked = rank_companies(companies, user_interests)
     start = (page - 1) * limit
     return ranked[start:start + limit]
 
@@ -71,8 +74,8 @@ def get_brief(
     company = result.data[0]
 
     # Get user for matching and location
-    user_result = db.table("users").select("skills, location").eq("id", user_id).execute()
-    user = user_result.data[0] if user_result.data else {"skills": [], "location": None}
+    user_result = db.table("users").select("interests, location").eq("id", user_id).execute()
+    user = user_result.data[0] if user_result.data else {"interests": [], "location": None}
 
     # Record the view (ignore if already exists due to unique constraint)
     try:
@@ -81,7 +84,7 @@ def get_brief(
         pass  # Already viewed — unique constraint prevents duplicate
 
     # Compute reachability
-    user_skills = user.get("skills", []) or []
+    user_interests = user.get("interests", []) or []
     student_location = user.get("location")
     score, factors = compute_reachability(company, student_location)
     company["reachability_probability"] = score
@@ -89,8 +92,8 @@ def get_brief(
     company["reachability_factors"] = factors
 
     # Match score and guidance
-    ms = match_score(user_skills, company.get("capability_tags") or company.get("need_tags") or [])
+    ms = match_score(user_interests, company.get("yc_tags") or [])
     company["match_score"] = ms
-    company["guidance"] = generate_guidance(user_skills, company)
+    company["guidance"] = generate_guidance(user_interests, company)
 
     return company
