@@ -14,7 +14,11 @@ def test_generate_draft_calls_claude():
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
         draft = generate_draft(
             student_bio="HS senior, ML projects",
-            student_capabilities=["deep-learning", "data-pipelines"],
+            student_projects="Built a CNN plant classifier",
+            student_interests=["Generative AI"],
+            portfolio_url=None,
+            github_url=None,
+            resume_url=None,
             company_name="Pando Bio",
             company_summary="AI enzyme design",
             specific_projects=["Analyze screening data"],
@@ -29,7 +33,7 @@ def test_generate_draft_calls_claude():
     assert call_kwargs["max_tokens"] == 300
 
 
-def test_generate_draft_passes_guidance_angle():
+def test_generate_draft_includes_founder_bio():
     from backend.email.generate import generate_draft
 
     mock_response = MagicMock()
@@ -41,17 +45,21 @@ def test_generate_draft_passes_guidance_angle():
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
         generate_draft(
             student_bio="Student",
-            student_capabilities=["frontend-development"],
+            student_projects=None,
+            student_interests=["Developer Tools"],
+            portfolio_url=None,
+            github_url=None,
+            resume_url=None,
             company_name="TestCo",
             company_summary="Test",
             specific_projects=[],
             founder_name="Jane",
+            founder_bio="Jane built infra tools at Google for 10 years",
             tone="friendly",
-            guidance_angle="Lead with React experience",
         )
 
     prompt_text = mock_client.messages.create.call_args[1]["messages"][0]["content"]
-    assert "Lead with React experience" in prompt_text
+    assert "10 years" in prompt_text
 
 
 def test_generate_draft_uses_correct_tone():
@@ -66,7 +74,11 @@ def test_generate_draft_uses_correct_tone():
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
         generate_draft(
             student_bio="Student",
-            student_capabilities=["backend-apis"],
+            student_projects=None,
+            student_interests=[],
+            portfolio_url=None,
+            github_url=None,
+            resume_url=None,
             company_name="TestCo",
             company_summary="Test",
             specific_projects=[],
