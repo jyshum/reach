@@ -23,7 +23,12 @@ async function authHeaders(): Promise<Record<string, string>> {
 }
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const headers = await authHeaders();
+  const headers: Record<string, string> = {
+    ...(await authHeaders()),
+  };
+  if (options?.body) {
+    headers["Content-Type"] = "application/json";
+  }
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: { ...headers, ...options?.headers },
@@ -46,15 +51,27 @@ export class ApiError extends Error {
   }
 }
 
+export interface InterestCategory {
+  name: string;
+  tags: string[];
+}
+
+export async function fetchInterests(): Promise<InterestCategory[]> {
+  const data = await apiFetch<{ categories: InterestCategory[] }>("/interests");
+  return data.categories;
+}
+
 export async function fetchCompanies(params?: {
   industry?: string;
   reachability?: string;
+  search?: string;
   page?: number;
   limit?: number;
 }): Promise<CompanyCard[]> {
   const query = new URLSearchParams();
   if (params?.industry) query.set("industry", params.industry);
   if (params?.reachability) query.set("reachability", params.reachability);
+  if (params?.search) query.set("search", params.search);
   if (params?.page) query.set("page", String(params.page));
   if (params?.limit) query.set("limit", String(params.limit));
   const qs = query.toString();
@@ -70,7 +87,7 @@ export async function fetchProfile(): Promise<UserProfile> {
 }
 
 export async function updateProfile(
-  data: Partial<Pick<UserProfile, "skills" | "school" | "grad_year" | "bio" | "github_url" | "portfolio_url">>,
+  data: Partial<Pick<UserProfile, "skills" | "school" | "grad_year" | "bio" | "github_url" | "portfolio_url" | "location" | "interests" | "projects" | "resume_url">>,
 ): Promise<UserProfile> {
   return apiFetch<UserProfile>("/me", {
     method: "PUT",
@@ -130,7 +147,7 @@ export async function disconnectGmail(): Promise<void> {
 
 export async function generateEmailDraft(
   companyId: number,
-  tone: "curious" | "friendly" = "curious"
+  tone: "curious" | "friendly" | "scrappy" | "earnest" = "curious"
 ): Promise<EmailDraft> {
   return apiFetch("/email/generate", {
     method: "POST",

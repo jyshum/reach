@@ -12,8 +12,12 @@ export interface CompanyCard {
   founder_name: string | null;
   founder_title: string | null;
   founder_avatar_url: string | null;
+  founder_email: string | null;
+  email_confidence: string | null;
+  has_email: boolean;
   need_tags: string[];
   capability_tags: string[];
+  yc_tags: string[];
   match_score: number;
   rank_score: number;
 }
@@ -40,6 +44,7 @@ export interface CompanyBrief {
   team_size: number | null;
   need_tags: string[];
   capability_tags: string[];
+  yc_tags: string[];
   specific_projects: string[];
   reachability_score: string | null;
   reachability_probability: number | null;
@@ -50,6 +55,9 @@ export interface CompanyBrief {
   founder_twitter: string | null;
   founder_avatar_url: string | null;
   founder_email: string | null;
+  founder_bio: string | null;
+  email_confidence: string | null;
+  has_email: boolean;
   small_logo_url: string | null;
   slug: string | null;
   all_locations: string | null;
@@ -65,10 +73,13 @@ export interface UserProfile {
   school: string | null;
   grad_year: number | null;
   skills: string[];
+  interests: string[];
   location: string | null;
   bio: string | null;
+  projects: string | null;
   github_url: string | null;
   portfolio_url: string | null;
+  resume_url: string | null;
   tier: string;
 }
 
