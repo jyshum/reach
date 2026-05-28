@@ -126,11 +126,33 @@ export default function FounderBrief({ brief }: FounderBriefProps) {
               </a>
             )}
           </div>
+
+          {brief.founder_email && (brief.email_confidence === "high" || brief.email_confidence === "medium") && (
+            <div className="mt-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-700">
+                Email available
+                {brief.email_confidence === "medium" && (
+                  <span className="text-teal-500">(auto-detected)</span>
+                )}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Company Info */}
       <section className="space-y-4">
+        {brief.founder_bio && (
+          <div className="rounded-xl border border-card-border bg-card/50 p-5">
+            <h3 className="mb-2 text-sm font-semibold text-secondary">
+              About {brief.founder_name || "the founder"}
+            </h3>
+            <p className="text-sm leading-relaxed text-primary italic">
+              {brief.founder_bio}
+            </p>
+          </div>
+        )}
+
         {brief.summary && (
           <p className="leading-relaxed text-primary">{brief.summary}</p>
         )}
@@ -152,14 +174,13 @@ export default function FounderBrief({ brief }: FounderBriefProps) {
           )}
         </div>
 
-        {/* Need tags */}
-        {brief.need_tags.length > 0 && (
+        {(brief.yc_tags || []).length > 0 && (
           <div>
             <h3 className="mb-2 text-sm font-semibold text-secondary">
-              Skills they need
+              Domain tags
             </h3>
             <div className="flex flex-wrap gap-1.5">
-              {brief.need_tags.map((tag) => (
+              {brief.yc_tags.map((tag) => (
                 <span
                   key={tag}
                   className="rounded-full bg-accent/10 px-3 py-1 text-xs text-accent"

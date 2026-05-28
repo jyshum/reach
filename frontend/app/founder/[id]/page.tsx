@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchBrief, fetchOutreach, ApiError } from "@/lib/api";
+import { fetchBrief, fetchOutreach, getGmailStatus, ApiError } from "@/lib/api";
 import type { CompanyBrief, OutreachEntry } from "@/lib/types";
 import FounderBrief from "@/components/FounderBrief";
 import GuidanceCard from "@/components/GuidanceCard";
@@ -21,6 +21,7 @@ export default function BriefPage({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [outreach, setOutreach] = useState<OutreachEntry[]>([]);
+  const [gmailConnected, setGmailConnected] = useState(false);
 
   useEffect(() => {
     if (!authenticated) return;
@@ -31,6 +32,8 @@ export default function BriefPage({
         setBrief(data);
         const allOutreach = await fetchOutreach();
         setOutreach(allOutreach.filter((e) => e.company_id === Number(id)));
+        const gmail = await getGmailStatus().catch(() => ({ connected: false, gmail_email: null }));
+        setGmailConnected(gmail.connected);
       } catch (err) {
         if (err instanceof ApiError && err.status === 404) {
           setError("not-found");
@@ -123,7 +126,12 @@ export default function BriefPage({
 
       <EmailWorkspace
         founderEmail={brief.founder_email}
+        emailConfidence={brief.email_confidence}
         companyName={brief.name}
+        companyId={brief.id}
+        founderName={brief.founder_name}
+        founderLinkedin={brief.founder_linkedin}
+        gmailConnected={gmailConnected}
       />
 
       <div className="mt-8 space-y-4">

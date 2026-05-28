@@ -38,7 +38,7 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
     company.industry,
     company.team_size ? `${company.team_size} people` : null,
     company.match_score > 0
-      ? `${company.match_score} skill${company.match_score === 1 ? "" : "s"} match`
+      ? `${company.match_score} interest${company.match_score === 1 ? "" : "s"} match`
       : null,
   ].filter(Boolean);
 
@@ -84,6 +84,11 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
               {company.reachability_score}
             </span>
           )}
+          {(company.email_confidence === "high" || company.email_confidence === "medium") && (
+            <span className="flex-shrink-0 rounded bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">
+              Email
+            </span>
+          )}
         </span>
 
         <span className="mt-0.5 block text-sm text-secondary">
@@ -106,7 +111,7 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
               {tag}
             </span>
           ))}
-          {company.need_tags.map((tag) => (
+          {(company.yc_tags || []).slice(0, 3).map((tag) => (
             <span
               key={tag}
               className="rounded bg-accent/10 px-2 py-0.5 text-xs text-accent"

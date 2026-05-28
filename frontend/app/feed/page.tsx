@@ -12,8 +12,8 @@ import LoadMoreButton from "@/components/LoadMoreButton";
 
 const PAGE_SIZE = 20;
 
-const filterKey = (industry: string, reachability: string) =>
-  `${industry}\u0000${reachability}`;
+const filterKey = (industry: string, reachability: string, search: string) =>
+  `${industry}\u0000${reachability}\u0000${search}`;
 
 function FeedContent() {
   const { authenticated, loading: authLoading } = useRequireAuth();
@@ -26,24 +26,25 @@ function FeedContent() {
   const [reachability, setReachability] = useState("");
   const pageRef = useRef(1);
   const requestSeqRef = useRef(0);
-  const filterRef = useRef({ industry: "", reachability: "" });
+  const filterRef = useRef({ industry: "", reachability: "", search: "" });
   const activeResultsFilterKeyRef = useRef("");
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    filterRef.current = { industry, reachability };
-  }, [industry, reachability]);
+    filterRef.current = { industry, reachability, search: searchQuery };
+  }, [industry, reachability, searchQuery]);
 
   const loadCompanies = useCallback(
     async (pageNum: number, append: boolean) => {
       const requestSeq = ++requestSeqRef.current;
       const requestIndustry = industry;
       const requestReachability = reachability;
+      const requestSearch = searchQuery;
       const requestPageNum = pageNum;
       const requestAppend = append;
-      const requestFilterKey = filterKey(requestIndustry, requestReachability);
+      const requestFilterKey = filterKey(requestIndustry, requestReachability, requestSearch);
 
       if (requestSeq !== requestSeqRef.current) return;
 
@@ -58,6 +59,7 @@ function FeedContent() {
         const data = await fetchCompanies({
           industry: requestIndustry || undefined,
           reachability: requestReachability || undefined,
+          search: requestSearch.trim() || undefined,
           page: requestPageNum,
           limit: PAGE_SIZE,
         });
@@ -65,6 +67,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
         const isCurrentRequest = requestSeq === requestSeqRef.current;
         const filterStillMatches = requestFilterKey === currentFilterKey;
@@ -89,6 +92,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
 
         if (
@@ -101,6 +105,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
 
         if (
@@ -112,7 +117,7 @@ function FeedContent() {
         }
       }
     },
-    [industry, reachability],
+    [industry, reachability, searchQuery],
   );
 
   useEffect(() => {
@@ -121,8 +126,9 @@ function FeedContent() {
     const requestSeq = ++requestSeqRef.current;
     const requestIndustry = industry;
     const requestReachability = reachability;
+    const requestSearch = searchQuery;
     const requestPageNum = 1;
-    const requestFilterKey = filterKey(requestIndustry, requestReachability);
+    const requestFilterKey = filterKey(requestIndustry, requestReachability, requestSearch);
 
     pageRef.current = requestPageNum;
 
@@ -131,6 +137,7 @@ function FeedContent() {
         const data = await fetchCompanies({
           industry: requestIndustry || undefined,
           reachability: requestReachability || undefined,
+          search: requestSearch.trim() || undefined,
           page: requestPageNum,
           limit: PAGE_SIZE,
         });
@@ -138,6 +145,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
 
         if (
@@ -154,6 +162,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
 
         if (
@@ -166,6 +175,7 @@ function FeedContent() {
         const currentFilterKey = filterKey(
           filterRef.current.industry,
           filterRef.current.reachability,
+          filterRef.current.search,
         );
 
         if (
@@ -178,7 +188,7 @@ function FeedContent() {
     }
 
     void loadFirstPage();
-  }, [authenticated, industry, reachability]);
+  }, [authenticated, industry, reachability, searchQuery]);
 
   const handleLoadMore = () => {
     if (loading || loadingMore || !hasMore) return;
@@ -189,6 +199,9 @@ function FeedContent() {
   };
 
   const handleSearch = useCallback((query: string) => {
+    pageRef.current = 1;
+    setLoading(true);
+    setLoadingMore(false);
     setSearchQuery(query);
   }, []);
 
@@ -206,29 +219,6 @@ function FeedContent() {
     setReachability(value);
   }, []);
 
-  const normalizedSearchQuery = searchQuery.trim().toLowerCase();
-
-  // Client-side filter on search query
-  const filtered = normalizedSearchQuery
-    ? companies.filter(
-        (c) => {
-          const fields = [
-            c.name,
-            c.founder_name,
-            c.one_liner,
-            c.industry,
-            c.stage_detail,
-            c.technical_level,
-            ...c.need_tags,
-          ];
-
-          return fields.some((field) =>
-            field?.toLowerCase().includes(normalizedSearchQuery),
-          );
-        },
-      )
-    : companies;
-
   if (authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -242,7 +232,7 @@ function FeedContent() {
       <div className="mb-6 flex flex-col items-center gap-4">
         <SearchBar
           onSearch={handleSearch}
-          placeholder="Search AI automation, data pipelines, healthcare, React..."
+          placeholder="Search by startup name or founder name..."
           initialValue={initialQuery}
         />
         <FilterBar
@@ -257,14 +247,14 @@ function FeedContent() {
         <div className="py-20 text-center text-secondary">
           Loading founders...
         </div>
-      ) : filtered.length === 0 ? (
+      ) : companies.length === 0 ? (
         <div className="py-20 text-center text-secondary">
           No startups match that search yet. Try a skill, industry, or product
           area.
         </div>
       ) : (
         <div className="space-y-3">
-          {filtered.map((company) => (
+          {companies.map((company) => (
             <FounderCard key={company.id} company={company} />
           ))}
         </div>

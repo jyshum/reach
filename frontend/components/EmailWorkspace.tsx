@@ -1,10 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { generateEmailDraft, sendEmail, getGmailAuthUrl } from "@/lib/api";
+
+const TONES = [
+  { key: "curious", label: "Curious" },
+  { key: "friendly", label: "Friendly" },
+  { key: "scrappy", label: "Scrappy" },
+  { key: "earnest", label: "Earnest" },
+] as const;
+
+type ToneKey = (typeof TONES)[number]["key"];
 
 interface EmailWorkspaceProps {
   founderEmail?: string | null;
+  emailConfidence?: string | null;
   companyName: string;
+  companyId: number;
+  founderName?: string | null;
+  founderLinkedin?: string | null;
+  gmailConnected: boolean;
 }
 
 function wordCount(text: string): number {
@@ -19,19 +34,73 @@ function countColor(count: number): string {
 
 export default function EmailWorkspace({
   founderEmail,
+  emailConfidence,
   companyName,
+  companyId,
+  founderName,
+  founderLinkedin,
+  gmailConnected,
 }: EmailWorkspaceProps) {
   const [body, setBody] = useState("");
+  const [originalDraft, setOriginalDraft] = useState("");
+  const [subjectLine, setSubjectLine] = useState("");
+  const [tone, setTone] = useState<ToneKey>("curious");
   const [copied, setCopied] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const count = wordCount(body);
 
-  const mailtoHref = founderEmail
-    ? `mailto:${founderEmail}?subject=${encodeURIComponent(`Quick question - ${companyName}`)}&body=${encodeURIComponent(body)}`
-    : undefined;
+  async function handleGenerate() {
+    setGenerating(true);
+    setError(null);
+    try {
+      const result = await generateEmailDraft(companyId, tone);
+      setBody(result.draft);
+      setOriginalDraft(result.draft);
+      if (!subjectLine) {
+        setSubjectLine(`Quick question - ${companyName}`);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate draft");
+    } finally {
+      setGenerating(false);
+    }
+  }
+
+  async function handleSend() {
+    if (!body.trim() || !subjectLine.trim()) return;
+    setSending(true);
+    setError(null);
+    try {
+      await sendEmail({
+        company_id: companyId,
+        subject_line: subjectLine,
+        final_text: body,
+        original_draft: originalDraft || body,
+        tone,
+      });
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send email");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  async function handleConnectGmail() {
+    try {
+      const { url } = await getGmailAuthUrl();
+      window.location.href = url;
+    } catch {
+      setError("Failed to get Gmail auth URL");
+    }
+  }
 
   async function handleCopy() {
     if (!body.trim() || !navigator.clipboard) return;
-
     try {
       await navigator.clipboard.writeText(body);
       setCopied(true);
@@ -41,18 +110,104 @@ export default function EmailWorkspace({
     }
   }
 
+  if (sent) {
+    return (
+      <div className="space-y-3">
+        <h3 className="font-display text-lg text-primary">Email sent</h3>
+        <div className="rounded-xl border border-reach-high/30 bg-reach-high/5 px-5 py-4">
+          <p className="text-sm text-primary">
+            Your email to {founderName || "the founder"} at {companyName} has been sent via Gmail.
+            We'll track this in your outreach log and check for replies automatically.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
       <h3 className="font-display text-lg text-primary">Write your email</h3>
 
+      {/* Recipient info */}
+      {founderEmail ? (
+        <div className="rounded-lg border border-card-border bg-card px-4 py-3">
+          <p className="text-sm text-primary">
+            To: <span className="font-medium">{founderEmail}</span>
+          </p>
+          {emailConfidence === "medium" && (
+            <p className="mt-1 text-xs text-amber-600">
+              This email was auto-detected — verify before sending
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-lg border border-dashed border-card-border px-4 py-3">
+          <p className="text-sm text-secondary">
+            Email not available
+            {founderLinkedin && (
+              <>
+                {" — "}
+                <a
+                  href={founderLinkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:underline"
+                >
+                  reach out via LinkedIn
+                </a>
+              </>
+            )}
+          </p>
+        </div>
+      )}
+
+      {/* Tone picker */}
+      <div className="flex flex-wrap gap-2">
+        {TONES.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTone(t.key)}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              tone === t.key
+                ? "bg-accent text-white"
+                : "border border-card-border bg-card text-secondary hover:text-primary"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Generate button */}
+      <button
+        type="button"
+        onClick={handleGenerate}
+        disabled={generating}
+        className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background disabled:opacity-40"
+      >
+        {generating ? "Generating..." : "Generate draft"}
+      </button>
+
+      {/* Subject line */}
+      <input
+        type="text"
+        value={subjectLine}
+        onChange={(e) => setSubjectLine(e.target.value)}
+        placeholder="Subject line"
+        className="w-full rounded-lg border border-card-border bg-card px-4 py-2 text-sm text-primary placeholder:text-tertiary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+      />
+
+      {/* Email body */}
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        placeholder="Write your email here..."
+        placeholder="Write your email here or generate a draft..."
         rows={8}
         className="w-full resize-y rounded-xl border border-card-border bg-card px-5 py-4 text-sm leading-relaxed text-primary placeholder:text-tertiary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
       />
 
+      {/* Word count + actions */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className={`text-sm ${countColor(count)}`}>
           {count} word{count !== 1 ? "s" : ""}{" "}
@@ -69,20 +224,46 @@ export default function EmailWorkspace({
             {copied ? "Copied" : "Copy draft"}
           </button>
 
-          {founderEmail ? (
-            <a
-              href={mailtoHref}
+          {gmailConnected ? (
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={sending || !body.trim() || !subjectLine.trim() || !founderEmail}
+              className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-40"
+            >
+              {sending ? "Sending..." : "Send via Gmail"}
+            </button>
+          ) : founderEmail ? (
+            <div className="flex items-center gap-2">
+              <a
+                href={`mailto:${founderEmail}?subject=${encodeURIComponent(subjectLine || `Quick question - ${companyName}`)}&body=${encodeURIComponent(body)}`}
+                className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background"
+              >
+                Open in email
+              </a>
+              <button
+                type="button"
+                onClick={handleConnectGmail}
+                className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90"
+              >
+                Connect Gmail to send
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleConnectGmail}
               className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90"
             >
-              Open email
-            </a>
-          ) : (
-            <span className="text-sm text-tertiary">
-              Email not available yet
-            </span>
+              Connect Gmail to send
+            </button>
           )}
         </div>
       </div>
+
+      {error && (
+        <p className="text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

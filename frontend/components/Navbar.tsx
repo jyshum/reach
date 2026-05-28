@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-card-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-        <Link href={session ? "/feed" : "/"} className="font-display text-xl">
+        <Link href="/" className="font-display text-xl">
           REACH
         </Link>
 
