@@ -76,6 +76,8 @@ def parse_founders_from_html(page_html: str) -> dict | None:
         "founder_avatar_url": strip_s3_signature(founder.get("avatar_thumb_url")),
         "founder_linkedin": founder.get("linkedin_url") or None,
         "founder_twitter": founder.get("twitter_url") or None,
+        "founder_bio": founder.get("founder_bio") or None,
+        "has_email": founder.get("has_email", False),
     }
 
 
@@ -129,6 +131,8 @@ def scrape_all_founders(
                 "founder_avatar_url": None,
                 "founder_linkedin": None,
                 "founder_twitter": None,
+                "founder_bio": None,
+                "has_email": False,
             })
             continue
 
@@ -146,6 +150,8 @@ def scrape_all_founders(
                 "founder_avatar_url": None,
                 "founder_linkedin": None,
                 "founder_twitter": None,
+                "founder_bio": None,
+                "has_email": False,
             })
 
         # Progress logging

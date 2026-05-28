@@ -69,3 +69,36 @@ def test_parse_founders_skips_inactive():
     result = parse_founders_from_html(SAMPLE_HTML_INACTIVE_FOUNDER)
     assert result is not None
     assert result["founder_name"] == "Active Alice"
+
+
+def test_parse_founders_extracts_bio_and_has_email():
+    result = parse_founders_from_html(SAMPLE_HTML_WITH_FOUNDERS)
+    assert result is not None
+    assert "founder_bio" in result
+    assert "has_email" in result
+
+
+SAMPLE_HTML_WITH_BIO = '''
+<html><body>
+<div>&quot;founders&quot;:[{&quot;user_id&quot;:123,&quot;is_active&quot;:true,&quot;founder_bio&quot;:&quot;Alice is a serial entrepreneur who previously founded DataCo.&quot;,&quot;full_name&quot;:&quot;Alice Smith&quot;,&quot;title&quot;:&quot;CEO&quot;,&quot;avatar_thumb_url&quot;:&quot;https://bookface-images.s3.us-west-2.amazonaws.com/avatars/abc.jpg&quot;,&quot;linkedin_url&quot;:&quot;https://linkedin.com/in/alice&quot;,&quot;twitter_url&quot;:&quot;https://twitter.com/alice&quot;,&quot;has_email&quot;:true}],&quot;editUrl&quot;:&quot;x&quot;</div>
+</body></html>
+'''
+
+
+def test_parse_founders_extracts_bio_text():
+    result = parse_founders_from_html(SAMPLE_HTML_WITH_BIO)
+    assert result["founder_bio"] == "Alice is a serial entrepreneur who previously founded DataCo."
+    assert result["has_email"] is True
+
+
+SAMPLE_HTML_NO_BIO = '''
+<html><body>
+<div>&quot;founders&quot;:[{&quot;user_id&quot;:456,&quot;is_active&quot;:true,&quot;full_name&quot;:&quot;Bob Jones&quot;,&quot;title&quot;:&quot;CTO&quot;,&quot;avatar_thumb_url&quot;:&quot;&quot;,&quot;linkedin_url&quot;:&quot;&quot;,&quot;twitter_url&quot;:&quot;&quot;,&quot;has_email&quot;:false}],&quot;editUrl&quot;:&quot;x&quot;</div>
+</body></html>
+'''
+
+
+def test_parse_founders_handles_missing_bio():
+    result = parse_founders_from_html(SAMPLE_HTML_NO_BIO)
+    assert result["founder_bio"] is None
+    assert result["has_email"] is False
