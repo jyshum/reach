@@ -5,7 +5,8 @@ import os
 
 from backend.db import get_supabase_client
 from backend.pipeline.enrich_config import ENRICHED_OUTPUT_PATH
-from backend.ml.config import SCORES_OUTPUT_PATH
+
+SCORES_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "reachability_scores.json")
 
 # Batch size for upserts (Supabase has a row limit per request)
 UPSERT_BATCH_SIZE = 500
