@@ -79,9 +79,13 @@ export default function FounderCard({ company, onClick }: FounderCardProps) {
           </span>
           {company.reachability_score && (
             <span
-              className={`flex-shrink-0 rounded px-2 py-0.5 text-xs font-semibold uppercase ${reachabilityColor(company.reachability_score)}`}
+              className={`flex-shrink-0 rounded px-3 py-1 text-xs font-semibold ${reachabilityColor(company.reachability_score)}`}
             >
-              {company.reachability_score}
+              {company.reachability_score === "high"
+                ? "High Reachability"
+                : company.reachability_score === "medium"
+                  ? "Medium Reachability"
+                  : "Low Reachability"}
             </span>
           )}
           {(company.email_confidence === "high" || company.email_confidence === "medium") && (

@@ -86,9 +86,13 @@ export default function FounderBrief({ brief }: FounderBriefProps) {
             )}
             {brief.reachability_score && (
               <span
-                className={`rounded px-2.5 py-1 text-xs font-semibold uppercase ${reachabilityColor(brief.reachability_score)}`}
+                className={`rounded px-3 py-1 text-xs font-semibold ${reachabilityColor(brief.reachability_score)}`}
               >
-                {brief.reachability_score} reachability
+                {brief.reachability_score === "high"
+                  ? "High Reachability"
+                  : brief.reachability_score === "medium"
+                    ? "Medium Reachability"
+                    : "Low Reachability"}
               </span>
             )}
           </div>
