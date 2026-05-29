@@ -229,7 +229,7 @@ function FeedContent() {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-8">
+    <main className="page-enter mx-auto max-w-3xl px-6 py-8">
       <div className="mb-6 flex flex-col items-center gap-4">
         <SearchBar
           onSearch={handleSearch}

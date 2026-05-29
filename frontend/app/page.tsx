@@ -54,7 +54,7 @@ export default function LandingPage() {
   if (authLoading) return null;
 
   return (
-    <main className="relative isolate flex min-h-screen flex-col items-center overflow-hidden px-6 pt-[4.5rem] pb-8 md:pt-20">
+    <main className="page-enter relative isolate flex min-h-screen flex-col items-center overflow-hidden px-6 pt-[4.5rem] pb-8 md:pt-20">
       {/* Decorative background shapes */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         {/* Top-left cluster */}

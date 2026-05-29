@@ -88,7 +88,7 @@ export default function BriefPage({
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-8">
+    <main className="page-enter mx-auto max-w-2xl px-6 py-8">
       <FounderBrief brief={brief} />
 
       {brief.reachability_factors && brief.reachability_factors.length > 0 && (

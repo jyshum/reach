@@ -128,7 +128,7 @@ export default function ProfilePage() {
   const isFree = !profile || profile.tier === "free";
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-10">
+    <main className="page-enter mx-auto max-w-2xl px-6 py-10">
       <div className="flex flex-col gap-10">
 
         {/* Section 1: Account Info */}
