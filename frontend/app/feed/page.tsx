@@ -9,6 +9,7 @@ import SearchBar from "@/components/SearchBar";
 import FilterBar from "@/components/FilterBar";
 import FounderCard from "@/components/FounderCard";
 import LoadMoreButton from "@/components/LoadMoreButton";
+import SkeletonCard from "@/components/SkeletonCard";
 
 const PAGE_SIZE = 20;
 
@@ -244,8 +245,10 @@ function FeedContent() {
       </div>
 
       {loading ? (
-        <div className="py-20 text-center text-secondary">
-          Loading founders...
+        <div className="space-y-3">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : companies.length === 0 ? (
         <div className="py-20 text-center text-secondary">
