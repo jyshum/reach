@@ -264,6 +264,15 @@ export default function ProfilePage() {
                 placeholder="A short intro about yourself…"
                 className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
               />
+              <details className="text-xs text-white/40 mt-2">
+                <summary className="cursor-pointer hover:text-white/60">Tips for a strong bio</summary>
+                <ul className="mt-2 space-y-1 pl-4 list-disc">
+                  <li>Mention what you're building or learning right now</li>
+                  <li>Include a specific technical skill (e.g. "I've been writing Python for 2 years")</li>
+                  <li>Say what kind of problems excite you, not just what you're good at</li>
+                  <li>Keep it under 3 sentences — founders skim</li>
+                </ul>
+              </details>
             </div>
 
             {/* GitHub URL */}
@@ -309,6 +318,15 @@ export default function ProfilePage() {
                 placeholder="Briefly describe something you've built or worked on (e.g., 'Built a trading bot in Python that tracks crypto prices')"
                 className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
               />
+              <details className="text-xs text-white/40 mt-2">
+                <summary className="cursor-pointer hover:text-white/60">What makes a good project description?</summary>
+                <ul className="mt-2 space-y-1 pl-4 list-disc">
+                  <li>Name a specific project, not just "I've done some projects"</li>
+                  <li>Mention the tech stack or approach</li>
+                  <li>Include a link if it's deployed or on GitHub</li>
+                  <li>Focus on 1-2 best projects, not a long list</li>
+                </ul>
+              </details>
             </div>
 
             {/* Resume URL */}
