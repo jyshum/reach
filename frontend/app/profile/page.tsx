@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail } from "@/lib/api";
+import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail, fetchRepos, createRepo, deleteRepo } from "@/lib/api";
 import type { GmailStatus } from "@/lib/types";
 import type { UserProfile } from "@/lib/types";
+import type { UserRepo } from "@/lib/types";
 import InterestPicker from "@/components/InterestPicker";
 
 const TECH_TERMS = new Set([
@@ -54,8 +55,11 @@ export default function ProfilePage() {
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
-  const [projects, setProjects] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
+  const [repos, setRepos] = useState<UserRepo[]>([]);
+  const [repoUrl, setRepoUrl] = useState("");
+  const [repoLoading, setRepoLoading] = useState(false);
+  const [repoError, setRepoError] = useState<string | null>(null);
   const [location, setLocation] = useState("");
 
   const [saving, setSaving] = useState(false);
@@ -89,7 +93,6 @@ export default function ProfilePage() {
         setGithubUrl(p.github_url ?? "");
         setPortfolioUrl(p.portfolio_url ?? "");
         setInterests(p.interests ?? []);
-        setProjects(p.projects ?? "");
         setResumeUrl(p.resume_url ?? "");
         setLocation(p.location ?? "");
       })
@@ -102,6 +105,10 @@ export default function ProfilePage() {
 
     getGmailStatus()
       .then((status) => setGmail(status))
+      .catch(() => {});
+
+    fetchRepos()
+      .then((r) => setRepos(r))
       .catch(() => {});
   }, [authenticated]);
 
@@ -127,7 +134,6 @@ export default function ProfilePage() {
         portfolio_url: portfolioUrl || null,
         location: location || null,
         interests,
-        projects: projects || null,
         resume_url: resumeUrl || null,
       });
 
@@ -166,6 +172,35 @@ export default function ProfilePage() {
       setSaveError("Failed to disconnect Gmail");
     } finally {
       setGmailLoading(false);
+    }
+  }
+
+  async function handleSummarizeRepo() {
+    const url = repoUrl.trim();
+    if (!url) return;
+
+    setRepoLoading(true);
+    setRepoError(null);
+    try {
+      const repo = await createRepo(url);
+      setRepos((prev) => [...prev, repo]);
+      setRepoUrl("");
+      if (repo.warning) {
+        setRepoError(repo.warning);
+      }
+    } catch (err) {
+      setRepoError(err instanceof Error ? err.message : "Failed to summarize repo");
+    } finally {
+      setRepoLoading(false);
+    }
+  }
+
+  async function handleDeleteRepo(repoId: number) {
+    try {
+      await deleteRepo(repoId);
+      setRepos((prev) => prev.filter((r) => r.id !== repoId));
+    } catch (err) {
+      setRepoError(err instanceof Error ? err.message : "Failed to remove repo");
     }
   }
 
@@ -249,6 +284,65 @@ export default function ProfilePage() {
             selected={interests}
             onChange={setInterests}
           />
+        </section>
+
+        {/* Section: Projects (GitHub Repos) */}
+        <section className="flex flex-col gap-3">
+          <h2 className="font-display text-2xl text-primary">Projects</h2>
+          <p className="text-xs text-tertiary">
+            Projects that relate to a founder's domain make your email stand out.
+            A trading bot for a fintech founder, a scraper for a data company — that's what gets replies.
+          </p>
+
+          {repos.map((repo) => (
+            <div key={repo.id} className="rounded-lg border border-card-border bg-card px-4 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-primary truncate">{repo.repo_name}</p>
+                    {repo.language && (
+                      <span className="text-xs text-tertiary">{repo.language}</span>
+                    )}
+                    {repo.stars > 0 && (
+                      <span className="text-xs text-tertiary">{repo.stars} stars</span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-xs text-secondary">{repo.summary}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteRepo(repo.id)}
+                  className="text-xs text-red-500 hover:text-red-600 shrink-0"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {repos.length < 3 && (
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={repoUrl}
+                onChange={(e) => setRepoUrl(e.target.value)}
+                placeholder="https://github.com/username/project"
+                className="flex-1 rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+              />
+              <button
+                type="button"
+                onClick={handleSummarizeRepo}
+                disabled={repoLoading || !repoUrl.trim()}
+                className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background disabled:opacity-40"
+              >
+                {repoLoading ? "Summarizing..." : "Summarize"}
+              </button>
+            </div>
+          )}
+
+          {repoError && (
+            <p className="text-xs text-red-500">{repoError}</p>
+          )}
         </section>
 
         {/* Section 4: Profile Details */}
@@ -424,30 +518,6 @@ export default function ProfilePage() {
                 placeholder="https://yoursite.com"
                 className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
               />
-            </div>
-
-            {/* Projects */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="projects" className="text-sm font-medium text-secondary">
-                Projects
-              </label>
-              <textarea
-                id="projects"
-                rows={3}
-                value={projects}
-                onChange={(e) => setProjects(e.target.value)}
-                placeholder="Briefly describe something you've built or worked on (e.g., 'Built a trading bot in Python that tracks crypto prices')"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
-              />
-              <details className="text-xs text-white/40 mt-2">
-                <summary className="cursor-pointer hover:text-white/60">What makes a good project description?</summary>
-                <ul className="mt-2 space-y-1 pl-4 list-disc">
-                  <li>Name a specific project, not just "I've done some projects"</li>
-                  <li>Mention the tech stack or approach</li>
-                  <li>Include a link if it's deployed or on GitHub</li>
-                  <li>Focus on 1-2 best projects, not a long list</li>
-                </ul>
-              </details>
             </div>
 
             {/* Resume URL */}
