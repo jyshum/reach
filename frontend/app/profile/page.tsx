@@ -7,6 +7,37 @@ import type { GmailStatus } from "@/lib/types";
 import type { UserProfile } from "@/lib/types";
 import InterestPicker from "@/components/InterestPicker";
 
+const TECH_TERMS = new Set([
+  "python", "javascript", "typescript", "react", "next", "nextjs", "node",
+  "java", "kotlin", "swift", "rust", "go", "golang", "c++", "c#",
+  "ruby", "php", "sql", "html", "css", "tailwind",
+  "api", "rest", "graphql", "websocket",
+  "ml", "ai", "machine learning", "deep learning", "nlp", "llm",
+  "pytorch", "tensorflow", "scikit",
+  "docker", "kubernetes", "aws", "gcp", "azure", "vercel", "supabase",
+  "firebase", "postgres", "mongodb", "redis", "sqlite",
+  "git", "github", "linux", "vim",
+  "figma", "sketch", "design",
+  "flutter", "react native", "ios", "android",
+  "scraper", "bot", "cli", "dashboard", "app", "web",
+  "data", "analytics", "pipeline", "etl",
+  "blockchain", "crypto", "web3", "solidity",
+  "opencv", "selenium", "playwright", "puppeteer",
+  "arduino", "raspberry pi", "iot",
+]);
+
+function hasSpecificTerm(text: string): boolean {
+  const lower = text.toLowerCase();
+  for (const term of TECH_TERMS) {
+    if (lower.includes(term)) return true;
+  }
+  return false;
+}
+
+function bioWordCount(text: string): number {
+  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+}
+
 export default function ProfilePage() {
   const { authenticated, loading: authLoading } = useRequireAuth();
 
@@ -16,7 +47,10 @@ export default function ProfilePage() {
   // Form fields
   const [school, setSchool] = useState("");
   const [gradYear, setGradYear] = useState("");
-  const [bio, setBio] = useState("");
+  const [bioGrade, setBioGrade] = useState("");
+  const [bioBuilding, setBioBuilding] = useState("");
+  const [bioInterests, setBioInterests] = useState("");
+  const [bioLegacy, setBioLegacy] = useState<string | null>(null);
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
@@ -41,7 +75,17 @@ export default function ProfilePage() {
         setProfile(p);
         setSchool(p.school ?? "");
         setGradYear(p.grad_year != null ? String(p.grad_year) : "");
-        setBio(p.bio ?? "");
+        const bioStr = p.bio ?? "";
+        const structuredMatch = bioStr.match(
+          /^I'm a (.+?)\.\s+(.+?)\.\s+I'm interested in (.+)\.?$/
+        );
+        if (structuredMatch) {
+          setBioGrade(structuredMatch[1]);
+          setBioBuilding(structuredMatch[2]);
+          setBioInterests(structuredMatch[3]);
+        } else if (bioStr) {
+          setBioLegacy(bioStr);
+        }
         setGithubUrl(p.github_url ?? "");
         setPortfolioUrl(p.portfolio_url ?? "");
         setInterests(p.interests ?? []);
@@ -70,7 +114,15 @@ export default function ProfilePage() {
       await updateProfile({
         school: school || null,
         grad_year: gradYear ? Number(gradYear) : null,
-        bio: bio || null,
+        bio: (() => {
+          const concatenatedBio =
+            bioLegacy !== null
+              ? bioLegacy
+              : bioGrade || bioBuilding || bioInterests
+                ? `I'm a ${bioGrade}. ${bioBuilding}. I'm interested in ${bioInterests}.`
+                : null;
+          return concatenatedBio;
+        })(),
         github_url: githubUrl || null,
         portfolio_url: portfolioUrl || null,
         location: location || null,
@@ -251,28 +303,97 @@ export default function ProfilePage() {
               />
             </div>
 
-            {/* Bio */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="bio" className="text-sm font-medium text-secondary">
-                Bio
-              </label>
-              <textarea
-                id="bio"
-                rows={3}
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                placeholder="A short intro about yourself…"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
-              />
-              <details className="text-xs text-white/40 mt-2">
-                <summary className="cursor-pointer hover:text-white/60">Tips for a strong bio</summary>
-                <ul className="mt-2 space-y-1 pl-4 list-disc">
-                  <li>Mention what you're building or learning right now</li>
-                  <li>Include a specific technical skill (e.g. "I've been writing Python for 2 years")</li>
-                  <li>Say what kind of problems excite you, not just what you're good at</li>
-                  <li>Keep it under 3 sentences — founders skim</li>
-                </ul>
-              </details>
+            {/* Bio Builder */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-secondary">About You</label>
+                <p className="text-xs text-tertiary">
+                  Founders skim — make each line specific, not generic.
+                </p>
+              </div>
+
+              {bioLegacy !== null ? (
+                <div className="flex flex-col gap-2">
+                  <textarea
+                    rows={3}
+                    value={bioLegacy}
+                    onChange={(e) => setBioLegacy(e.target.value)}
+                    placeholder="A short intro about yourself..."
+                    className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBioLegacy(null);
+                      setBioGrade("");
+                      setBioBuilding("");
+                      setBioInterests("");
+                    }}
+                    className="self-start text-xs text-accent hover:underline"
+                  >
+                    Switch to guided bio builder
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_grade" className="text-xs font-medium text-tertiary">
+                      Grade & School
+                    </label>
+                    <input
+                      id="bio_grade"
+                      type="text"
+                      value={bioGrade}
+                      onChange={(e) => setBioGrade(e.target.value)}
+                      placeholder="e.g. Junior at Lincoln High"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioGrade && bioWordCount(bioGrade) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_building" className="text-xs font-medium text-tertiary">
+                      What are you building or learning?
+                    </label>
+                    <input
+                      id="bio_building"
+                      type="text"
+                      value={bioBuilding}
+                      onChange={(e) => setBioBuilding(e.target.value)}
+                      placeholder="e.g. Writing Python scrapers, learning React"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioBuilding && bioWordCount(bioBuilding) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                    {bioBuilding && bioWordCount(bioBuilding) >= 5 && !hasSpecificTerm(bioBuilding) && (
+                      <p className="text-xs text-amber-500">Try mentioning a specific tool, language, or project</p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_interests" className="text-xs font-medium text-tertiary">
+                      What problems interest you?
+                    </label>
+                    <input
+                      id="bio_interests"
+                      type="text"
+                      value={bioInterests}
+                      onChange={(e) => setBioInterests(e.target.value)}
+                      placeholder="e.g. How startups use NLP to process messy data"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioInterests && bioWordCount(bioInterests) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                    {bioInterests && bioWordCount(bioInterests) >= 5 && !hasSpecificTerm(bioInterests) && (
+                      <p className="text-xs text-amber-500">Try mentioning a specific tool, language, or project</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* GitHub URL */}
