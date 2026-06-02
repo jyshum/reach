@@ -6,3 +6,6 @@ venv/
 .venv/
 backend/ml/artifacts/
 .DS_Store
+.claude/
+.superpowers/
+jared_ques.txt
