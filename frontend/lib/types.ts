@@ -81,6 +81,17 @@ export interface UserProfile {
   portfolio_url: string | null;
   resume_url: string | null;
   tier: string;
+  summarization_count: number;
+}
+
+export interface UserRepo {
+  id: number;
+  repo_url: string;
+  repo_name: string | null;
+  summary: string;
+  language: string | null;
+  stars: number;
+  warning?: string | null;
 }
 
 export interface OutreachEntry {

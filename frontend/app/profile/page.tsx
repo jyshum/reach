@@ -2,10 +2,42 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail } from "@/lib/api";
+import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail, fetchRepos, createRepo, deleteRepo, uploadResume, deleteResume } from "@/lib/api";
 import type { GmailStatus } from "@/lib/types";
 import type { UserProfile } from "@/lib/types";
+import type { UserRepo } from "@/lib/types";
 import InterestPicker from "@/components/InterestPicker";
+
+const TECH_TERMS = new Set([
+  "python", "javascript", "typescript", "react", "next", "nextjs", "node",
+  "java", "kotlin", "swift", "rust", "go", "golang", "c++", "c#",
+  "ruby", "php", "sql", "html", "css", "tailwind",
+  "api", "rest", "graphql", "websocket",
+  "ml", "ai", "machine learning", "deep learning", "nlp", "llm",
+  "pytorch", "tensorflow", "scikit",
+  "docker", "kubernetes", "aws", "gcp", "azure", "vercel", "supabase",
+  "firebase", "postgres", "mongodb", "redis", "sqlite",
+  "git", "github", "linux", "vim",
+  "figma", "sketch", "design",
+  "flutter", "react native", "ios", "android",
+  "scraper", "bot", "cli", "dashboard", "app", "web",
+  "data", "analytics", "pipeline", "etl",
+  "blockchain", "crypto", "web3", "solidity",
+  "opencv", "selenium", "playwright", "puppeteer",
+  "arduino", "raspberry pi", "iot",
+]);
+
+function hasSpecificTerm(text: string): boolean {
+  const lower = text.toLowerCase();
+  for (const term of TECH_TERMS) {
+    if (lower.includes(term)) return true;
+  }
+  return false;
+}
+
+function bioWordCount(text: string): number {
+  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+}
 
 export default function ProfilePage() {
   const { authenticated, loading: authLoading } = useRequireAuth();
@@ -16,13 +48,22 @@ export default function ProfilePage() {
   // Form fields
   const [school, setSchool] = useState("");
   const [gradYear, setGradYear] = useState("");
-  const [bio, setBio] = useState("");
+  const [bioGrade, setBioGrade] = useState("");
+  const [bioBuilding, setBioBuilding] = useState("");
+  const [bioInterests, setBioInterests] = useState("");
+  const [bioLegacy, setBioLegacy] = useState<string | null>(null);
   const [githubUrl, setGithubUrl] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
-  const [projects, setProjects] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
+  const [repos, setRepos] = useState<UserRepo[]>([]);
+  const [repoUrl, setRepoUrl] = useState("");
+  const [repoLoading, setRepoLoading] = useState(false);
+  const [repoError, setRepoError] = useState<string | null>(null);
   const [location, setLocation] = useState("");
+  const [resumeFile, setResumeFile] = useState<string | null>(null);
+  const [resumeUploading, setResumeUploading] = useState(false);
+  const [resumeError, setResumeError] = useState<string | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -41,12 +82,24 @@ export default function ProfilePage() {
         setProfile(p);
         setSchool(p.school ?? "");
         setGradYear(p.grad_year != null ? String(p.grad_year) : "");
-        setBio(p.bio ?? "");
+        const bioStr = p.bio ?? "";
+        const structuredMatch = bioStr.match(
+          /^I'm a (.+?)\.\s+(.+?)\.\s+I'm interested in (.+)\.?$/
+        );
+        if (structuredMatch) {
+          setBioGrade(structuredMatch[1]);
+          setBioBuilding(structuredMatch[2]);
+          setBioInterests(structuredMatch[3]);
+        } else if (bioStr) {
+          setBioLegacy(bioStr);
+        }
         setGithubUrl(p.github_url ?? "");
         setPortfolioUrl(p.portfolio_url ?? "");
         setInterests(p.interests ?? []);
-        setProjects(p.projects ?? "");
         setResumeUrl(p.resume_url ?? "");
+        if (p.resume_url) {
+          setResumeFile("resume.pdf");
+        }
         setLocation(p.location ?? "");
       })
       .catch(() => {
@@ -59,6 +112,10 @@ export default function ProfilePage() {
     getGmailStatus()
       .then((status) => setGmail(status))
       .catch(() => {});
+
+    fetchRepos()
+      .then((r) => setRepos(r))
+      .catch(() => {});
   }, [authenticated]);
 
   async function handleSave(e: React.FormEvent) {
@@ -70,13 +127,19 @@ export default function ProfilePage() {
       await updateProfile({
         school: school || null,
         grad_year: gradYear ? Number(gradYear) : null,
-        bio: bio || null,
+        bio: (() => {
+          const concatenatedBio =
+            bioLegacy !== null
+              ? bioLegacy
+              : bioGrade || bioBuilding || bioInterests
+                ? `I'm a ${bioGrade}. ${bioBuilding}. I'm interested in ${bioInterests}.`
+                : null;
+          return concatenatedBio;
+        })(),
         github_url: githubUrl || null,
         portfolio_url: portfolioUrl || null,
         location: location || null,
         interests,
-        projects: projects || null,
-        resume_url: resumeUrl || null,
       });
 
       setSaved(true);
@@ -114,6 +177,71 @@ export default function ProfilePage() {
       setSaveError("Failed to disconnect Gmail");
     } finally {
       setGmailLoading(false);
+    }
+  }
+
+  async function handleSummarizeRepo() {
+    const url = repoUrl.trim();
+    if (!url) return;
+
+    setRepoLoading(true);
+    setRepoError(null);
+    try {
+      const repo = await createRepo(url);
+      setRepos((prev) => [...prev, repo]);
+      setRepoUrl("");
+      if (repo.warning) {
+        setRepoError(repo.warning);
+      }
+    } catch (err) {
+      setRepoError(err instanceof Error ? err.message : "Failed to summarize repo");
+    } finally {
+      setRepoLoading(false);
+    }
+  }
+
+  async function handleDeleteRepo(repoId: number) {
+    try {
+      await deleteRepo(repoId);
+      setRepos((prev) => prev.filter((r) => r.id !== repoId));
+    } catch (err) {
+      setRepoError(err instanceof Error ? err.message : "Failed to remove repo");
+    }
+  }
+
+  async function handleResumeUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      setResumeError("Only PDF files are accepted.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setResumeError("File too large. Maximum size is 2MB.");
+      return;
+    }
+
+    setResumeUploading(true);
+    setResumeError(null);
+    try {
+      const result = await uploadResume(file);
+      setResumeUrl(result.resume_url);
+      setResumeFile(file.name);
+    } catch (err) {
+      setResumeError(err instanceof Error ? err.message : "Failed to upload resume");
+    } finally {
+      setResumeUploading(false);
+    }
+  }
+
+  async function handleResumeDelete() {
+    try {
+      await deleteResume();
+      setResumeUrl("");
+      setResumeFile(null);
+    } catch (err) {
+      setResumeError(err instanceof Error ? err.message : "Failed to remove resume");
     }
   }
 
@@ -199,6 +327,65 @@ export default function ProfilePage() {
           />
         </section>
 
+        {/* Section: Projects (GitHub Repos) */}
+        <section className="flex flex-col gap-3">
+          <h2 className="font-display text-2xl text-primary">Projects</h2>
+          <p className="text-xs text-tertiary">
+            Projects that relate to a founder's domain make your email stand out.
+            A trading bot for a fintech founder, a scraper for a data company — that's what gets replies.
+          </p>
+
+          {repos.map((repo) => (
+            <div key={repo.id} className="rounded-lg border border-card-border bg-card px-4 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-primary truncate">{repo.repo_name}</p>
+                    {repo.language && (
+                      <span className="text-xs text-tertiary">{repo.language}</span>
+                    )}
+                    {repo.stars > 0 && (
+                      <span className="text-xs text-tertiary">{repo.stars} stars</span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-xs text-secondary">{repo.summary}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteRepo(repo.id)}
+                  className="text-xs text-red-500 hover:text-red-600 shrink-0"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {repos.length < 3 && (
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={repoUrl}
+                onChange={(e) => setRepoUrl(e.target.value)}
+                placeholder="https://github.com/username/project"
+                className="flex-1 rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+              />
+              <button
+                type="button"
+                onClick={handleSummarizeRepo}
+                disabled={repoLoading || !repoUrl.trim()}
+                className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background disabled:opacity-40"
+              >
+                {repoLoading ? "Summarizing..." : "Summarize"}
+              </button>
+            </div>
+          )}
+
+          {repoError && (
+            <p className="text-xs text-red-500">{repoError}</p>
+          )}
+        </section>
+
         {/* Section 4: Profile Details */}
         <section className="flex flex-col gap-4">
           <h2 className="font-display text-2xl text-primary">Profile Details</h2>
@@ -251,28 +438,97 @@ export default function ProfilePage() {
               />
             </div>
 
-            {/* Bio */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="bio" className="text-sm font-medium text-secondary">
-                Bio
-              </label>
-              <textarea
-                id="bio"
-                rows={3}
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                placeholder="A short intro about yourself…"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
-              />
-              <details className="text-xs text-white/40 mt-2">
-                <summary className="cursor-pointer hover:text-white/60">Tips for a strong bio</summary>
-                <ul className="mt-2 space-y-1 pl-4 list-disc">
-                  <li>Mention what you're building or learning right now</li>
-                  <li>Include a specific technical skill (e.g. "I've been writing Python for 2 years")</li>
-                  <li>Say what kind of problems excite you, not just what you're good at</li>
-                  <li>Keep it under 3 sentences — founders skim</li>
-                </ul>
-              </details>
+            {/* Bio Builder */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-secondary">About You</label>
+                <p className="text-xs text-tertiary">
+                  Founders skim — make each line specific, not generic.
+                </p>
+              </div>
+
+              {bioLegacy !== null ? (
+                <div className="flex flex-col gap-2">
+                  <textarea
+                    rows={3}
+                    value={bioLegacy}
+                    onChange={(e) => setBioLegacy(e.target.value)}
+                    placeholder="A short intro about yourself..."
+                    className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBioLegacy(null);
+                      setBioGrade("");
+                      setBioBuilding("");
+                      setBioInterests("");
+                    }}
+                    className="self-start text-xs text-accent hover:underline"
+                  >
+                    Switch to guided bio builder
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_grade" className="text-xs font-medium text-tertiary">
+                      Grade & School
+                    </label>
+                    <input
+                      id="bio_grade"
+                      type="text"
+                      value={bioGrade}
+                      onChange={(e) => setBioGrade(e.target.value)}
+                      placeholder="e.g. Junior at Lincoln High"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioGrade && bioWordCount(bioGrade) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_building" className="text-xs font-medium text-tertiary">
+                      What are you building or learning?
+                    </label>
+                    <input
+                      id="bio_building"
+                      type="text"
+                      value={bioBuilding}
+                      onChange={(e) => setBioBuilding(e.target.value)}
+                      placeholder="e.g. Writing Python scrapers, learning React"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioBuilding && bioWordCount(bioBuilding) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                    {bioBuilding && bioWordCount(bioBuilding) >= 5 && !hasSpecificTerm(bioBuilding) && (
+                      <p className="text-xs text-amber-500">Try mentioning a specific tool, language, or project</p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="bio_interests" className="text-xs font-medium text-tertiary">
+                      What problems interest you?
+                    </label>
+                    <input
+                      id="bio_interests"
+                      type="text"
+                      value={bioInterests}
+                      onChange={(e) => setBioInterests(e.target.value)}
+                      placeholder="e.g. How startups use NLP to process messy data"
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    {bioInterests && bioWordCount(bioInterests) < 5 && (
+                      <p className="text-xs text-amber-500">Be a bit more specific</p>
+                    )}
+                    {bioInterests && bioWordCount(bioInterests) >= 5 && !hasSpecificTerm(bioInterests) && (
+                      <p className="text-xs text-amber-500">Try mentioning a specific tool, language, or project</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* GitHub URL */}
@@ -305,43 +561,42 @@ export default function ProfilePage() {
               />
             </div>
 
-            {/* Projects */}
+            {/* Resume PDF */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="projects" className="text-sm font-medium text-secondary">
-                Projects
+              <label className="text-sm font-medium text-secondary">
+                Resume (PDF)
               </label>
-              <textarea
-                id="projects"
-                rows={3}
-                value={projects}
-                onChange={(e) => setProjects(e.target.value)}
-                placeholder="Briefly describe something you've built or worked on (e.g., 'Built a trading bot in Python that tracks crypto prices')"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent resize-none"
-              />
-              <details className="text-xs text-white/40 mt-2">
-                <summary className="cursor-pointer hover:text-white/60">What makes a good project description?</summary>
-                <ul className="mt-2 space-y-1 pl-4 list-disc">
-                  <li>Name a specific project, not just "I've done some projects"</li>
-                  <li>Mention the tech stack or approach</li>
-                  <li>Include a link if it's deployed or on GitHub</li>
-                  <li>Focus on 1-2 best projects, not a long list</li>
-                </ul>
-              </details>
-            </div>
+              <p className="text-xs text-tertiary">
+                Upload your resume — it'll be linked in your email signature.
+              </p>
 
-            {/* Resume URL */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="resume_url" className="text-sm font-medium text-secondary">
-                Resume URL
-              </label>
-              <input
-                id="resume_url"
-                type="url"
-                value={resumeUrl}
-                onChange={(e) => setResumeUrl(e.target.value)}
-                placeholder="Link to your resume (Google Doc, Dropbox, etc.)"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
-              />
+              {resumeFile ? (
+                <div className="flex items-center justify-between rounded-lg border border-card-border bg-card px-4 py-3">
+                  <p className="text-sm text-primary">{resumeFile}</p>
+                  <button
+                    type="button"
+                    onClick={handleResumeDelete}
+                    className="text-xs text-red-500 hover:text-red-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-card-border px-4 py-6 text-sm text-secondary transition-colors hover:border-accent hover:text-primary">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleResumeUpload}
+                    className="hidden"
+                    disabled={resumeUploading}
+                  />
+                  {resumeUploading ? "Uploading..." : "Click to upload or drag and drop"}
+                </label>
+              )}
+
+              {resumeError && (
+                <p className="text-xs text-red-500">{resumeError}</p>
+              )}
             </div>
 
             {/* Save row */}

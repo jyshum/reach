@@ -20,6 +20,7 @@ interface EmailWorkspaceProps {
   founderName?: string | null;
   founderLinkedin?: string | null;
   gmailConnected: boolean;
+  hasBio: boolean;
 }
 
 function wordCount(text: string): number {
@@ -40,6 +41,7 @@ export default function EmailWorkspace({
   founderName,
   founderLinkedin,
   gmailConnected,
+  hasBio,
 }: EmailWorkspaceProps) {
   const [body, setBody] = useState("");
   const [originalDraft, setOriginalDraft] = useState("");
@@ -180,14 +182,21 @@ export default function EmailWorkspace({
       </div>
 
       {/* Generate button */}
-      <button
-        type="button"
-        onClick={handleGenerate}
-        disabled={generating}
-        className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background disabled:opacity-40"
-      >
-        {generating ? "Generating..." : "Generate draft"}
-      </button>
+      <div className="relative group inline-block">
+        <button
+          type="button"
+          onClick={handleGenerate}
+          disabled={generating || !hasBio}
+          className="rounded-lg border border-card-border bg-card px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background disabled:opacity-40"
+        >
+          {generating ? "Generating..." : "Generate draft"}
+        </button>
+        {!hasBio && (
+          <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Fill in your bio on your profile first
+          </span>
+        )}
+      </div>
 
       {/* Subject line */}
       <input
