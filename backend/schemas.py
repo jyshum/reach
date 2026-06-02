@@ -23,6 +23,7 @@ class UserProfile(BaseModel):
     portfolio_url: str | None = None
     resume_url: str | None = None
     tier: str = "free"
+    summarization_count: int = 0
 
 
 class UserUpdate(BaseModel):
@@ -36,6 +37,22 @@ class UserUpdate(BaseModel):
     github_url: str | None = None
     portfolio_url: str | None = None
     resume_url: str | None = None
+
+
+# --- Repos ---
+
+class RepoCreate(BaseModel):
+    repo_url: str
+
+
+class RepoResponse(BaseModel):
+    id: int
+    repo_url: str
+    repo_name: str | None = None
+    summary: str
+    language: str | None = None
+    stars: int = 0
+    warning: str | None = None
 
 
 # --- Guidance ---

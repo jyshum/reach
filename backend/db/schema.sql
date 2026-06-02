@@ -13,6 +13,7 @@ create table if not exists users (
   github_url text,
   portfolio_url text,
   tier text not null default 'free' check (tier in ('free', 'unlocked', 'paid')),
+  summarization_count int default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -102,6 +103,24 @@ create table if not exists email_log (
   created_at timestamptz not null default now()
 );
 
+-- User repos (GitHub project summaries for email generation)
+create table if not exists user_repos (
+  id serial primary key,
+  user_id uuid not null references users(id) on delete cascade,
+  repo_url text not null,
+  repo_name text,
+  summary text not null,
+  language text,
+  stars int default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table user_repos enable row level security;
+create policy "Users can view own repos" on user_repos for select using (auth.uid() = user_id);
+create policy "Users can insert own repos" on user_repos for insert with check (auth.uid() = user_id);
+create policy "Users can delete own repos" on user_repos for delete using (auth.uid() = user_id);
+create index idx_user_repos_user on user_repos(user_id);
+
 -- Indexes for common queries
 create index if not exists idx_companies_reachability on companies(reachability_probability desc);
 create index if not exists idx_companies_industry on companies(industry);
@@ -180,3 +199,26 @@ create policy "Users can update own email_log" on email_log for update using (au
 -- ALTER TABLE companies ADD COLUMN IF NOT EXISTS
 --   founder_email_status text DEFAULT 'unknown';
 -- ============================================================
+
+-- MIGRATION: Profile inputs overhaul (2026-06-02)
+-- Run these in Supabase SQL Editor on existing database:
+--
+-- CREATE TABLE IF NOT EXISTS user_repos (
+--   id serial primary key,
+--   user_id uuid not null references users(id) on delete cascade,
+--   repo_url text not null,
+--   repo_name text,
+--   summary text not null,
+--   language text,
+--   stars int default 0,
+--   created_at timestamptz not null default now()
+-- );
+-- ALTER TABLE user_repos ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Users can view own repos" ON user_repos FOR SELECT USING (auth.uid() = user_id);
+-- CREATE POLICY "Users can insert own repos" ON user_repos FOR INSERT WITH CHECK (auth.uid() = user_id);
+-- CREATE POLICY "Users can delete own repos" ON user_repos FOR DELETE USING (auth.uid() = user_id);
+-- CREATE INDEX idx_user_repos_user ON user_repos(user_id);
+--
+-- ALTER TABLE users ADD COLUMN IF NOT EXISTS summarization_count int DEFAULT 0;
+--
+-- Also in Supabase Storage: create bucket "resumes" (public).
