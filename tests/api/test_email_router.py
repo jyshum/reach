@@ -390,3 +390,32 @@ def test_check_replies_detects_bounce(client, auth_headers):
     assert response.status_code == 200
     assert response.json()["bounces_found"] == 1
     assert response.json()["replies_found"] == 0
+
+
+def test_send_rejects_bounced_email(client, auth_headers):
+    mock_db = MagicMock()
+    company = _sample_company()
+    company["founder_email"] = "founder@startup.com"
+    company["founder_email_status"] = "bounced"
+
+    def table_side_effect(table_name):
+        mock_table = MagicMock()
+        if table_name == "gmail_tokens":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = [
+                {"encrypted_refresh_token": "enc-tok", "gmail_email": "me@gmail.com"}
+            ]
+        elif table_name == "companies":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = [company]
+        return mock_table
+
+    mock_db.table.side_effect = table_side_effect
+
+    with _mock_auth(), patch("backend.routers.email.get_db", return_value=mock_db):
+        response = client.post(
+            "/email/send",
+            json={"company_id": 1, "subject_line": "Hi", "final_text": "Hello", "original_draft": "Hello"},
+            headers=auth_headers,
+        )
+
+    assert response.status_code == 400
+    assert "bounced" in response.json()["detail"].lower()

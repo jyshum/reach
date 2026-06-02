@@ -140,7 +140,7 @@ def send_email_endpoint(body: EmailSend, user_id: str = Depends(get_current_user
 
     token_row = token_result.data[0]
 
-    company_result = db.table("companies").select("founder_email, name").eq("id", body.company_id).execute()
+    company_result = db.table("companies").select("founder_email, founder_email_status, name").eq("id", body.company_id).execute()
     if not company_result.data:
         raise HTTPException(status_code=404, detail="Company not found")
 
@@ -148,6 +148,12 @@ def send_email_endpoint(body: EmailSend, user_id: str = Depends(get_current_user
     founder_email = company.get("founder_email")
     if not founder_email:
         raise HTTPException(status_code=400, detail="No email address found for this founder")
+
+    if company.get("founder_email_status") == "bounced":
+        raise HTTPException(
+            status_code=400,
+            detail="This founder's email previously bounced. The address may be invalid.",
+        )
 
     refresh_token = decrypt_token(token_row["encrypted_refresh_token"])
     access_token = refresh_access_token(refresh_token)
