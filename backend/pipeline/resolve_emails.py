@@ -1,6 +1,6 @@
 """Resolve founder email addresses from multiple sources.
 
-Cascade: website scrape → pattern guess + SMTP verify.
+Cascade: website scrape → GitHub discovery → pattern guess + MX verify.
 Runs offline on dev machine. Only attempts founders with has_email=True.
 """
 
@@ -29,11 +29,21 @@ GENERIC_PREFIXES = {
     "billing", "legal", "privacy", "security", "noreply", "no-reply",
 }
 
+PERSONAL_EMAIL_DOMAINS = {
+    "gmail.com", "googlemail.com", "outlook.com", "hotmail.com",
+    "live.com", "yahoo.com", "yahoo.co.uk", "icloud.com", "me.com",
+    "mac.com", "aol.com", "protonmail.com", "proton.me", "pm.me",
+    "fastmail.com", "zoho.com", "mail.com", "gmx.com", "gmx.net",
+}
+
 EMAIL_REGEX = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 
 WEBSITE_PATHS = ["", "/contact", "/about", "/team", "/about-us", "/contact-us"]
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+# GitHub API — unauthenticated rate limit is 60 req/hr, sufficient for targeted lookups
+GITHUB_API = "https://api.github.com"
 
 
 def extract_domain(url: str | None) -> str | None:
@@ -130,6 +140,123 @@ def scrape_website_for_email(
     return None
 
 
+# ---------- GitHub discovery ----------
+
+
+def _github_api_get(path: str) -> dict | list | None:
+    """Hit the GitHub API. Returns parsed JSON or None."""
+    try:
+        req = Request(
+            f"{GITHUB_API}{path}",
+            headers={
+                "User-Agent": USER_AGENT,
+                "Accept": "application/vnd.github.v3+json",
+            },
+        )
+        resp = urlopen(req, timeout=REQUEST_TIMEOUT)
+        return json.loads(resp.read().decode("utf-8"))
+    except Exception:
+        return None
+
+
+def _extract_github_username(url: str | None) -> str | None:
+    """Extract a GitHub username from a URL like github.com/username."""
+    if not url:
+        return None
+    match = re.search(r"github\.com/([a-zA-Z0-9_-]+)", url)
+    if match:
+        username = match.group(1)
+        # Filter out org-level pages that aren't usernames
+        if username.lower() not in {"orgs", "settings", "marketplace", "explore"}:
+            return username
+    return None
+
+
+def _find_github_username(founder: dict, company_desc: str) -> str | None:
+    """Try to find a GitHub username from founder/company data."""
+    # Check founder bio for github.com links
+    bio = founder.get("founder_bio") or ""
+    username = _extract_github_username(bio)
+    if username:
+        return username
+
+    # Check LinkedIn URL (some people use github links in LinkedIn)
+    # Not useful directly, but the founder name can be tried as a username
+
+    # Check company description for github org
+    username = _extract_github_username(company_desc)
+    if username:
+        return username
+
+    return None
+
+
+def discover_email_from_github(
+    founder_name: str, domain: str, founder: dict, company_desc: str
+) -> str | None:
+    """Try to find founder email via GitHub.
+
+    Strategy:
+    1. Find GitHub username from bio/description
+    2. Check public email on their profile
+    3. Scan their recent public commits for @company-domain emails
+    """
+    username = _find_github_username(founder, company_desc)
+    if not username:
+        return None
+
+    # Check profile public email
+    user_data = _github_api_get(f"/users/{username}")
+    if not user_data:
+        return None
+
+    public_email = user_data.get("email")
+    if public_email:
+        email_lower = public_email.lower()
+        email_domain = email_lower.split("@")[-1]
+        # Accept company domain emails directly
+        if domain and email_lower.endswith(f"@{domain}"):
+            return public_email
+        # Accept personal emails — it's on their profile, so it's theirs
+        if email_domain in PERSONAL_EMAIL_DOMAINS:
+            return public_email
+
+    # Scan recent public events for commit emails
+    events = _github_api_get(f"/users/{username}/events/public?per_page=30")
+    if not events or not isinstance(events, list):
+        return None
+
+    first, last = split_founder_name(founder_name)
+    found_emails = set()
+
+    for event in events:
+        if event.get("type") != "PushEvent":
+            continue
+        payload = event.get("payload", {})
+        for commit in payload.get("commits", []):
+            author = commit.get("author", {})
+            email = (author.get("email") or "").lower()
+            if not email or email.split("@")[0] in GENERIC_PREFIXES:
+                continue
+            email_domain = email.split("@")[-1]
+            # Accept company domain emails
+            if domain and email.endswith(f"@{domain}"):
+                found_emails.add(email)
+            # Accept personal emails only if founder name appears in local part
+            elif email_domain in PERSONAL_EMAIL_DOMAINS:
+                local = email.split("@")[0]
+                if first and first.lower() in local:
+                    found_emails.add(email)
+
+    if found_emails:
+        return match_founder_email(list(found_emails), first, last)
+
+    return None
+
+
+# ---------- MX / SMTP verification ----------
+
+
 def check_mx_records(domain: str) -> bool:
     """Check if domain has MX records (accepts email)."""
     import subprocess
@@ -189,6 +316,10 @@ def resolve_all_emails(
         raw = json.load(f)
 
     website_map = {c["name"]: c.get("website", "") for c in raw}
+    desc_map = {
+        c["name"]: (c.get("long_description") or "") + " " + (c.get("description") or "")
+        for c in raw
+    }
 
     # Load existing results for resume support
     existing = {}
@@ -200,7 +331,7 @@ def resolve_all_emails(
     results = list(existing.values())
     resolved_names = set(existing.keys())
 
-    stats = {"website": 0, "pattern": 0, "failed": 0}
+    stats = {"website": 0, "github": 0, "pattern_smtp": 0, "pattern_mx": 0, "failed": 0}
 
     eligible = [f for f in founders if f.get("has_email") and f["company_name"] not in resolved_names]
     print(f"[INFO] {len(eligible)} founders to resolve ({len(resolved_names)} already done)")
@@ -224,17 +355,39 @@ def resolve_all_emails(
                 confidence = "high"
                 stats["website"] += 1
 
-        # Step 2: Pattern guess + MX/SMTP verify
+        # Step 2: GitHub discovery
+        if not resolved_email and domain:
+            company_desc = desc_map.get(name, "")
+            resolved_email = discover_email_from_github(
+                founder_name, domain, founder, company_desc,
+            )
+            if resolved_email:
+                source = "github"
+                confidence = "high"
+                stats["github"] += 1
+
+        # Step 3: Pattern guess + verification
         if not resolved_email and domain and first:
             candidates = guess_email_patterns(first, last, domain)
             if check_mx_records(domain):
+                # Try SMTP verification first
+                smtp_verified = False
                 for candidate in candidates:
                     if verify_smtp(candidate, domain):
                         resolved_email = candidate
                         source = "pattern"
                         confidence = "medium"
-                        stats["pattern"] += 1
+                        stats["pattern_smtp"] += 1
+                        smtp_verified = True
                         break
+
+                # If SMTP didn't work (server blocks probing), accept
+                # first pattern with MX-valid domain as low confidence
+                if not smtp_verified:
+                    resolved_email = candidates[0]  # first@domain.com
+                    source = "pattern"
+                    confidence = "low"
+                    stats["pattern_mx"] += 1
 
         if not resolved_email:
             stats["failed"] += 1
@@ -248,7 +401,13 @@ def resolve_all_emails(
 
         done = i + 1
         if done % LOG_EVERY == 0 or done == len(eligible):
-            print(f"[INFO] {done}/{len(eligible)} processed | website={stats['website']} pattern={stats['pattern']} failed={stats['failed']}")
+            total_resolved = stats["website"] + stats["github"] + stats["pattern_smtp"] + stats["pattern_mx"]
+            print(
+                f"[INFO] {done}/{len(eligible)} processed | "
+                f"website={stats['website']} github={stats['github']} "
+                f"pattern_smtp={stats['pattern_smtp']} pattern_mx={stats['pattern_mx']} "
+                f"failed={stats['failed']} | total_resolved={total_resolved}"
+            )
 
         if done % LOG_EVERY == 0:
             with open(output_path, "w") as f:
@@ -260,11 +419,13 @@ def resolve_all_emails(
     with open(output_path, "w") as f:
         json.dump(results, f, indent=2)
 
-    total_resolved = stats["website"] + stats["pattern"]
-    print(f"[DONE] Resolved {total_resolved}/{len(eligible)} emails")
-    print(f"  Website: {stats['website']}")
-    print(f"  Pattern+SMTP: {stats['pattern']}")
-    print(f"  Failed: {stats['failed']}")
+    total_resolved = stats["website"] + stats["github"] + stats["pattern_smtp"] + stats["pattern_mx"]
+    print(f"\n[DONE] Resolved {total_resolved}/{len(eligible)} emails")
+    print(f"  Website scrape (high):     {stats['website']}")
+    print(f"  GitHub discovery (high):   {stats['github']}")
+    print(f"  Pattern + SMTP (medium):   {stats['pattern_smtp']}")
+    print(f"  Pattern + MX only (low):   {stats['pattern_mx']}")
+    print(f"  Failed (no domain/MX):     {stats['failed']}")
     return results
 
 

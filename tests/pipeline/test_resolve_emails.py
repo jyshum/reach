@@ -1,12 +1,15 @@
 """Tests for email resolution — parsing logic only (no network)."""
 
 import pytest
+from unittest.mock import patch
 from backend.pipeline.resolve_emails import (
     extract_domain,
     extract_emails_from_html,
     filter_generic_emails,
     guess_email_patterns,
     match_founder_email,
+    discover_email_from_github,
+    PERSONAL_EMAIL_DOMAINS,
 )
 
 
@@ -73,4 +76,68 @@ def test_match_founder_email_no_match():
 
 def test_match_founder_email_empty():
     result = match_founder_email([], "Alice", "Smith")
+    assert result is None
+
+
+def test_personal_email_domains_contains_common_providers():
+    assert "gmail.com" in PERSONAL_EMAIL_DOMAINS
+    assert "outlook.com" in PERSONAL_EMAIL_DOMAINS
+    assert "protonmail.com" in PERSONAL_EMAIL_DOMAINS
+    assert "icloud.com" in PERSONAL_EMAIL_DOMAINS
+    assert "yahoo.com" in PERSONAL_EMAIL_DOMAINS
+
+
+@patch("backend.pipeline.resolve_emails._github_api_get")
+def test_github_discovery_accepts_personal_email_from_profile(mock_api):
+    """GitHub public profile email with a personal domain should be accepted."""
+    mock_api.side_effect = [
+        # /users/jsmith -> profile with personal email
+        {"email": "jsmith@gmail.com", "login": "jsmith"},
+    ]
+    founder = {"founder_bio": "github.com/jsmith"}
+    result = discover_email_from_github("John Smith", "startup.com", founder, "")
+    assert result == "jsmith@gmail.com"
+
+
+@patch("backend.pipeline.resolve_emails._github_api_get")
+def test_github_discovery_accepts_personal_email_from_commits(mock_api):
+    """Commit emails from personal domains should be accepted if founder name matches."""
+    mock_api.side_effect = [
+        # /users/jsmith -> no public email
+        {"email": None, "login": "jsmith"},
+        # /users/jsmith/events/public -> commit with personal email
+        [
+            {
+                "type": "PushEvent",
+                "payload": {
+                    "commits": [
+                        {"author": {"email": "john.smith@outlook.com"}},
+                    ],
+                },
+            },
+        ],
+    ]
+    founder = {"founder_bio": "github.com/jsmith"}
+    result = discover_email_from_github("John Smith", "startup.com", founder, "")
+    assert result == "john.smith@outlook.com"
+
+
+@patch("backend.pipeline.resolve_emails._github_api_get")
+def test_github_discovery_rejects_personal_email_without_name_match(mock_api):
+    """Commit emails from personal domains should be rejected if name doesn't match."""
+    mock_api.side_effect = [
+        {"email": None, "login": "jsmith"},
+        [
+            {
+                "type": "PushEvent",
+                "payload": {
+                    "commits": [
+                        {"author": {"email": "randomuser@gmail.com"}},
+                    ],
+                },
+            },
+        ],
+    ]
+    founder = {"founder_bio": "github.com/jsmith"}
+    result = discover_email_from_github("John Smith", "startup.com", founder, "")
     assert result is None
