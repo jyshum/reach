@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchBrief, fetchOutreach, getGmailStatus, ApiError } from "@/lib/api";
+import { fetchBrief, fetchOutreach, getGmailStatus, fetchProfile, ApiError } from "@/lib/api";
 import type { CompanyBrief, OutreachEntry } from "@/lib/types";
 import FounderBrief from "@/components/FounderBrief";
 import GuidanceCard from "@/components/GuidanceCard";
@@ -22,6 +22,7 @@ export default function BriefPage({
   const [loading, setLoading] = useState(true);
   const [outreach, setOutreach] = useState<OutreachEntry[]>([]);
   const [gmailConnected, setGmailConnected] = useState(false);
+  const [hasBio, setHasBio] = useState(false);
 
   useEffect(() => {
     if (!authenticated) return;
@@ -34,6 +35,8 @@ export default function BriefPage({
         setOutreach(allOutreach.filter((e) => e.company_id === Number(id)));
         const gmail = await getGmailStatus().catch(() => ({ connected: false, gmail_email: null }));
         setGmailConnected(gmail.connected);
+        const profile = await fetchProfile().catch(() => null);
+        setHasBio(!!profile?.bio);
       } catch (err) {
         if (err instanceof ApiError && err.status === 404) {
           setError("not-found");
@@ -132,6 +135,7 @@ export default function BriefPage({
         founderName={brief.founder_name}
         founderLinkedin={brief.founder_linkedin}
         gmailConnected={gmailConnected}
+        hasBio={hasBio}
       />
 
       <div className="mt-8 space-y-4">
