@@ -93,3 +93,117 @@ def test_build_gmail_service():
 
     mock_build.assert_called_once()
     assert service is not None
+
+
+def test_check_bounce_detects_mailer_daemon(mock_gmail_service):
+    from backend.email.gmail import check_thread_for_bounce
+
+    mock_gmail_service.users().threads().get().execute.return_value = {
+        "messages": [
+            {
+                "id": "msg-1",
+                "payload": {"headers": [
+                    {"name": "From", "value": "student@gmail.com"},
+                    {"name": "Subject", "value": "Quick question"},
+                ]},
+            },
+            {
+                "id": "msg-2",
+                "payload": {"headers": [
+                    {"name": "From", "value": "Mail Delivery Subsystem <mailer-daemon@googlemail.com>"},
+                    {"name": "Subject", "value": "Delivery Status Notification (Failure)"},
+                ]},
+            },
+        ]
+    }
+
+    result = check_thread_for_bounce(
+        service=mock_gmail_service,
+        thread_id="thread-1",
+        sender_email="student@gmail.com",
+    )
+    assert result is True
+
+
+def test_check_bounce_detects_failed_recipients_header(mock_gmail_service):
+    from backend.email.gmail import check_thread_for_bounce
+
+    mock_gmail_service.users().threads().get().execute.return_value = {
+        "messages": [
+            {
+                "id": "msg-1",
+                "payload": {"headers": [
+                    {"name": "From", "value": "student@gmail.com"},
+                    {"name": "Subject", "value": "Quick question"},
+                ]},
+            },
+            {
+                "id": "msg-2",
+                "payload": {"headers": [
+                    {"name": "From", "value": "postmaster@outlook.com"},
+                    {"name": "Subject", "value": "Undeliverable: Quick question"},
+                    {"name": "X-Failed-Recipients", "value": "founder@startup.com"},
+                ]},
+            },
+        ]
+    }
+
+    result = check_thread_for_bounce(
+        service=mock_gmail_service,
+        thread_id="thread-1",
+        sender_email="student@gmail.com",
+    )
+    assert result is True
+
+
+def test_check_bounce_ignores_real_reply(mock_gmail_service):
+    from backend.email.gmail import check_thread_for_bounce
+
+    mock_gmail_service.users().threads().get().execute.return_value = {
+        "messages": [
+            {
+                "id": "msg-1",
+                "payload": {"headers": [
+                    {"name": "From", "value": "student@gmail.com"},
+                    {"name": "Subject", "value": "Quick question"},
+                ]},
+            },
+            {
+                "id": "msg-2",
+                "payload": {"headers": [
+                    {"name": "From", "value": "founder@startup.com"},
+                    {"name": "Subject", "value": "Re: Quick question"},
+                ]},
+            },
+        ]
+    }
+
+    result = check_thread_for_bounce(
+        service=mock_gmail_service,
+        thread_id="thread-1",
+        sender_email="student@gmail.com",
+    )
+    assert result is False
+
+
+def test_check_bounce_no_extra_messages(mock_gmail_service):
+    from backend.email.gmail import check_thread_for_bounce
+
+    mock_gmail_service.users().threads().get().execute.return_value = {
+        "messages": [
+            {
+                "id": "msg-1",
+                "payload": {"headers": [
+                    {"name": "From", "value": "student@gmail.com"},
+                    {"name": "Subject", "value": "Quick question"},
+                ]},
+            },
+        ]
+    }
+
+    result = check_thread_for_bounce(
+        service=mock_gmail_service,
+        thread_id="thread-1",
+        sender_email="student@gmail.com",
+    )
+    assert result is False

@@ -2,6 +2,7 @@
 
 import base64
 from email.mime.text import MIMEText
+from email.utils import parseaddr
 
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -49,3 +50,55 @@ def check_thread_for_reply(
 
     messages = thread.get("messages", [])
     return len(messages) > 1
+
+
+BOUNCE_SENDERS = {"mailer-daemon", "postmaster", "mail delivery subsystem"}
+
+BOUNCE_SUBJECTS = {
+    "delivery status notification",
+    "undeliverable",
+    "mail delivery failed",
+    "returned to sender",
+}
+
+
+def check_thread_for_bounce(
+    service,
+    thread_id: str,
+    sender_email: str,
+) -> bool:
+    """Check if a Gmail thread contains a bounce (NDR) message."""
+    thread = service.users().threads().get(
+        userId="me", id=thread_id, format="metadata",
+        metadataHeaders=["From", "Subject", "X-Failed-Recipients"],
+    ).execute()
+
+    messages = thread.get("messages", [])
+    sender_lower = sender_email.lower()
+
+    for msg in messages:
+        headers = {
+            h["name"].lower(): h["value"]
+            for h in msg.get("payload", {}).get("headers", [])
+        }
+
+        from_raw = headers.get("from", "")
+        _, from_email = parseaddr(from_raw)
+        from_lower = from_email.lower()
+        if from_lower == sender_lower:
+            continue
+
+        # Check X-Failed-Recipients header
+        if "x-failed-recipients" in headers:
+            return True
+
+        # Check From for bounce senders
+        if any(sender in from_lower for sender in BOUNCE_SENDERS):
+            return True
+
+        # Check Subject for bounce patterns
+        subject = headers.get("subject", "").lower()
+        if any(pattern in subject for pattern in BOUNCE_SUBJECTS):
+            return True
+
+    return False
