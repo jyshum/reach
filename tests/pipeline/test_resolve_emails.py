@@ -9,6 +9,7 @@ from backend.pipeline.resolve_emails import (
     guess_email_patterns,
     match_founder_email,
     discover_email_from_github,
+    scrape_website_for_email,
     PERSONAL_EMAIL_DOMAINS,
 )
 
@@ -41,10 +42,17 @@ def test_extract_emails_from_html_finds_plain_text():
 
 
 def test_extract_emails_filters_wrong_domain():
-    html = '<a href="mailto:user@gmail.com">Email</a> and alice@example.com'
+    html = '<a href="mailto:user@randomunknown.org">Email</a> and alice@example.com'
     emails = extract_emails_from_html(html, "example.com")
     assert "alice@example.com" in emails
-    assert "user@gmail.com" not in emails
+    assert "user@randomunknown.org" not in emails
+
+
+def test_extract_emails_includes_personal_domains():
+    html = '<p>Contact alice@gmail.com or support@example.com</p>'
+    emails = extract_emails_from_html(html, "example.com")
+    assert "alice@gmail.com" in emails
+    assert "support@example.com" in emails
 
 
 def test_filter_generic_emails():
@@ -141,3 +149,36 @@ def test_github_discovery_rejects_personal_email_without_name_match(mock_api):
     founder = {"founder_bio": "github.com/jsmith"}
     result = discover_email_from_github("John Smith", "startup.com", founder, "")
     assert result is None
+
+
+@patch("backend.pipeline.resolve_emails.fetch_page")
+def test_website_scrape_accepts_personal_email_with_name_match(mock_fetch):
+    """Personal email on website should be accepted if founder name matches."""
+    mock_fetch.side_effect = [
+        '<p>Contact alice.chen@gmail.com for details</p>',  # homepage
+        None, None, None, None, None,  # other paths
+    ]
+    result = scrape_website_for_email("https://startup.com", "startup.com", "Alice", "Chen")
+    assert result == "alice.chen@gmail.com"
+
+
+@patch("backend.pipeline.resolve_emails.fetch_page")
+def test_website_scrape_rejects_personal_email_without_name_match(mock_fetch):
+    """Personal email on website should be rejected if name doesn't match."""
+    mock_fetch.side_effect = [
+        '<p>Contact randomdude@gmail.com for details</p>',
+        None, None, None, None, None,
+    ]
+    result = scrape_website_for_email("https://startup.com", "startup.com", "Alice", "Chen")
+    assert result is None
+
+
+@patch("backend.pipeline.resolve_emails.fetch_page")
+def test_website_scrape_prefers_company_domain_over_personal(mock_fetch):
+    """Company domain email should be preferred over personal email."""
+    mock_fetch.side_effect = [
+        '<p>alice@startup.com or alice.chen@gmail.com</p>',
+        None, None, None, None, None,
+    ]
+    result = scrape_website_for_email("https://startup.com", "startup.com", "Alice", "Chen")
+    assert result == "alice@startup.com"

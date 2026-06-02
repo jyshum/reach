@@ -64,9 +64,14 @@ def extract_domain(url: str | None) -> str | None:
 
 
 def extract_emails_from_html(html: str, domain: str) -> list[str]:
-    """Extract all email addresses matching a domain from HTML content."""
+    """Extract emails matching company domain or personal providers."""
     all_emails = EMAIL_REGEX.findall(html.lower())
-    return list(set(e for e in all_emails if e.endswith(f"@{domain}")))
+    results = set()
+    for e in all_emails:
+        email_domain = e.split("@")[-1]
+        if email_domain == domain or email_domain in PERSONAL_EMAIL_DOMAINS:
+            results.add(e)
+    return list(results)
 
 
 def filter_generic_emails(emails: list[str]) -> list[str]:
@@ -134,9 +139,30 @@ def scrape_website_for_email(
             all_emails.extend(found)
         time.sleep(0.5)
 
-    personal = filter_generic_emails(all_emails)
-    if personal:
-        return match_founder_email(personal, founder_first, founder_last)
+    non_generic = filter_generic_emails(all_emails)
+    if not non_generic:
+        return None
+
+    # Split into company-domain and personal-domain emails
+    company_emails = [e for e in non_generic if e.endswith(f"@{domain}")]
+    personal_emails = [
+        e for e in non_generic
+        if e.split("@")[-1] in PERSONAL_EMAIL_DOMAINS
+    ]
+
+    # Prefer company-domain emails
+    if company_emails:
+        return match_founder_email(company_emails, founder_first, founder_last)
+
+    # Accept personal emails only if founder name appears in local part
+    first_lower = founder_first.lower().strip()
+    name_matched = [
+        e for e in personal_emails
+        if first_lower and first_lower in e.split("@")[0]
+    ]
+    if name_matched:
+        return match_founder_email(name_matched, founder_first, founder_last)
+
     return None
 
 
