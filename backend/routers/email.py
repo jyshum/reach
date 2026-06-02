@@ -14,7 +14,7 @@ from backend.email.oauth import (
     decrypt_token,
     refresh_access_token,
 )
-from backend.email.gmail import build_gmail_service, send_email, check_thread_for_reply
+from backend.email.gmail import build_gmail_service, send_email, check_thread_for_reply, check_thread_for_bounce
 from backend.email.generate import generate_draft
 from backend.schemas import EmailGenerate, EmailDraft, EmailSend, GmailStatus
 
@@ -194,7 +194,7 @@ def send_email_endpoint(body: EmailSend, user_id: str = Depends(get_current_user
 
 @router.post("/check-replies")
 def check_replies(user_id: str = Depends(get_current_user)):
-    """Check all sent emails for replies via Gmail API."""
+    """Check all sent emails for bounces and replies via Gmail API."""
     db = get_db()
 
     token_result = db.table("gmail_tokens").select("encrypted_refresh_token, gmail_email").eq("user_id", user_id).execute()
@@ -211,12 +211,39 @@ def check_replies(user_id: str = Depends(get_current_user)):
     sent_emails = sent_result.data
 
     replies_found = 0
+    bounces_found = 0
 
     for email_entry in sent_emails:
         thread_id = email_entry.get("gmail_thread_id")
         if not thread_id:
             continue
 
+        # Check for bounce first
+        is_bounce = check_thread_for_bounce(
+            service=service,
+            thread_id=thread_id,
+            sender_email=token_row["gmail_email"],
+        )
+
+        if is_bounce:
+            bounces_found += 1
+            now = datetime.now(timezone.utc).isoformat()
+
+            db.table("email_log").update({
+                "status": "bounced",
+            }).eq("id", email_entry["id"]).execute()
+
+            db.table("outreach_log").update({
+                "status": "bounced",
+            }).eq("user_id", user_id).eq("company_id", email_entry["company_id"]).execute()
+
+            db.table("companies").update({
+                "founder_email_status": "bounced",
+            }).eq("id", email_entry["company_id"]).execute()
+
+            continue
+
+        # Check for reply
         has_reply = check_thread_for_reply(
             service=service,
             thread_id=thread_id,
@@ -236,4 +263,4 @@ def check_replies(user_id: str = Depends(get_current_user)):
                 "status": "replied",
             }).eq("user_id", user_id).eq("company_id", email_entry["company_id"]).execute()
 
-    return {"replies_found": replies_found, "checked": len(sent_emails)}
+    return {"replies_found": replies_found, "bounces_found": bounces_found, "checked": len(sent_emails)}
