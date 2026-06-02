@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRequireAuth } from "@/lib/useAuth";
-import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail, fetchRepos, createRepo, deleteRepo } from "@/lib/api";
+import { fetchProfile, updateProfile, getGmailStatus, getGmailAuthUrl, disconnectGmail, fetchRepos, createRepo, deleteRepo, uploadResume, deleteResume } from "@/lib/api";
 import type { GmailStatus } from "@/lib/types";
 import type { UserProfile } from "@/lib/types";
 import type { UserRepo } from "@/lib/types";
@@ -61,6 +61,9 @@ export default function ProfilePage() {
   const [repoLoading, setRepoLoading] = useState(false);
   const [repoError, setRepoError] = useState<string | null>(null);
   const [location, setLocation] = useState("");
+  const [resumeFile, setResumeFile] = useState<string | null>(null);
+  const [resumeUploading, setResumeUploading] = useState(false);
+  const [resumeError, setResumeError] = useState<string | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -94,6 +97,9 @@ export default function ProfilePage() {
         setPortfolioUrl(p.portfolio_url ?? "");
         setInterests(p.interests ?? []);
         setResumeUrl(p.resume_url ?? "");
+        if (p.resume_url) {
+          setResumeFile("resume.pdf");
+        }
         setLocation(p.location ?? "");
       })
       .catch(() => {
@@ -134,7 +140,6 @@ export default function ProfilePage() {
         portfolio_url: portfolioUrl || null,
         location: location || null,
         interests,
-        resume_url: resumeUrl || null,
       });
 
       setSaved(true);
@@ -201,6 +206,42 @@ export default function ProfilePage() {
       setRepos((prev) => prev.filter((r) => r.id !== repoId));
     } catch (err) {
       setRepoError(err instanceof Error ? err.message : "Failed to remove repo");
+    }
+  }
+
+  async function handleResumeUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      setResumeError("Only PDF files are accepted.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setResumeError("File too large. Maximum size is 2MB.");
+      return;
+    }
+
+    setResumeUploading(true);
+    setResumeError(null);
+    try {
+      const result = await uploadResume(file);
+      setResumeUrl(result.resume_url);
+      setResumeFile(file.name);
+    } catch (err) {
+      setResumeError(err instanceof Error ? err.message : "Failed to upload resume");
+    } finally {
+      setResumeUploading(false);
+    }
+  }
+
+  async function handleResumeDelete() {
+    try {
+      await deleteResume();
+      setResumeUrl("");
+      setResumeFile(null);
+    } catch (err) {
+      setResumeError(err instanceof Error ? err.message : "Failed to remove resume");
     }
   }
 
@@ -520,19 +561,42 @@ export default function ProfilePage() {
               />
             </div>
 
-            {/* Resume URL */}
+            {/* Resume PDF */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="resume_url" className="text-sm font-medium text-secondary">
-                Resume URL
+              <label className="text-sm font-medium text-secondary">
+                Resume (PDF)
               </label>
-              <input
-                id="resume_url"
-                type="url"
-                value={resumeUrl}
-                onChange={(e) => setResumeUrl(e.target.value)}
-                placeholder="Link to your resume (Google Doc, Dropbox, etc.)"
-                className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm text-primary placeholder:text-tertiary focus:outline-none focus:ring-1 focus:ring-accent"
-              />
+              <p className="text-xs text-tertiary">
+                Upload your resume — it'll be linked in your email signature.
+              </p>
+
+              {resumeFile ? (
+                <div className="flex items-center justify-between rounded-lg border border-card-border bg-card px-4 py-3">
+                  <p className="text-sm text-primary">{resumeFile}</p>
+                  <button
+                    type="button"
+                    onClick={handleResumeDelete}
+                    className="text-xs text-red-500 hover:text-red-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-card-border px-4 py-6 text-sm text-secondary transition-colors hover:border-accent hover:text-primary">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleResumeUpload}
+                    className="hidden"
+                    disabled={resumeUploading}
+                  />
+                  {resumeUploading ? "Uploading..." : "Click to upload or drag and drop"}
+                </label>
+              )}
+
+              {resumeError && (
+                <p className="text-xs text-red-500">{resumeError}</p>
+              )}
             </div>
 
             {/* Save row */}
