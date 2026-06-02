@@ -119,7 +119,7 @@ alter table user_repos enable row level security;
 create policy "Users can view own repos" on user_repos for select using (auth.uid() = user_id);
 create policy "Users can insert own repos" on user_repos for insert with check (auth.uid() = user_id);
 create policy "Users can delete own repos" on user_repos for delete using (auth.uid() = user_id);
-create index idx_user_repos_user on user_repos(user_id);
+create index if not exists idx_user_repos_user on user_repos(user_id);
 
 -- Indexes for common queries
 create index if not exists idx_companies_reachability on companies(reachability_probability desc);

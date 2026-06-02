@@ -52,7 +52,7 @@ class RepoResponse(BaseModel):
     summary: str
     language: str | None = None
     stars: int = 0
-    warning: str | None = None
+    warning: str | None = None  # transient: only set on creation, not stored in DB
 
 
 # --- Guidance ---
