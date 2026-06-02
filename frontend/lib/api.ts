@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { CompanyCard, CompanyBrief, UserProfile, OutreachEntry, EmailDraft, GmailStatus } from "./types";
+import type { CompanyCard, CompanyBrief, UserProfile, OutreachEntry, EmailDraft, GmailStatus, UserRepo } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -170,4 +170,43 @@ export async function sendEmail(data: {
 
 export async function checkReplies(): Promise<{ replies_found: number; checked: number }> {
   return apiFetch("/email/check-replies", { method: "POST" });
+}
+
+// --- Repos ---
+
+export async function fetchRepos(): Promise<UserRepo[]> {
+  return apiFetch<UserRepo[]>("/me/repos");
+}
+
+export async function createRepo(repoUrl: string): Promise<UserRepo> {
+  return apiFetch<UserRepo>("/me/repos", {
+    method: "POST",
+    body: JSON.stringify({ repo_url: repoUrl }),
+  });
+}
+
+export async function deleteRepo(repoId: number): Promise<void> {
+  return apiFetch("/me/repos/" + repoId, { method: "DELETE" });
+}
+
+// --- Resume ---
+
+export async function uploadResume(file: File): Promise<{ resume_url: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const headers = await authHeaders();
+  const res = await fetch(`${API_URL}/me/resume`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, body.detail || "Upload failed");
+  }
+  return res.json();
+}
+
+export async function deleteResume(): Promise<void> {
+  return apiFetch("/me/resume", { method: "DELETE" });
 }
