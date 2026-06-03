@@ -157,11 +157,12 @@ class OutreachEntry(BaseModel):
 
 class EmailGenerate(BaseModel):
     company_id: int
-    tone: Literal["curious", "friendly"] = "curious"
+    tone: Literal["curious", "friendly", "scrappy", "earnest"] = "curious"
 
 
 class EmailDraft(BaseModel):
     draft: str
+    subject_line: str
     tone: str
     company_id: int
     company_name: str
