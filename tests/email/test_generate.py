@@ -1,24 +1,23 @@
+"""Tests for email draft generation."""
+
 from unittest.mock import patch, MagicMock
-import pytest
 
 
-def test_generate_draft_calls_claude():
+def test_generate_draft_calls_claude_with_system_prompt():
     from backend.email.generate import generate_draft
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="I'm a high school senior in SF...")]
+    mock_response.content = [MagicMock(text="SUBJECT: Quick chat about enzymes\n\nI'm a high school senior in SF...")]
 
     mock_client = MagicMock()
     mock_client.messages.create.return_value = mock_response
 
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
-        draft = generate_draft(
+        subject, draft = generate_draft(
             student_bio="HS senior, ML projects",
-            student_projects="Built a CNN plant classifier",
+            repo_summaries=[{"repo_name": "bot", "summary": "A bot.", "language": "Python", "stars": 5}],
             student_interests=["Generative AI"],
-            portfolio_url=None,
-            github_url=None,
-            resume_url=None,
+            signature_links={"github_url": "https://github.com/alice"},
             company_name="Pando Bio",
             company_summary="AI enzyme design",
             specific_projects=["Analyze screening data"],
@@ -26,18 +25,48 @@ def test_generate_draft_calls_claude():
             tone="curious",
         )
 
-    assert draft == "I'm a high school senior in SF..."
-    mock_client.messages.create.assert_called_once()
+    assert subject == "Quick chat about enzymes"
+    assert "high school senior" in draft
+    assert "SUBJECT:" not in draft
+
     call_kwargs = mock_client.messages.create.call_args[1]
     assert call_kwargs["model"] == "claude-haiku-4-5-20251001"
     assert call_kwargs["max_tokens"] == 300
+    assert "system" in call_kwargs
+    assert "high school" in call_kwargs["system"].lower()
+
+
+def test_generate_draft_fallback_subject():
+    from backend.email.generate import generate_draft
+
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text="I'm a high school student interested in your work...")]
+
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = mock_response
+
+    with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
+        subject, draft = generate_draft(
+            student_bio="Student",
+            repo_summaries=[],
+            student_interests=[],
+            signature_links={},
+            company_name="TestCo",
+            company_summary="Test",
+            specific_projects=[],
+            founder_name="Sam",
+            tone="friendly",
+        )
+
+    assert subject == "Quick question - TestCo"
+    assert "high school student" in draft
 
 
 def test_generate_draft_includes_founder_bio():
     from backend.email.generate import generate_draft
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="Draft text")]
+    mock_response.content = [MagicMock(text="SUBJECT: Test\n\nDraft text")]
 
     mock_client = MagicMock()
     mock_client.messages.create.return_value = mock_response
@@ -45,11 +74,9 @@ def test_generate_draft_includes_founder_bio():
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
         generate_draft(
             student_bio="Student",
-            student_projects=None,
+            repo_summaries=[],
             student_interests=["Developer Tools"],
-            portfolio_url=None,
-            github_url=None,
-            resume_url=None,
+            signature_links={},
             company_name="TestCo",
             company_summary="Test",
             specific_projects=[],
@@ -58,15 +85,16 @@ def test_generate_draft_includes_founder_bio():
             tone="friendly",
         )
 
-    prompt_text = mock_client.messages.create.call_args[1]["messages"][0]["content"]
-    assert "10 years" in prompt_text
+    call_kwargs = mock_client.messages.create.call_args[1]
+    user_message = call_kwargs["messages"][0]["content"]
+    assert "10 years" in user_message
 
 
 def test_generate_draft_uses_correct_tone():
     from backend.email.generate import generate_draft
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="Draft")]
+    mock_response.content = [MagicMock(text="SUBJECT: Test\n\nDraft")]
 
     mock_client = MagicMock()
     mock_client.messages.create.return_value = mock_response
@@ -74,11 +102,9 @@ def test_generate_draft_uses_correct_tone():
     with patch("backend.email.generate.anthropic.Anthropic", return_value=mock_client):
         generate_draft(
             student_bio="Student",
-            student_projects=None,
+            repo_summaries=[],
             student_interests=[],
-            portfolio_url=None,
-            github_url=None,
-            resume_url=None,
+            signature_links={},
             company_name="TestCo",
             company_summary="Test",
             specific_projects=[],
@@ -86,5 +112,6 @@ def test_generate_draft_uses_correct_tone():
             tone="friendly",
         )
 
-    prompt_text = mock_client.messages.create.call_args[1]["messages"][0]["content"]
-    assert "Warm" in prompt_text
+    call_kwargs = mock_client.messages.create.call_args[1]
+    user_message = call_kwargs["messages"][0]["content"]
+    assert "Warm" in user_message
