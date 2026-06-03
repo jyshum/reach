@@ -1,56 +1,134 @@
-"""Tests for the interest-aligned email prompt."""
+"""Tests for the email prompt builder."""
 
-from backend.email.prompt import build_email_prompt, TONES
+from backend.email.prompt import build_system_prompt, build_user_prompt, TONES
 
 
-def test_prompt_includes_student_projects():
-    result = build_email_prompt(
-        student_bio="HS junior",
-        student_projects="Built a CNN plant disease classifier using PyTorch",
-        student_interests=["Generative AI", "Healthcare"],
-        portfolio_url="https://alice.dev",
-        github_url="https://github.com/alice",
-        resume_url=None,
-        company_name="Pando Bioscience",
-        company_summary="AI-driven enzyme engineering",
+def test_system_prompt_contains_rules():
+    system = build_system_prompt()
+    assert "high school" in system.lower()
+    assert "4-5 sentences" in system
+    assert "SUBJECT:" in system
+    assert "at most one" in system  # repo rule
+
+
+def test_system_prompt_contains_signature_rule():
+    system = build_system_prompt()
+    assert "signature" in system.lower()
+
+
+def test_user_prompt_includes_bio():
+    result = build_user_prompt(
+        student_bio="I'm a junior at Lincoln High. Writing Python scrapers. I'm interested in NLP.",
+        repo_summaries=[],
+        student_interests=["Generative AI"],
+        signature_links={},
+        company_name="Pando Bio",
+        company_summary="AI enzyme design",
         specific_projects=["Enzyme screening pipeline"],
         founder_name="Will Cao",
         founder_bio="Will changed her major from engineering machines to engineering bacteria.",
         tone="curious",
     )
-    assert "plant disease classifier" in result
-    assert "Pando Bioscience" in result
+    assert "junior at Lincoln High" in result
+    assert "Pando Bio" in result
     assert "Will Cao" in result
-    assert "alice.dev" in result
-    assert "github.com/alice" in result
+    assert "engineering bacteria" in result
 
 
-def test_prompt_includes_founder_bio():
-    result = build_email_prompt(
+def test_user_prompt_includes_repo_summaries():
+    result = build_user_prompt(
         student_bio="Student",
-        student_projects=None,
-        student_interests=["Developer Tools"],
-        portfolio_url=None,
-        github_url=None,
-        resume_url=None,
-        company_name="TestCo",
-        company_summary="Dev tools for teams",
-        specific_projects=[],
-        founder_name="Bob",
-        founder_bio="Bob spent 10 years at Google building infrastructure tools.",
-        tone="friendly",
-    )
-    assert "10 years at Google" in result
-
-
-def test_prompt_handles_all_none_optionals():
-    result = build_email_prompt(
-        student_bio="Student",
-        student_projects=None,
+        repo_summaries=[
+            {"repo_name": "trading-bot", "summary": "A Python bot for crypto.", "language": "Python", "stars": 12},
+            {"repo_name": "scraper", "summary": "Web scraper for pricing data.", "language": "JavaScript", "stars": 0},
+        ],
         student_interests=[],
-        portfolio_url=None,
-        github_url=None,
-        resume_url=None,
+        signature_links={},
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        tone="curious",
+    )
+    assert "trading-bot" in result
+    assert "Python bot for crypto" in result
+    assert "scraper" in result
+
+
+def test_user_prompt_omits_repos_when_empty():
+    result = build_user_prompt(
+        student_bio="Student",
+        repo_summaries=[],
+        student_interests=[],
+        signature_links={},
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        tone="curious",
+    )
+    assert "Projects:" not in result
+
+
+def test_user_prompt_includes_signature_links():
+    result = build_user_prompt(
+        student_bio="Student",
+        repo_summaries=[],
+        student_interests=[],
+        signature_links={
+            "github_url": "https://github.com/alice",
+            "resume_url": "https://storage.example.com/resume.pdf",
+        },
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        tone="curious",
+    )
+    assert "github.com/alice" in result
+    assert "resume.pdf" in result
+    assert "SIGNATURE LINKS" in result
+
+
+def test_user_prompt_omits_signature_section_when_no_links():
+    result = build_user_prompt(
+        student_bio="Student",
+        repo_summaries=[],
+        student_interests=[],
+        signature_links={},
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        tone="curious",
+    )
+    assert "SIGNATURE LINKS" not in result
+
+
+def test_user_prompt_tone_changes_voice():
+    base = dict(
+        student_bio="Student",
+        repo_summaries=[],
+        student_interests=[],
+        signature_links={},
+        company_name="TestCo",
+        company_summary="Test",
+        specific_projects=[],
+        founder_name="Sam",
+        founder_bio=None,
+    )
+    curious = build_user_prompt(**base, tone="curious")
+    scrappy = build_user_prompt(**base, tone="scrappy")
+    assert "curious" in curious.lower() or "nerdy" in curious.lower()
+    assert "Resourceful" in scrappy
+
+
+def test_user_prompt_handles_all_none_optionals():
+    result = build_user_prompt(
+        student_bio="Student",
+        repo_summaries=[],
+        student_interests=[],
+        signature_links={},
         company_name="TestCo",
         company_summary="Building things",
         specific_projects=[],
@@ -60,60 +138,3 @@ def test_prompt_handles_all_none_optionals():
     )
     assert "TestCo" in result
     assert "Sam" in result
-
-
-def test_prompt_includes_resume_url():
-    result = build_email_prompt(
-        student_bio="Student",
-        student_projects=None,
-        student_interests=[],
-        portfolio_url=None,
-        github_url=None,
-        resume_url="https://docs.google.com/my-resume",
-        company_name="TestCo",
-        company_summary="Building things",
-        specific_projects=[],
-        founder_name="Sam",
-        founder_bio=None,
-        tone="earnest",
-    )
-    assert "docs.google.com/my-resume" in result
-
-
-def test_tone_changes_voice():
-    base = dict(
-        student_bio="Student",
-        student_projects=None,
-        student_interests=[],
-        portfolio_url=None,
-        github_url=None,
-        resume_url=None,
-        company_name="TestCo",
-        company_summary="Test",
-        specific_projects=[],
-        founder_name="Sam",
-        founder_bio=None,
-    )
-    curious = build_email_prompt(**base, tone="curious")
-    scrappy = build_email_prompt(**base, tone="scrappy")
-    assert "curious" in curious.lower()
-    assert "Resourceful" in scrappy
-
-
-def test_prompt_emphasizes_domain_alignment():
-    result = build_email_prompt(
-        student_bio="Student",
-        student_projects="Built a trading bot",
-        student_interests=["Fintech", "Payments"],
-        portfolio_url=None,
-        github_url=None,
-        resume_url=None,
-        company_name="PayCo",
-        company_summary="Payment infrastructure for SMBs",
-        specific_projects=[],
-        founder_name="Jane",
-        founder_bio=None,
-        tone="curious",
-    )
-    # Prompt should emphasize interest alignment, not skill-gap filling
-    assert "interest" in result.lower() or "into" in result.lower() or "domain" in result.lower()
