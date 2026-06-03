@@ -15,7 +15,8 @@ def _parse_subject(raw: str, company_name: str) -> tuple[str, str]:
     if first_line.upper().startswith("SUBJECT:"):
         subject = first_line[len("SUBJECT:"):].strip()
         body = lines[1].strip() if len(lines) > 1 else ""
-        return subject, body
+        if subject:
+            return subject, body
 
     return f"Quick question - {company_name}", raw.strip()
 
