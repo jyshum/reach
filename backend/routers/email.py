@@ -98,17 +98,24 @@ def generate_email(body: EmailGenerate, user_id: str = Depends(get_current_user)
     company = company_result.data[0]
 
     user_result = db.table("users").select(
-        "interests, projects, bio, portfolio_url, github_url, resume_url"
+        "interests, bio, portfolio_url, github_url, resume_url"
     ).eq("id", user_id).execute()
     user = user_result.data[0] if user_result.data else {}
 
-    draft = generate_draft(
+    repos_result = db.table("user_repos").select(
+        "repo_name, summary, language, stars"
+    ).eq("user_id", user_id).execute()
+    repo_summaries = repos_result.data if repos_result.data else []
+
+    subject_line, draft = generate_draft(
         student_bio=user.get("bio") or "High school student",
-        student_projects=user.get("projects"),
+        repo_summaries=repo_summaries,
         student_interests=user.get("interests") or [],
-        portfolio_url=user.get("portfolio_url"),
-        github_url=user.get("github_url"),
-        resume_url=user.get("resume_url"),
+        signature_links={
+            "github_url": user.get("github_url"),
+            "resume_url": user.get("resume_url"),
+            "portfolio_url": user.get("portfolio_url"),
+        },
         company_name=company.get("name", ""),
         company_summary=company.get("summary") or company.get("description") or "",
         specific_projects=company.get("specific_projects") or [],
@@ -119,6 +126,7 @@ def generate_email(body: EmailGenerate, user_id: str = Depends(get_current_user)
 
     return {
         "draft": draft,
+        "subject_line": subject_line,
         "tone": body.tone,
         "company_id": body.company_id,
         "company_name": company.get("name", ""),

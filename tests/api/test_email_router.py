@@ -137,13 +137,15 @@ def test_generate_returns_draft(client, auth_headers):
             mock_table.select.return_value.eq.return_value.execute.return_value.data = [_sample_company()]
         elif table_name == "users":
             mock_table.select.return_value.eq.return_value.execute.return_value.data = [_sample_user()]
+        elif table_name == "user_repos":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = []
         return mock_table
 
     mock_db.table.side_effect = table_side_effect
 
     with _mock_auth(), \
          patch("backend.routers.email.get_db", return_value=mock_db), \
-         patch("backend.routers.email.generate_draft", return_value="I'm a high school senior in SF..."):
+         patch("backend.routers.email.generate_draft", return_value=("Quick chat about AlphaCo", "I'm a high school senior in SF...")):
         response = client.post(
             "/email/generate",
             json={"company_id": 1, "tone": "curious"},
@@ -153,6 +155,7 @@ def test_generate_returns_draft(client, auth_headers):
     assert response.status_code == 200
     data = response.json()
     assert data["draft"] == "I'm a high school senior in SF..."
+    assert data["subject_line"] == "Quick chat about AlphaCo"
     assert data["company_name"] == "AlphaCo"
     assert data["tone"] == "curious"
 
@@ -166,6 +169,8 @@ def test_generate_company_not_found(client, auth_headers):
             mock_table.select.return_value.eq.return_value.execute.return_value.data = []
         elif table_name == "users":
             mock_table.select.return_value.eq.return_value.execute.return_value.data = [_sample_user()]
+        elif table_name == "user_repos":
+            mock_table.select.return_value.eq.return_value.execute.return_value.data = []
         return mock_table
 
     mock_db.table.side_effect = table_side_effect
