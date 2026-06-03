@@ -8,4 +8,5 @@ backend/ml/artifacts/
 .DS_Store
 .claude/
 .superpowers/
+docs/superpowers/
 jared_ques.txt
