@@ -87,7 +87,7 @@ export async function fetchProfile(): Promise<UserProfile> {
 }
 
 export async function updateProfile(
-  data: Partial<Pick<UserProfile, "skills" | "school" | "grad_year" | "bio" | "github_url" | "portfolio_url" | "location" | "interests" | "projects" | "resume_url">>,
+  data: Partial<Pick<UserProfile, "skills" | "school" | "grad_year" | "bio" | "github_url" | "portfolio_url" | "location" | "interests" | "resume_url">>,
 ): Promise<UserProfile> {
   return apiFetch<UserProfile>("/me", {
     method: "PUT",

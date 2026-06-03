@@ -142,6 +142,7 @@ export const INDUSTRIES = [
 
 export interface EmailDraft {
   draft: string;
+  subject_line: string;
   tone: string;
   company_id: number;
   company_name: string;

@@ -62,9 +62,7 @@ export default function EmailWorkspace({
       const result = await generateEmailDraft(companyId, tone);
       setBody(result.draft);
       setOriginalDraft(result.draft);
-      if (!subjectLine) {
-        setSubjectLine(`Quick question - ${companyName}`);
-      }
+      setSubjectLine(result.subject_line || `Quick question - ${companyName}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to generate draft");
     } finally {
