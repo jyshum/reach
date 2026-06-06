@@ -1,6 +1,7 @@
-"""Resume PDF upload and delete endpoints."""
+"""Resume PDF upload, delete, and public redirect endpoints."""
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi.responses import RedirectResponse
 
 from backend.auth import get_current_user
 from backend.db import get_db
@@ -37,9 +38,18 @@ async def upload_resume(
 
     public_url = db.storage.from_(BUCKET).get_public_url(path)
 
-    db.table("users").update({"resume_url": public_url}).eq("id", user_id).execute()
+    # Derive slug from user email (e.g. "jshum" from "jshum@example.com")
+    user_result = db.table("users").select("email").eq("id", user_id).execute()
+    slug = user_id  # fallback
+    if user_result.data and user_result.data[0].get("email"):
+        slug = user_result.data[0]["email"].split("@")[0]
 
-    return {"resume_url": public_url}
+    db.table("users").update({
+        "resume_url": public_url,
+        "resume_slug": slug,
+    }).eq("id", user_id).execute()
+
+    return {"resume_url": public_url, "resume_slug": slug}
 
 
 @router.delete("/me/resume")
@@ -49,6 +59,16 @@ def delete_resume(user_id: str = Depends(get_current_user)):
     path = f"{user_id}/resume.pdf"
 
     db.storage.from_(BUCKET).remove([path])
-    db.table("users").update({"resume_url": None}).eq("id", user_id).execute()
+    db.table("users").update({"resume_url": None, "resume_slug": None}).eq("id", user_id).execute()
 
     return {"ok": True}
+
+
+@router.get("/resume/{slug}")
+def public_resume(slug: str):
+    """Redirect a friendly resume URL to the actual Supabase storage URL."""
+    db = get_db()
+    result = db.table("users").select("resume_url").eq("resume_slug", slug).execute()
+    if not result.data or not result.data[0].get("resume_url"):
+        raise HTTPException(status_code=404, detail="Resume not found")
+    return RedirectResponse(result.data[0]["resume_url"])

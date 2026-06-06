@@ -98,7 +98,7 @@ def generate_email(body: EmailGenerate, user_id: str = Depends(get_current_user)
     company = company_result.data[0]
 
     user_result = db.table("users").select(
-        "interests, bio, portfolio_url, github_url, resume_url"
+        "interests, bio, portfolio_url, github_url, resume_url, resume_slug"
     ).eq("id", user_id).execute()
     user = user_result.data[0] if user_result.data else {}
 
@@ -107,13 +107,20 @@ def generate_email(body: EmailGenerate, user_id: str = Depends(get_current_user)
     ).eq("user_id", user_id).execute()
     repo_summaries = repos_result.data if repos_result.data else []
 
+    # Use clean resume URL if slug exists, otherwise raw URL
+    resume_link = None
+    if user.get("resume_slug"):
+        resume_link = f"https://reachyc.com/resume/{user['resume_slug']}"
+    elif user.get("resume_url"):
+        resume_link = user["resume_url"]
+
     subject_line, draft = generate_draft(
         student_bio=user.get("bio") or "High school student",
         repo_summaries=repo_summaries,
         student_interests=user.get("interests") or [],
         signature_links={
             "github_url": user.get("github_url"),
-            "resume_url": user.get("resume_url"),
+            "resume_url": resume_link,
             "portfolio_url": user.get("portfolio_url"),
         },
         company_name=company.get("name", ""),
